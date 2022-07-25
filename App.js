@@ -1,128 +1,125 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TextInput } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import "react-native-gesture-handler";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useFonts } from "expo-font";
-// Component
-import CustomBtn from "./src/components/CustomBtn";
-import { Images } from "./Images";
-// Screen import
-import Register from "./src/screens/Register";
-import FindPassWord from "./src/screens/FindPassWord";
-import MainScreen from "./src/screens/MainScreen";
-import { useState } from "react";
+import { StatusBar } from 'expo-status-bar';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
+import { useFonts } from 'expo-font';
+import LR from './screens/LR';
+import Main from './screens/Main';
 
 
-function login({ navigation }) {
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator} from '@react-navigation/stack';
+import 'react-native-gesture-handler';
+// import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-  const [studentId, setStudentId] = useState('');
-  const [studentPassword, setStudentPassword] = useState('');
-  const [loaded] = useFonts({
-    //폰트 설정
-    Audiowide: require("./assets/fonts/AudiowideRegular.ttf"),
-    NanumGothic: require("./assets/fonts/NanumGothic.otf"),
-    NanumGothicBold: require("./assets/fonts/NanumGothicBold.otf"),
+import firebase from 'firebase/app';
+import "firebase/auth";
+
+
+
+const Stack = createStackNavigator();
+
+export default function App() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBiAMNvHOG2_2g9vbuxNBse5qIQP8drdOo",
+    authDomain: "capstonconnect-8876a.firebaseapp.com",
+    databaseURL: "https://capstonconnect-8876a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "capstonconnect-8876a",
+    storageBucket: "capstonconnect-8876a.appspot.com",
+    messagingSenderId: "434008796329",
+    appId: "1:434008796329:web:3d5f07352693e496e3cdb8",
+    measurementId: "G-GPTY23T65H"
+  };
+  //Checking if firebase has been initialized 파이어베이스 초기화 여부 확인
+  if(!firebase.apps.length){
+    firebase.initializeApp(firebaseConfig);
+  }else{
+    firebase.app();
+  }
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user != null) {
+      setIsLoggedIn(true)
+    } else{
+      setIsLoggedIn(false);
+    }
+  });
+
+
+
+  const [loaded] = useFonts({  //폰트 설정..
+    Audiowide : require('./assets/fonts/AudiowideRegular.ttf'),
+    NanumGothic: require('./assets/fonts/NanumGothic.otf'),
+    NanumGothicBold: require('./assets/fonts/NanumGothicBold.otf'),
   });
   if (!loaded) {
     return null;
   }
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto"></StatusBar>
-      <View style={styles.top}>
-        <Text style={styles.connect}>CONNECT</Text>
-      </View>
-      <View style={styles.mid}>
-        <Text style={styles.NanumRG}>학번</Text>
-        <TextInput value={studentId} onChangeText={(studentId) => {setStudentId(studentId)}} placeholder={"ex) 20171111"} style={styles.input} />
-        <Text style={styles.NanumRG}>비밀번호</Text>
-        <TextInput value={studentPassword} onChangeText={(studentPassword) => {setStudentPassword(studentPassword)}} secureTextEntry={true} style={styles.input} />
-        <CustomBtn  title="로그인" onClick={() => navigation.navigate("메인")} />
-        <View style={styles.bottom}>
-          <Text style={styles.membership}>
-            <Text onPress={() => navigation.navigate("회원가입")}>
-              회원가입
-            </Text>
-          </Text>
-          <Text style={styles.membership}>
-            <Text onPress={() => navigation.navigate("비밀번호 찾기")}>
-              비밀번호 찾기
-            </Text>
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
-}
-
-const Stack = createStackNavigator();
-
-export default function App() {
-
-
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="로그인">
-        <Stack.Screen name="로그인" component={login} options={{headerShown: false}}/>
-        <Stack.Screen name="회원가입" component={Register} />
-        <Stack.Screen name="비밀번호 찾기" component={FindPassWord} />
+    <NavigationContainer> 
+      {isLoggedIn ? <Stack.Navigator>
+        <Stack.Screen name="Main" component={Main} options={{headerShown: false}}/>
+      </Stack.Navigator> :
+      
+      <Stack.Navigator>
+      <Stack.Screen name="LR" component={LR} options={{headerShown: false}} />
+      
       </Stack.Navigator>
-    </NavigationContainer>
-
-
-
+      }
+        
+      </NavigationContainer>
+      
   );
 }
 
 
 
-// <Stack.Navigator initialRouteName="메인">
-// <Stack.Screen name="메인" component={MainScreen} />
-// </Stack.Navigator>
+
 const styles = StyleSheet.create({
-  container: {
+  container:{
+    flex: 1,
+    backgroundColor:"white",
+  },
+  top:{
     flex: 1,
     backgroundColor: "white",
+    justifyContent:"flex-end",
+    alignItems:"center",
+    marginBottom: 30
   },
-  top: {
-    flex: 1,
-    backgroundColor: "white",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    marginBottom: 30,
-  },
-  mid: {
+  mid:{
     flex: 2.5,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
-  bottom: {
-    justifyContent: "space-around",
-    flexDirection: "row",
+  bottom:{
+    justifyContent:"space-around",
+    flexDirection: 'row',
     marginTop: 20,
   },
-  connect: {
+  connect:{
     fontSize: 50,
-    fontFamily: "Audiowide",
+    fontFamily: 'Audiowide',
   },
-  NanumRG: {
+  NanumRG:{
     fontSize: 25,
-    fontFamily: "NanumGothic",
+    fontFamily: 'NanumGothic',
     marginLeft: 20,
-    marginTop: 40,
+    marginTop: 40
+    
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor:"white",
     height: 40,
     margin: 5,
     marginLeft: 20,
     marginRight: 20,
     borderBottomWidth: 1.5,
   },
-  membership: {
+  membership:{
     fontSize: 20,
-    fontFamily: "NanumGothic",
-  },
-});
+    fontFamily: 'NanumGothic',
+    
+  }
+})

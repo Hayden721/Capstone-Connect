@@ -1,3 +1,5 @@
 export const Fonts = {
-    AudiowideRegular: "AudiowideRegular"  
-  };
+  AudiowideRegular: "AudiowideRegular",
+  NanumGothic: "NanumGothic",
+  NanumGothicBold: "NanumGothicBold"
+};
