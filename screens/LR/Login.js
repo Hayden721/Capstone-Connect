@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity,Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity,Alert, Modal} from 'react-native';
 //import { useFonts } from 'expo-font';
 
 import firebase from 'firebase/app';
 import "firebase/auth";
+//import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 
 const resultMessages = {
@@ -31,7 +32,7 @@ function Loginscreen({navigation}) {
       })
     }
 
-    
+    //로그인
     function Login(){
 
       const {email, pwd} = values
@@ -50,13 +51,51 @@ function Loginscreen({navigation}) {
       });
     }
 
+
+    //비밀번호 찾기 모달
+    const [modalVisible, setModalVisible] = useState(false);
+  
+    //비밀번호 찾기 이메일 전송
+   
+    const [emailAddress, setEmailAddress ]= useState('');
+    function findPwd() {
+      
+      firebase.auth().sendPasswordResetEmail(emailAddress)
+      .then(()=> {
+        setModalVisible(!modalVisible)
+        Alert.alert("전송 완료", "이메일을 확인하세요.")
+        console.log('비밀번호 전송완료');
+      })
+      .catch((error) => {
+        const alertMessage = resultMessages[error.code]
+        Alert.alert("비밀번호 찾기 실패", alertMessage);
+      })
+    }
+
+    
     return(
+      
       <View style={styles.container}>
         <StatusBar style="auto"></StatusBar>
         <View style={styles.top}>
           <Text style={styles.connect}>CONNECT</Text>
         </View>
         <View style={styles.mid}>
+          <Modal  visible = {modalVisible}>
+            <Text style={styles.NanumRG}>비밀번호 찾기</Text>
+            <View style={styles.pwdFind}>
+            <Text style={styles.NanumRG}>이메일</Text>
+              <TextInput placeholder={"이메일을 입력 하세요."} style={styles.input} onChangeText={text =>setEmailAddress(text)}/>
+              <View style={styles.bottom}>
+                <TouchableOpacity style={styles.pwdFindBtn} onPress={() => findPwd()}>
+                <Text style={{ color: '#000000', fontSize: 24, fontFamily:'NanumGothicBold' }}>찾기</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.pwdFindBtn} onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={{ color: '#000000', fontSize: 24, fontFamily:'NanumGothicBold' }}>취소</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
           <Text style={styles.NanumRG}>이메일</Text>
           <TextInput placeholder={"ex) 20171111@naver.com"} style={styles.input} onChangeText={text => handleChange(text, "email")}/>
           <Text style={styles.NanumRG}>비밀번호</Text>
@@ -69,10 +108,13 @@ function Loginscreen({navigation}) {
         </TouchableOpacity>
           <View style={styles.bottom}>
             <Text style={styles.membership}><Text onPress={()=> navigation.navigate('Register')}>회원가입</Text></Text> 
-            <Text style={styles.membership}><Text onPress={()=> alert("비밀번호 찾기")}>비밀번호 찾기</Text></Text>  
+            
+            <Text style={styles.membership}><Text onPress={() => setModalVisible(!modalVisible)}>비밀번호 찾기</Text></Text>  
+            
           </View>
         </View>
       </View>
+      
     );
   }
   export default Loginscreen;
@@ -128,5 +170,19 @@ function Loginscreen({navigation}) {
       marginTop: 50,
       borderRadius: 10,
       alignItems:"center"
+    },
+    pwdFind:{
+      //alignItems:"center",
+      justifyContent:"center",
+      marginTop:"50%" 
+    }
+    ,pwdFindBtn:{
+      backgroundColor: '#D9D9D9',
+      padding: 15,
+      margin: 20,
+      marginTop: 50,
+      borderRadius: 10,
+      alignItems:"center",
+      
     }
   })
