@@ -1,5 +1,5 @@
 import React from 'react';
-import Loginscreen from './LR/Login';
+import LoginScreen from './LR/Login';
 import Register from './LR/Register'
 
 import { createStackNavigator,} from '@react-navigation/stack';
@@ -12,8 +12,8 @@ const LR = () => {
     return (
         <Stack.Navigator screenOptions ={{ headerShown: false}}>
             <Stack.Screen  
-                name="Loginscreen"
-                component={Loginscreen} />
+                name="LoginScreen"
+                component={LoginScreen} />
             <Stack.Screen 
             name="Register"
             component={Register}/> 

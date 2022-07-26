@@ -16,7 +16,7 @@ const resultMessages = {
 }
 
 
-function Loginscreen({navigation}) {
+function LoginScreen({navigation}) {
     const [values, setValues] = useState({
       email:"",
       pwd:""
@@ -75,7 +75,7 @@ function Loginscreen({navigation}) {
       </View>
     );
   }
-  export default Loginscreen;
+  export default LoginScreen;
   const styles = StyleSheet.create({
     container:{
       flex: 1,

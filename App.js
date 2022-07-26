@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert, SafeAreaView } from 'react-native';
 import { useFonts } from 'expo-font';
 import LR from './screens/LR';
-import Main from './screens/Main';
 
+import BottomTabNavi from './screens/BottomTabNavi';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator} from '@react-navigation/stack';
@@ -48,6 +48,7 @@ export default function App() {
 
 
 
+
   const [loaded] = useFonts({  //폰트 설정..
     Audiowide : require('./assets/fonts/AudiowideRegular.ttf'),
     NanumGothic: require('./assets/fonts/NanumGothic.otf'),
@@ -60,7 +61,7 @@ export default function App() {
   return (
     <NavigationContainer> 
       {isLoggedIn ? <Stack.Navigator>
-        <Stack.Screen name="Main" component={Main} options={{headerShown: false}}/>
+        <Stack.Screen name="BottomTab" component={BottomTabNavi} options={{headerShown: false}}/>
       </Stack.Navigator> :
       
       <Stack.Navigator>
@@ -68,8 +69,9 @@ export default function App() {
       
       </Stack.Navigator>
       }
-        
       </NavigationContainer>
+
+      
       
   );
 }
