@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput, TouchableOpacity,Platform, Alert} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity,Platform, Alert, Modal} from 'react-native';
 
 import CheckBox from 'expo-checkbox';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -64,7 +64,12 @@ function Register({}) {
     }
 }
 
+function Pwdfind() {
+  <Modal>
 
+  </Modal>
+
+}
 
 
 
