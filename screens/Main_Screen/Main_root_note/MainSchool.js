@@ -4,7 +4,7 @@ import React from 'react'
 const MainSchool = () => {
   return (
     <View>
-      <Text>School</Text>
+      <Text>학교 공지사항 인것 </Text>
     </View>
   )
 }

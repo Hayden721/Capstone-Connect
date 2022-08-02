@@ -11,8 +11,6 @@ const Main_board = () => {
     <View>
     <View style={styles.Container}>
     <Text style={styles.Top}>게시판</Text>
-    
-
       <View style={styles.menuContainer} horizontal ={true}>
 
       <TouchableOpacity style={styles.textContainer}>
@@ -46,12 +44,13 @@ export default Main_board
 const styles = StyleSheet.create({
 
   Container: {
-    backgroundColor:"white",
+    backgroundColor:"000000",
+    marginTop: 30,
   },
 
   Top: {   
     fontSize:30,
-    marginLeft:15,   
+    marginLeft:32,   
   },
 
   menuContainer: {
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
     borderRadius:10,
     margin:5,
     padding:10,
-    backgroundColor:"white"
+    backgroundColor:"000000"
   },
 
   textStyle: {

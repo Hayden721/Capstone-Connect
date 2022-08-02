@@ -13,17 +13,12 @@ const Main_root = ({navigation}) => {
     <View>
     <Text style={styles.Top}>공지사항</Text>
 
-    <TouchableOpacity onPress={() => navigation.navigate("School")}>
-      <Text> dasd</Text>
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => navigation.navigate("MainSystem")}>
-    </TouchableOpacity>
-
     <View style={styles.Container}></View>
-    <TouchableOpacity style={styles.textContainerss}>
+    <TouchableOpacity onPress={() => navigation.navigate("학교 공지사항")} style={styles.textContainerss}>
       <Text style={styles.School}> 학교 </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.textContainerss}>
+
+      <TouchableOpacity onPress={() => navigation.navigate("시스템 공지사항")} style={styles.textContainerss}>
       <Text style={styles.System}> 시스템 </Text>
       </TouchableOpacity>
 
@@ -44,8 +39,13 @@ const Main_root = ({navigation}) => {
       <Text style={styles.Top}>게시판</Text>
 
       <View style={styles.Container}></View>
-      <TouchableOpacity style={styles.textContainerss}>
+      <TouchableOpacity onPress={() => navigation.navigate("Board")} style={styles.textContainerss}>
       <Text style={styles.School}> 게시판 </Text>
+      </TouchableOpacity>
+
+      <View style={styles.Container}></View>
+      <TouchableOpacity onPress={() => navigation.navigate("Chat")} style={styles.textContainerss}>
+      <Text style={styles.School}> 채팅방 </Text>
       </TouchableOpacity>
   </View>
 
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   
   textContainerss: {
-    height:100,
+    height:80,
     borderColor:'#000',
     borderWidth:1,
     borderRadius:10,
