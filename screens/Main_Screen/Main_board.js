@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity,StyleSheet  } from "react-native";
 import firebase from 'firebase/app';
 import "firebase/auth";
+import MainSchool from "./Main_root_note/MainSchool";
 
 
 
@@ -10,6 +11,7 @@ const Main_board = () => {
     <View>
     <View style={styles.Container}>
     <Text style={styles.Top}>게시판</Text>
+    
 
       <View style={styles.menuContainer} horizontal ={true}>
 

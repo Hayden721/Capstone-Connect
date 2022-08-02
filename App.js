@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TextInput, Alert, SafeAreaView } from 'react-na
 import { useFonts } from 'expo-font';
 import LR from './screens/LR';
 
-import BottomTabNavi from './screens/BottomTabNavi';
+import BottomTabNavi from './screens/BottomTabNavi copy';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator} from '@react-navigation/stack';

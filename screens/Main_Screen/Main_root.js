@@ -3,12 +3,21 @@ import firebase from 'firebase/app';
 import "firebase/auth";
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TouchableOpacity } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
 
-const Main_root = () => {
+
+
+const Main_root = ({navigation}) => {
   return (
     <View>
     <Text style={styles.Top}>공지사항</Text>
+
+    <TouchableOpacity onPress={() => navigation.navigate("School")}>
+      <Text> dasd</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate("MainSystem")}>
+    </TouchableOpacity>
 
     <View style={styles.Container}></View>
     <TouchableOpacity style={styles.textContainerss}>
@@ -88,7 +97,7 @@ const styles = StyleSheet.create({
     borderRadius:10,
     margin:20,
     padding:15,
-    backgroundColor:"#EFD9E0"
+    backgroundColor:"black"
   },
   textStyle: {
     justifyContent:"center",
