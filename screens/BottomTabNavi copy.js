@@ -10,12 +10,18 @@ import MainSchool from "./Main_Screen/Main_root_note/MainSchool";
 import { AntDesign, MaterialCommunityIcons  } from '@expo/vector-icons'; 
 import { createStackNavigator } from "@react-navigation/stack";
 import MainSystem from "./Main_Screen/Main_root_note/MainSystem";
+import Board_whole from "./Main_Screen/Main_board_note/Board_whole";
 
 const TabStack = createBottomTabNavigator();
 const ConnectStack = createStackNavigator();
 const BoardStack = createStackNavigator();
 
-const ConnectStackScreen = ()=> {
+
+
+const ConnectStackScreen = ({ navigation, route })=> {
+  route.state && route.state.index > 0
+  ? navigation.setOptions({ tabBarVisible: false })
+  : navigation.setOptions({ tabBarVisible: true });
   return(
    <ConnectStack.Navigator>
   <ConnectStack.Screen name="Connect" component={Main_root} options={{headerShown: false}} />
@@ -29,6 +35,7 @@ const BoardStackScreen = ()=> {
   return(
    <BoardStack.Navigator>
   <BoardStack.Screen name="Board" component={Main_board} options={{headerShown: false}} />
+  <BoardStack.Screen name="전체 게시판" component={Board_whole} />
   </BoardStack.Navigator>
   );
 };

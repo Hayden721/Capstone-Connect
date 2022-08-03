@@ -6,16 +6,18 @@ import MainSchool from "./Main_root_note/MainSchool";
 
 
 
-const Main_board = () => {
+const Main_board = ({navigation}) => {
   return (
     <View>
     <View style={styles.Container}>
     <Text style={styles.Top}>게시판</Text>
       <View style={styles.menuContainer} horizontal ={true}>
 
-      <TouchableOpacity style={styles.textContainer}>
-      <Text style={styles.textStyle}> <Text onPress={()=> navigation.navigate('every')}></Text>전체</Text>
+      <View style={styles.textContainer}>
+      <TouchableOpacity onPress={() => navigation.navigate("전체 게시판")} style={styles.textStyle}>
+      <Text style={styles.textStyle}> 전체 </Text>
       </TouchableOpacity>
+      </View>
 
       <TouchableOpacity style={styles.textContainer}>
       <Text style={styles.textStyle}> <Text onPress={()=> alert('자유게시판으로 이동 ')}></Text>자유</Text>
