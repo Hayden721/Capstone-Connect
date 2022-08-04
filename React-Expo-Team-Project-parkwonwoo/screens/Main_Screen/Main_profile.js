@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react';
+import firebase from 'firebase/app';
 import "firebase/auth";
 
 const Main_profile = () => {

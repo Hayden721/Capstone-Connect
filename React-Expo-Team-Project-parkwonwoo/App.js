@@ -13,6 +13,7 @@ import 'react-native-gesture-handler';
 
 import firebase from 'firebase/app';
 import "firebase/auth";
+import "firebase/firestore";
 
 
 

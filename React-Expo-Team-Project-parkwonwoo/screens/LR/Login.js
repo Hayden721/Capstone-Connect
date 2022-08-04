@@ -38,8 +38,11 @@ function LoginScreen({navigation}) {
       const {email, pwd} = values
 
       firebase.auth().signInWithEmailAndPassword(email, pwd)
-      .then(() => {
-          
+      .then((value) => {
+         if(value.user.emailVerified == false){
+          firebase.auth().signOut()  //이메일 인증 안하면 로그아웃
+          Alert("로그인 실패", "이메일 인증 하세요.");// 이게 안나오고 밑에 알수없는 이유로가 나옴;;
+        }
       })
       .catch((error) => {
         console.log(error.code)

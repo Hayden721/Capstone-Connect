@@ -7,6 +7,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import firebase from 'firebase/app';
 import "firebase/auth";
+import 'firebase/firestore';
 
 
 const resultMessages = {
@@ -18,35 +19,58 @@ const resultMessages = {
 }
 
 
+
+
 function Register({}) {
     const [agree, setAgree] = useState(false);
-    const [values, setValues] = useState({
-      email: "",
-      pwd: "",
-      pwd2: ""
-    })
+    const [addName, setAddName] = useState('');
+    const [addNumber, setAddNumber] = useState('');
+    const [email, setAddEmail] = useState('');
+    const [pwd, setAddPwd] = useState('');
+    const [pwd2, setAddPwd2] = useState('');
+   // const [certification, setCertification] = useState(false);
     
-    
-  function handleChange(text, eventName) {
-      setValues(prev => {
-          return {
-              ...prev,
-              [eventName]: text
-          }
+   
+    const db = firebase.firestore();
+    let hakbun = email; //db에 이메일
+  function addText(){
+      
+      db.collection("users").doc(hakbun).set({
+        name: addName,
+        number: addNumber,
+        email: email
       })
-  }
+      .then(() => {
+        console.log('Create Complete!');
+      })
+     .catch((error) => {
+      console.log(error.message);
+     })  
+     
+  };
+
 
   function SignUp() {
-
-    const { email, pwd, pwd2 } = values
-
+    
+    
     if (pwd == pwd2 && agree) {
         firebase.auth().createUserWithEmailAndPassword(email, pwd)
             .then(() => {
+              addText()
+              firebase.auth().currentUser.sendEmailVerification()
+              .then(() => {
+                console.log("이메일 전송 완료");
+              })
+              firebase.auth().signOut()
+              .catch((error) => {
+                console.log(error.code);
+                Alert.alert("실패", "이메일 전송 실패");
+            });
               Alert.alert("회원가입 성공", "회원가입을 축하드립니다.")
+              
             })
             .catch((error) => {
-             // console.log(error.code);
+                console.log(error.code);
                 // ..
                 const alertMessage = resultMessages[error.code] ? 
                 resultMessages[error.code] : "알 수 없는 이유로 회원가입에 실패하였습니다.";
@@ -64,29 +88,60 @@ function Register({}) {
     }
 }
 
-function Pwdfind() {
-  <Modal>
+ /*function touch (){      무시해도 됨  나중에 학번 중복
+  db.collection("users").doc("363636")
+  .onSnapshot((doc) => {
+      console.log("Current data: ", doc.data());
+  });
+   db.collection("users").where("number", "==", addNumber).get().then((result) => {
+      result.forEach((doc) => {
+        console.log(doc.data())
+        alert("학번 중복 입니다.");
+        console.log("중복임");
+      });
+      setCertification(false)
+  });
+  const nn =  db.collection("users").where("number", "==", addNumber).get();
+  console.log(nn);
+  nn.then((result) => {
+    result.forEach((doc) => {
+     if(nn){
+      alert("학번 중복 입니다.");    
+      setCertification(false);
+      console.log("중복");
+     }else{
+      alert("중복 아님");
+      console.log("중복아님");
+     }
+    });
+  
+});
 
-  </Modal>
-
-}
-
-
-
+}*/
     return(
       <KeyboardAwareScrollView style={styles.container } behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <Text style={styles.NanumRG}>학번</Text>
-        <TextInput placeholder={"ex) 20171111"} style={styles.input} onChangeText={text => handleChange(text, "email")} />
+        <View style={styles.check}>
+          <View style={styles.item1}>
+          <TextInput placeholder={"ex) 20171111"} style={styles.input}value={addNumber} onChangeText={text => setAddNumber(text)} />
+          </View>
+          <View style={styles.item2}>
+            <TouchableOpacity style={styles.checkBtn} onPress={() => touch()}>
+              <Text style={{ color: '#000000', fontSize: 20, fontFamily:'NanumGothicBold' }}>인증</Text> 
+            </TouchableOpacity>
+          </View>
+        </View>
+        
         <Text style={styles.NanumRG}>이름</Text>
-        <TextInput placeholder={"ex) 홍길동"} style={styles.input}/>
+        <TextInput placeholder={"ex) 홍길동"} style={styles.input} value={addName} onChangeText={text =>setAddName(text)}/>
         <Text style={styles.NanumRG}>비밀번호</Text>
-        <TextInput secureTextEntry ={true} style={styles.input} onChangeText={text => handleChange(text, "pwd")}/>
+        <TextInput secureTextEntry ={true} style={styles.input} value={pwd}  onChangeText={text => setAddPwd(text)}/>
         <Text style={styles.NanumRG}>비밀번호 확인</Text>
-        <TextInput secureTextEntry ={true} style={styles.input} onChangeText={text => handleChange(text, "pwd2")}/>
+        <TextInput secureTextEntry ={true} style={styles.input} value={pwd2} onChangeText={text => setAddPwd2(text)}/>
         <Text style={styles.NanumRG}>학교 이메일</Text>
         <View style={styles.check}>
           <View style={styles.item1}>
-            <TextInput  placeholder={"ex) 20001234@shinhan.ac.kr"} style={styles.input}/>
+            <TextInput  placeholder={"ex) 20001234@shinhan.ac.kr"} style={styles.input} value={email} onChangeText={text =>setAddEmail(text)}/>
           </View>
           <View style={styles.item2}>
             <TouchableOpacity style={styles.checkBtn}>
@@ -109,8 +164,9 @@ function Pwdfind() {
             <Text style={styles.NanumRG}>[필수]동의합니다.</Text>
           </View>
           <View style={styles.box3}>
-            <TouchableOpacity onPress={() => alert('clicked!')}>
+            <TouchableOpacity>
               <MaterialCommunityIcons name="plus" size={50} color="black" />
+              
             </TouchableOpacity>
           </View>
         </View>
@@ -124,13 +180,7 @@ function Pwdfind() {
             alignItems:"center"
             }}
             
-            onPress={()=> SignUp()}
-            /*navigation.reset({    스택 초기화  둘중 뭘해도 다시 돌아가짐 
-                routes: [{
-                name: '이동할 컴포넌트 name',
-                params: { key : value}}] // 보낼 데이터가 있다면
-             }) */
-        >
+            onPress={()=> SignUp()} >
             <Text style={{ color: '#000000', fontSize: 24, fontFamily:'NanumGothicBold' }}>회원가입</Text>
         </TouchableOpacity>
       </KeyboardAwareScrollView>
@@ -194,5 +244,5 @@ function Pwdfind() {
       }
 })
 
-  export default Register;
+export default Register;
   

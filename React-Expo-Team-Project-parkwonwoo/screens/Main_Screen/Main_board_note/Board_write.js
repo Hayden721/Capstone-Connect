@@ -11,7 +11,7 @@ const Board_write = ({navigation}) => {
       <AntDesign name="checksquareo" size={30} color="black" />
       <Text style={styles.Category}> 카테고리 </Text>
       </TouchableOpacity>  
-
+      
       <TouchableOpacity style={styles.icon}>
       <AntDesign name="picture" size={30} color="black" />
       <Text style={styles.Category}> 사진 </Text>

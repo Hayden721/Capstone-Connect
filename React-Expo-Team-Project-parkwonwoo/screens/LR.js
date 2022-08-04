@@ -10,10 +10,11 @@ import { createStackNavigator,} from '@react-navigation/stack';
 const LR = () => {
     const Stack = createStackNavigator();
     return (
-        <Stack.Navigator screenOptions ={{ headerShown: false}}>
+        <Stack.Navigator>
             <Stack.Screen  
                 name="LoginScreen"
-                component={LoginScreen} />
+                component={LoginScreen}
+                options ={{ headerShown: false}} />
             <Stack.Screen 
             name="Register"
             component={Register}/> 
