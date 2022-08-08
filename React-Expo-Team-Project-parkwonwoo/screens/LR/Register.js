@@ -28,17 +28,15 @@ function Register({}) {
     const [email, setAddEmail] = useState('');
     const [pwd, setAddPwd] = useState('');
     const [pwd2, setAddPwd2] = useState('');
-   // const [certification, setCertification] = useState(false);
-    
+
    
     const db = firebase.firestore();
-    let hakbun = email; //db에 이메일
-  function addText(){
-      
-      db.collection("users").doc(hakbun).set({
+    const docEmail = email;
+    function addText(){
+      db.collection("users").doc(docEmail).set({
         name: addName,
         number: addNumber,
-        email: email
+        email: email,
       })
       .then(() => {
         console.log('Create Complete!');
@@ -51,8 +49,6 @@ function Register({}) {
 
 
   function SignUp() {
-    
-    
     if (pwd == pwd2 && agree) {
         firebase.auth().createUserWithEmailAndPassword(email, pwd)
             .then(() => {
@@ -61,7 +57,6 @@ function Register({}) {
               .then(() => {
                 console.log("이메일 전송 완료");
               })
-              firebase.auth().signOut()
               .catch((error) => {
                 console.log(error.code);
                 Alert.alert("실패", "이메일 전송 실패");
@@ -71,7 +66,6 @@ function Register({}) {
             })
             .catch((error) => {
                 console.log(error.code);
-                // ..
                 const alertMessage = resultMessages[error.code] ? 
                 resultMessages[error.code] : "알 수 없는 이유로 회원가입에 실패하였습니다.";
                 console.log(alertMessage)
@@ -87,20 +81,56 @@ function Register({}) {
         Alert.alert("회원가입 실패","필수 약관을 동의해 주세요.")
     }
 }
+function touch(){
+  console.log()
+}
+/*
+function touch() {
+  db.collection("users").get().then((result) => {
+    result.forEach((doc) => {
+      //console.log(doc.data().number)
+      if(addNumber == false){
+        setCertification(false)
+      } else if(doc.data().number != addNumber){
+        setCertification(true)
+      } else {
+        setCertification(false)
+      }
+    });
+    console.log(certification+ "1")
+    console.log(certification+ "2")
+});
 
- /*function touch (){      무시해도 됨  나중에 학번 중복
+}
+
+/*
+const handleChange = () => {
+  db.collection("users").get().then((result) => {
+    result.forEach((doc) => {
+      //console.log(doc.data().number)
+      if(addNumber == false || addNumber ===""){
+        setCheckError("학번을 입력하세요.")
+        setCertification(false)
+      }
+      else if(doc.data().number == addNumber){
+        setCheckError("중복 학번 입니다.")
+        setCertification(false)
+        return true;
+      } else if(doc.data().number != addNumber && addNumber.length == 7) {
+        setCheckError("사용 가능한 학번 입니다.")
+        setCertification(true)
+      } else{
+        setCheckError("불가능한 학번 입니다.")
+      }
+    });
+});
+}
+ function touch (){      무시해도 됨  나중에 학번 중복
   db.collection("users").doc("363636")
   .onSnapshot((doc) => {
       console.log("Current data: ", doc.data());
   });
-   db.collection("users").where("number", "==", addNumber).get().then((result) => {
-      result.forEach((doc) => {
-        console.log(doc.data())
-        alert("학번 중복 입니다.");
-        console.log("중복임");
-      });
-      setCertification(false)
-  });
+   
   const nn =  db.collection("users").where("number", "==", addNumber).get();
   console.log(nn);
   nn.then((result) => {
@@ -116,17 +146,19 @@ function Register({}) {
     });
   
 });
-
+<Text style={{ color: 'red', fontSize: 15, fontFamily:'NanumGothic', marginTop: 33, marginLeft: 20 }}>{checkError}</Text> 학번옆에 쓸 글
 }*/
     return(
       <KeyboardAwareScrollView style={styles.container } behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={styles.check}>
         <Text style={styles.NanumRG}>학번</Text>
+        </View>
         <View style={styles.check}>
           <View style={styles.item1}>
-          <TextInput placeholder={"ex) 20171111"} style={styles.input}value={addNumber} onChangeText={text => setAddNumber(text)} />
+          <TextInput placeholder={"ex) 20171111"} style={styles.input}value={addNumber} onChangeText={text => setAddNumber(text)}/>
           </View>
           <View style={styles.item2}>
-            <TouchableOpacity style={styles.checkBtn} onPress={() => touch()}>
+            <TouchableOpacity style={styles.checkBtn} >
               <Text style={{ color: '#000000', fontSize: 20, fontFamily:'NanumGothicBold' }}>인증</Text> 
             </TouchableOpacity>
           </View>
@@ -144,7 +176,7 @@ function Register({}) {
             <TextInput  placeholder={"ex) 20001234@shinhan.ac.kr"} style={styles.input} value={email} onChangeText={text =>setAddEmail(text)}/>
           </View>
           <View style={styles.item2}>
-            <TouchableOpacity style={styles.checkBtn}>
+            <TouchableOpacity style={styles.checkBtn} onPress={()=> touch()}>
               <Text style={{ color: '#000000', fontSize: 20, fontFamily:'NanumGothicBold' }}>인증</Text> 
             </TouchableOpacity>
           </View>

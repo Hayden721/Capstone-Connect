@@ -1,7 +1,7 @@
 
 import firebase from 'firebase/app';
 import "firebase/auth";
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View,Alert } from 'react-native'
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
@@ -9,7 +9,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
 
 
 
@@ -50,7 +49,7 @@ const Main_root = ({navigation}) => {
       <Text style={styles.Top2}>게시판</Text>
 
       <View style={styles.Container}></View>
-      <TouchableOpacity onPress={() => navigation.navigate("Board")} style={styles.textContainerss}>
+      <TouchableOpacity onPress={() => navigation.navigate("Board1")} style={styles.textContainerss}>
       <Foundation name="clipboard-pencil" size={40} color="#FF3300" />
       </TouchableOpacity>
 

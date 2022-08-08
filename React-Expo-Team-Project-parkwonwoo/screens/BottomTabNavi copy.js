@@ -55,7 +55,7 @@ const ChatStackScreen = ()=> {
 const TabStackScreen =() => {
   return (
     <TabStack.Navigator>
-    <TabStack.Screen name="Connect" component={ConnectStackScreen} options={{ headerShown: false,
+    <TabStack.Screen name="Connect1" component={ConnectStackScreen} options={{ headerShown: false,
           tabBarIcon: () => (
             <AntDesign 
             name="home" 
@@ -66,7 +66,7 @@ const TabStackScreen =() => {
         }}
       />
 
-    <TabStack.Screen name="Board" component={BoardStackScreen} options={{headerShown: false,
+    <TabStack.Screen name="Board1" component={BoardStackScreen} options={{headerShown: false,
           tabBarIcon: () => (
             <MaterialCommunityIcons 
             name="clipboard-edit-outline" 

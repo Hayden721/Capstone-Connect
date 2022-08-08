@@ -1,39 +1,178 @@
-import { View, Text, TouchableOpacity,StyleSheet, TextInput} from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity,StyleSheet, TextInput, Image, Alert} from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import React, { useState, useEffect } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import firebase from 'firebase/app';
+import "firebase/auth";
+import 'firebase/firestore';
+import 'firebase/storage';
 
 const Board_write = ({navigation}) => {
+  const db = firebase.firestore();
+  const [imageUrl, setImageUrl] = useState(null); // 이미지 주소
+  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
+
+  const [boardTitle, setTitle] = useState("");
+  const [boardContent, setContent] = useState("");
+
+  const currentUser = firebase.auth().currentUser;  //현재 사용자
+  const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+  
+  function addText(){
+    db.collection("Boards").doc("Free").collection(currentUser.uid).doc().set({
+      title: boardTitle,
+      content: boardContent,
+      timestamp: timestamp,
+      writer: currentUser.email
+    })
+    .then(() => {
+      console.log('Create Complete!')
+      navigation.navigate('Board')
+    })
+   .catch((error) => {
+    console.log(error.message);
+   })  
+};
+function touch() {
+
+  console.log(currentUser.uid);
+  console.log("zz");
+}
+
+  /*
+ function writeText () {  //db에 저장
+      db.collection("Boards").doc(currentUser.uid).collection(String(boardId)).orderBy("date","desc").set({
+      boarID : boardId,
+      titie : boardTitle,
+      content: boardContent,
+      uid: currentUser.uid,
+      date: time(),
+      photUrl: imageUrl
+    })
+    .then(() => {
+      console.log('Create Complete!');
+      setBoardId(boardId+1);
+      console.log(boardId);
+      navigation.navigate("전체 게시판")
+    })
+   .catch((error) => {
+    console.log(error.message);
+   })  
+};
+*/
+  
+  const uplodImage = async () => {
+    // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
+    if(!status?.granted) {
+      const permission = await requestPermission();
+      if(!permission.granted){
+        return null;
+      }
+    }
+    // 이미지 업로드 기능
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: false,
+      quality: 1,
+      aspect: [1,1]
+    });
+    if (result.cancelled){
+      return null; //이미지 업로드 취소
+    } 
+
+    //파이어베이스 스토리지 업로드
+    console.log(result);
+    setImageUrl(result.uri);
+    let uri = result.uri;
+    const filename = result.uri.split('/').pop();
+    // const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", uri, true);
+      xhr.send(null);
+    });
+
+    firebase.storage().ref().child("images/" + filename)
+    .put(blob)
+    .then((uri) => {
+      console.log(uri)
+      console.log("성공")
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  };
+  
+  
+
+
+//작성 확인 작업
+/*
+const checkWrite = () => {
+  Alert.alert(
+    '작성',
+    '작성하시겠습니까?',
+    [
+      {text: '취소', onPress: () => {}, style: 'cancel'},
+      {
+        text: '확인',
+        onPress: () => {
+        writeText
+        },
+      },
+    ],
+    {
+      cancelable: true,
+      onDismiss: () => {},
+    },
+  );
+};
+*/
   return (
-    <View style={styles.Container}>
+    <KeyboardAwareScrollView style={styles.Container } behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <TouchableOpacity style={styles.icon}>
       <AntDesign name="checksquareo" size={30} color="black" />
       <Text style={styles.Category}> 카테고리 </Text>
-      </TouchableOpacity>  
+      </TouchableOpacity> 
       
-      <TouchableOpacity style={styles.icon}>
+      <TouchableOpacity style={styles.icon} onPress={uplodImage}>
       <AntDesign name="picture" size={30} color="black" />
       <Text style={styles.Category}> 사진 </Text>
       </TouchableOpacity>  
-      
-      <TouchableOpacity style={styles.icon}>
+     
+      <TouchableOpacity style={styles.icon} onPress={()=> touch()}>
+    
       <MaterialIcons name="upload-file" size={30} color="black"/>
       <Text style={styles.Category}> 첨부파일 </Text>
+    
       </TouchableOpacity>   
 
       <View style={styles.Container2}>
-      <TextInput placeholder={"제목"} style={styles.input}/>
-
-      <TextInput placeholder={"내용을 입력해주세요."} style={styles.input2}/>
-  
-
-      <TouchableOpacity onPress={() => navigation.navigate("전체 게시판")}
+      <View style={styles.Container3}>
+      <Image source = {{uri:imageUrl}} 
+        style={{width: 200 , height: 200,}}  // 이미지 크기
+      />
+      </View>
+      <TextInput placeholder={"제목"} style={styles.input} value={boardTitle} onChangeText={text => setTitle(text)}/>
+      <TextInput placeholder={"내용을 입력해주세요."} style={styles.input2} value ={boardContent} onChangeText={text => setContent(text)}/>
+      <TouchableOpacity  onPress = {()=>addText()}
       style={styles.customBtn}>
       <Text style={{ color: '#000000', fontSize: 24, fontFamily:'NanumGothicBold' }}>작성</Text>
       </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
     
   )
 }
@@ -49,6 +188,9 @@ const styles = StyleSheet.create({
 
   Container2: {
     flexDirection: 'column',
+  },
+  Container3: {
+   alignItems: "center",
   },
 
   icon: {
@@ -83,7 +225,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    backgroundColor:"000000",
+    backgroundColor:"#ffffff",
     height: 40,
     margin: 5,
     marginTop: 10,
@@ -93,7 +235,7 @@ const styles = StyleSheet.create({
   },
 
   input2: {
-    backgroundColor:"000000",
+    backgroundColor:"#ffffff",
     height: 40,
     margin: 5,
     marginLeft: 20,
