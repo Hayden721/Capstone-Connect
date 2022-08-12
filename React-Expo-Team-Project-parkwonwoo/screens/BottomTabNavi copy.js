@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Main_root from "../screens/Main_Screen/Main_root";
@@ -23,6 +23,7 @@ const ChatStack = createStackNavigator();
 
 
 const ConnectStackScreen = ()=> {
+  
   return(
    <ConnectStack.Navigator>
   <ConnectStack.Screen name="Connect" component={Main_root} options={{headerShown: false}} />

@@ -13,6 +13,7 @@ import 'firebase/storage';
 const Board_write = ({navigation}) => {
   const db = firebase.firestore();
   const [imageUrl, setImageUrl] = useState(null); // 이미지 주소
+  const [downUrl, setdownUrl] = useState(null);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
 
   const [boardTitle, setTitle] = useState("");
@@ -20,13 +21,25 @@ const Board_write = ({navigation}) => {
 
   const currentUser = firebase.auth().currentUser;  //현재 사용자
   const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+  const nowTime= () => {
+    let time = new Date();
+    let year = time.getFullYear();
+    let month = time.getMonth()+ 1;
+    let day = time.getDate();
+
+    return year + '-' + month + '-' + day;
+  }
+  const date = nowTime();
   
+  //보드 db에 저장
   function addText(){
-    db.collection("Boards").doc("Free").collection(currentUser.uid).doc().set({
+    db.collection("Free").add({
       title: boardTitle,
       content: boardContent,
       timestamp: timestamp,
-      writer: currentUser.email
+      date: date,
+      writer: currentUser.email,
+      photoUrl: downUrl,
     })
     .then(() => {
       console.log('Create Complete!')
@@ -37,34 +50,15 @@ const Board_write = ({navigation}) => {
    })  
 };
 function touch() {
-
-  console.log(currentUser.uid);
-  console.log("zz");
+  db.collection("Free").get().then((result)=> {
+   result.forEach((doc) =>{
+      console.log(doc.data());
+    });
+ });
 }
 
-  /*
- function writeText () {  //db에 저장
-      db.collection("Boards").doc(currentUser.uid).collection(String(boardId)).orderBy("date","desc").set({
-      boarID : boardId,
-      titie : boardTitle,
-      content: boardContent,
-      uid: currentUser.uid,
-      date: time(),
-      photUrl: imageUrl
-    })
-    .then(() => {
-      console.log('Create Complete!');
-      setBoardId(boardId+1);
-      console.log(boardId);
-      navigation.navigate("전체 게시판")
-    })
-   .catch((error) => {
-    console.log(error.message);
-   })  
-};
-*/
   
-  const uplodImage = async () => {
+  const pickImage = async () => {
     // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
     if(!status?.granted) {
       const permission = await requestPermission();
@@ -73,21 +67,23 @@ function touch() {
       }
     }
     // 이미지 업로드 기능
-    const result = await ImagePicker.launchImageLibraryAsync({
+    const imageData = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: false,
       quality: 1,
       aspect: [1,1]
     });
-    if (result.cancelled){
+    if (imageData.cancelled){
       return null; //이미지 업로드 취소
     } 
+    
+    console.log(imageData);
+    setImageUrl(imageData.uri);
+    
 
-    //파이어베이스 스토리지 업로드
-    console.log(result);
-    setImageUrl(result.uri);
-    let uri = result.uri;
-    const filename = result.uri.split('/').pop();
+  //파이어베이스 스토리지 업로드
+    let uri = imageData.uri;
+    const filename = imageData.uri.split('/').pop();
     // const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
 
     const blob = await new Promise((resolve, reject) => {
@@ -104,16 +100,27 @@ function touch() {
       xhr.send(null);
     });
 
-    firebase.storage().ref().child("images/" + filename)
-    .put(blob)
-    .then((uri) => {
-      console.log(uri)
+    const reference = firebase.storage().ref().child("images/"+filename);
+    await reference.put(blob)
+    .then(() => {
       console.log("성공")
     })
     .catch((error) => {
       console.log(error);
     })
+
+    //이미지 다운로드 url
+     await reference.getDownloadURL()
+    .then((url)=> {
+      console.log(url)
+      setdownUrl(url)
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+
   };
+
   
   
 
@@ -147,7 +154,7 @@ const checkWrite = () => {
       <Text style={styles.Category}> 카테고리 </Text>
       </TouchableOpacity> 
       
-      <TouchableOpacity style={styles.icon} onPress={uplodImage}>
+      <TouchableOpacity style={styles.icon} onPress={pickImage}>
       <AntDesign name="picture" size={30} color="black" />
       <Text style={styles.Category}> 사진 </Text>
       </TouchableOpacity>  

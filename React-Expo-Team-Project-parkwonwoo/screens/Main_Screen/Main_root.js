@@ -2,7 +2,7 @@
 import firebase from 'firebase/app';
 import "firebase/auth";
 import { StyleSheet, Text, View,Alert } from 'react-native'
-import React from 'react'
+import React, { useEffect } from "react";
 import { TouchableOpacity } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -15,6 +15,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 const Main_root = ({navigation}) => {
+
   return (
     <View>
     <Text style={styles.Top}>Connect </Text>
