@@ -49,6 +49,7 @@ const Board_write = ({navigation}) => {
     console.log(error.message);
    })  
 };
+
 function touch() {
   db.collection("Free").get().then((result)=> {
    result.forEach((doc) =>{

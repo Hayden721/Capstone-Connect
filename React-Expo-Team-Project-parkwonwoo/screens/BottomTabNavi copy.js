@@ -12,6 +12,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import MainSystem from "./Main_Screen/Main_root_note/MainSystem";
 import Board_whole from "./Main_Screen/Main_board_note/Board_whole";
 import Board_write from "./Main_Screen/Main_board_note/Board_write";
+import Board_join from "./Main_Screen/Main_board_note/Board_join";
 
 
 
@@ -39,6 +40,7 @@ const BoardStackScreen = ()=> {
   <BoardStack.Screen name="Board" component={Main_board} options={{headerShown: false}} />
   <BoardStack.Screen name="전체 게시판" component={Board_whole} />
   <BoardStack.Screen name="글작성" component={Board_write}/>
+  <BoardStack.Screen name="글조회" component={Board_join}/>
   </BoardStack.Navigator>
   );
 };

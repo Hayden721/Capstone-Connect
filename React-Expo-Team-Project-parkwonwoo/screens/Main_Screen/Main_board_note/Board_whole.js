@@ -1,4 +1,4 @@
-import { View, Text,TouchableOpacity,StyleSheet, Image} from 'react-native'
+import { View, Text,TouchableOpacity,StyleSheet, Image, Pressable} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons';
 import firebase from 'firebase/app';
@@ -14,7 +14,6 @@ const Board_whole = ({navigation}) => {
 
 
   const db = firebase.firestore();
-  
    async function getPosts () {
     const snapshot = await db.collection("Free").orderBy("timestamp", "desc").get();
     const posts = snapshot.docs.map((doc) => ({
@@ -23,8 +22,9 @@ const Board_whole = ({navigation}) => {
     }));
    return posts;
    }
-  
+
    const renderItem = ({item}) => (
+    <Pressable onPress={()=> navigation.navigate("글조회", {title:item.title, date:item.date, writer:item.writer, content:item.content , photoUrl:item.photoUrl})}>
     <View style = {[styles.container, styles.box]}>
           <View style = {[styles.container2, styles.title]}>
             <Text style= {styles.font}>{item.title}</Text>
@@ -41,10 +41,9 @@ const Board_whole = ({navigation}) => {
               resizeMode="cover"
               />  
           </View>
-      </View>
-        
+      </View>  
+    </Pressable> 
   );
-
   return (
     <View style = {styles.container2}>
       <View style= {styles.flatlist}>
