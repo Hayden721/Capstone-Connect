@@ -12,7 +12,7 @@ import { useFonts } from "expo-font";
 
 //navigation import
 
-import BottomTabNavi from "./navigation/BottomTabNavi copy";
+import Root from "./navigation/Root";
 
 //Navi import
 import { NavigationContainer } from "@react-navigation/native";

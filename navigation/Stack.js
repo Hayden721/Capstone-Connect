@@ -1,7 +1,8 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator } from '@react-navigation/stack';
+import 'react-native-gesture-handler';
 import { View, Text, TouchableOpacity } from "react-native";
-import { YELLOW_COLOR } from "../colors";
+
 
 
 const ScreenOne = ({ navigation: { navigate } }) => (
@@ -19,7 +20,7 @@ const ScreenThree = ({ navigation: { navigate } }) => (
     <Text>Go to Search</Text>
   </TouchableOpacity>
 );
-const NativeStack = createNativeStackNavigator();
+const NativeStack = createStackNavigator();
 
 const Stack = () => (
   <NativeStack.Navigator

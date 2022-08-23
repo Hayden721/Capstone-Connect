@@ -1,16 +1,17 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
+import 'react-native-gesture-handler';
 import { Text, View } from "react-native";
 import { useColorScheme } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 
-import { BLACK_COLOR, YELLOW_COLOR, LIGHT_GREY } from "../colors";
+import { BLACK_COLOR, YELLOW_COLOR, LIGHT_GREY } from "../styles/colors/colors";
 import Stack from "./Stack";
 //stack screens import
-import Movie from "../screens/Movie";
-import Search from "../screens/Search";
-import Tv from "../screens/Tv";
+import Main from "../screens/Main";
+import Board from "../screens/Board";
+import Chat from "../screens/Chat";
+import Profile from "../screens/Profile";
 
 const Tab = createBottomTabNavigator();
 
