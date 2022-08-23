@@ -3,10 +3,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import 'react-native-gesture-handler';
 import { Text, View } from "react-native";
 import { useColorScheme } from "react-native";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 import { BLACK_COLOR, YELLOW_COLOR, LIGHT_GREY } from "../styles/colors/colors";
-import Stack from "./Stack";
+import Stacks from "./Stack";
 //stack screens import
 import Main from "../screens/Main";
 import Board from "../screens/Board";
@@ -43,7 +43,7 @@ const Tabs = () => {
         component={Main}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <AntDesign name="film-outline" color={color} size={size} />;
+            return <Ionicons name="home-outline" size={24} color={color} />;
           },
         }}
       />
@@ -52,7 +52,7 @@ const Tabs = () => {
         component={Board}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <AntDesign name="tv-outline" color={color} size={size} />;
+            return <Ionicons name="clipboard-outline" size={24} color={color} />;
           },
         }}
       />
@@ -61,7 +61,7 @@ const Tabs = () => {
         component={Chat}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <AntDesign name="search-outline" color={color} size={size} />;
+            return <Ionicons name="chatbubble-ellipses-outline" size={24} color={color} />;
           },
         }}
       />
@@ -70,7 +70,7 @@ const Tabs = () => {
         component={Profile}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <AntDesign name="search-outline" color={color} size={size} />;
+            return <Ionicons name="person-circle-outline" size={24} color={color} />;
           },
         }}
       />

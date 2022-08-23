@@ -1,38 +1,22 @@
 import React from "react";
-import { createStackNavigator } from '@react-navigation/stack';
-import 'react-native-gesture-handler';
+import { createStackNavigator } from "@react-navigation/stack";
+import "react-native-gesture-handler";
 import { View, Text, TouchableOpacity } from "react-native";
+//Accunt import
+import NotiSchool from "../screens/Main/Notice/NotiSchool";
+import NotiSystem from "../screens/Main/Notice/NotiSystem";
 
+// TabNavi를 호출하는 법 onPress={() => navigate("Tabs", {screen:"Search"})}
 
-
-const ScreenOne = ({ navigation: { navigate } }) => (
-  <TouchableOpacity onPress={() => navigate("Two")}>
-    <Text>One</Text>
-  </TouchableOpacity>
-);
-const ScreenTwo = ({ navigation: { navigate } }) => (
-  <TouchableOpacity onPress={() => navigate("Three")}>
-    <Text>go to Three</Text>
-  </TouchableOpacity>
-);
-const ScreenThree = ({ navigation: { navigate } }) => (
-  <TouchableOpacity onPress={() => navigate("Tabs", {screen:"Search"})}>
-    <Text>Go to Search</Text>
-  </TouchableOpacity>
-);
-const NativeStack = createStackNavigator();
+const Stacks = createStackNavigator();
 
 const Stack = () => (
-  <NativeStack.Navigator
-    screenOptions={{
+  <Stacks.Navigator screenOptions={{}}>
+    <Stacks.Screen name="NotiSchool" component={NotiSchool} />
+    <Stacks.Screen name="NotiSystem" component={NotiSystem} />
 
-      headerBackTitleVisible: false,
-    }}
-  >
-    <NativeStack.Screen name="One" component={ScreenOne} />
-    <NativeStack.Screen name="Two" component={ScreenTwo} />
-    <NativeStack.Screen name="Three" component={ScreenThree} />
-  </NativeStack.Navigator>
+
+  </Stacks.Navigator>
 );
 
 export default Stack;

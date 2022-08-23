@@ -3,7 +3,7 @@ import React from 'react';
 import firebase from 'firebase/app';
 import "firebase/auth";
 
-const profile = () => {
+const Profile = () => {
   return (
     <View>
       <View style={styles.Container}></View>
@@ -20,7 +20,7 @@ const profile = () => {
   )
 }
 
-export default profile
+export default Profile
 
 const styles = StyleSheet.create({
   customBtn:{
