@@ -14,8 +14,6 @@ const Stack = () => (
   <Stacks.Navigator screenOptions={{}}>
     <Stacks.Screen name="NotiSchool" component={NotiSchool} />
     <Stacks.Screen name="NotiSystem" component={NotiSystem} />
-
-
   </Stacks.Navigator>
 );
 

@@ -18,11 +18,9 @@ const Main = ({ navigation }) => {
 
       <View style={styles.Container}></View>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Stack", { screen: "NotiSchool" })}
+        onPress={() => navigation.navigate("Notice", { screen: "NotiSchool"})}
         style={styles.textContainerss}
-      >
-
-      </TouchableOpacity>
+      ></TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => navigation.navigate("Stack", { screen: "NotiSystem" })}
