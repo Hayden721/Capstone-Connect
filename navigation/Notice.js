@@ -6,6 +6,8 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import NotiSchool from "../screens/Main/Notice/NotiSchool";
 import NotiSystem from "../screens/Main/Notice/NotiSystem";
 
+//공지사항 상단탭 네비게이션
+
 const noticeTab = createMaterialTopTabNavigator();
 
 function Notice() {
