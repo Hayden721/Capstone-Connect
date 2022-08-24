@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Boardcontest = () => {
+const Board_club= () => {
   return (
     <View>
       <Text>Boardcontest</Text>
@@ -9,4 +9,4 @@ const Boardcontest = () => {
   )
 }
 
-export default Boardcontest
+export default Board_club;

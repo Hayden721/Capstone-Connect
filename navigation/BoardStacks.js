@@ -11,22 +11,23 @@ import Board_bulletinBoard from "../screens/Board/Board_bulletinBoard";
 import Board_free from "../screens/Board/Board_free";
 import Board_competition from "../screens/Board/Board_competition";
 import Board_club from "../screens/Board/Board_club";
-import Board_postLookUp from "../screens/Board/Board_postLookUp.js";
+import Board_postLookUp from "../screens/Board/Board_postLookUp.js.js";
+
+import Board_write from "../screens/Board/Board_write";
 
 // TabNavi를 호출하는 법 onPress={() => navigate("Tabs", {screen:"Search"})}
 
-const NoticeStack = createStackNavigator();
 const BoardStack = createStackNavigator();
-const Stack = () => {
-  const NoticeStacks = () => {
+
+  const BoardStacks = () => {
     return (
-      <NoticeStacks.Navigator screenOptions={{}}>
-        <NoticeStack.Screen name="NotiSchool" component={NotiSchool} />
-        <NoticeStack.Screen name="NotiSystem" component={NotiSystem} />
-      </NoticeStacks.Navigator>
-    );
-  };
-}
+    <BoardStack.Navigator>
+      <BoardStack.Screen name="Board_postLookUp" component={Board_postLookUp}/>
+      <BoardStack.Screen name="Board_write" component={Board_write}/>
+    </BoardStack.Navigator>  
+    )
+  }
+
   
 
-export default Stack;
+export default BoardStacks;

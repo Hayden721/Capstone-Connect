@@ -23,6 +23,7 @@ import "react-native-gesture-handler";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import LoginScreen from "./screens/Account/Login";
 
 const Stack = createStackNavigator();
 
@@ -66,7 +67,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-    <Root />
-  </NavigationContainer>
-  )
+      {isLoggedIn ? <Root /> : <LoginScreen />}
+    </NavigationContainer>
+  );
 }

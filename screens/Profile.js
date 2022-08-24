@@ -3,9 +3,9 @@ import React from 'react';
 import firebase from 'firebase/app';
 import "firebase/auth";
 
-const Profile = () => {
+const Main_profile = () => {
   return (
-    <View>
+    <ScrollView>
       <View style={styles.Container}></View>
       <Text style={styles.Profile}>프로필</Text>
 
@@ -16,11 +16,11 @@ const Profile = () => {
       <Text style={{ color: '#000000', fontSize: 24, fontFamily:'NanumGothicBold' }}>로그아웃</Text>
       </TouchableOpacity>
 
-    </View>
+    </ScrollView>
   )
 }
 
-export default Profile
+export default Main_profile
 
 const styles = StyleSheet.create({
   customBtn:{

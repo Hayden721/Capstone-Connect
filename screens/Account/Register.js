@@ -26,7 +26,7 @@ const resultMessages = {
   "auth/weak-password": "비밀번호를 6자리 이상 입력해 주세요.",
 };
 
-function Register({}) {
+function Register({navigation}) {
   const [agree, setAgree] = useState(false);
   const [addName, setAddName] = useState("");
   const [addNumber, setAddNumber] = useState("");

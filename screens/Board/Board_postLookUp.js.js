@@ -1,7 +1,9 @@
 import { View, Text, StyleSheet, Image,  Modal} from 'react-native'
 import React, { useState, useEffect } from 'react'
 
-const Board_join = ({route}) => {
+// 글 조회
+
+const Board_postLookUp = ({route}) => {
     const title = route.params.title;
     const content = route.params.content;
     const date = route.params.date;
@@ -42,7 +44,7 @@ const Board_join = ({route}) => {
   )
 }
 
-export default Board_join;
+export default Board_postLookUp;
 
 const styles = StyleSheet.create({
   container : {

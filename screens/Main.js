@@ -23,7 +23,7 @@ const Main = ({ navigation }) => {
       ></TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("Stack", { screen: "NotiSystem" })}
+        onPress={() => navigation.navigate("Notice", { screen: "NotiSystem" })}
         style={styles.textContainerss}
       >
         <Ionicons name="build" size={24} color="black" />
