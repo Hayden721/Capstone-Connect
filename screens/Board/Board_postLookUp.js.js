@@ -1,5 +1,8 @@
-import { View, Text, StyleSheet, Image,  Modal} from 'react-native'
+import { View, Text, StyleSheet, Image,Pressable, Modal} from 'react-native'
 import React, { useState, useEffect } from 'react'
+import firebase from 'firebase/app';
+import "firebase/auth";
+import { MaterialIcons } from '@expo/vector-icons';
 
 // 글 조회
 
@@ -10,8 +13,9 @@ const Board_postLookUp = ({route}) => {
     const writer = route.params.writer;
     const photoUrl = route.params.photoUrl;
     const [display, setDisplay] = useState(false);
+    const myBoard = writer === firebase.auth().currentUser.email; //햄버거 버튼 자신이 쓴 글 확인
+
     useEffect(() =>{
-      
       if(photoUrl != null){
         setDisplay(true)
       }
@@ -20,7 +24,13 @@ const Board_postLookUp = ({route}) => {
   return (
     <View style = {styles.container}>
       <View style = {styles.titleContainer}>
-        <Text style = {styles.title}>{title}</Text>
+        <View style = {styles.titlevar}>
+          <Text style = {styles.title}>{title}</Text>
+        </View>
+        {myBoard && (<Pressable hitSlop={8}>
+          <View style = {styles.var}>
+          <MaterialIcons name="more-vert" size={30} color="black" />
+        </View></Pressable>)}
       </View>
       <View>
         <View style = {styles.writerContainer}>
@@ -53,11 +63,15 @@ const styles = StyleSheet.create({
     
   },
   titleContainer :{
+    flexDirection: 'row',
     marginBottom: 10,
+    alignItems:"center",
+    justifyContent:"center",
+    height: 30
   },
   title: {
     fontFamily:"NanumGothicBold",
-    fontSize: 30,
+    fontSize: 20,
   },
   profile:{
     fontFamily:"NanumGothic",
@@ -77,5 +91,11 @@ const styles = StyleSheet.create({
   contentContainer:{
     marginTop: 30,
     fontFamily:"NanumGothic"
+  },
+  var:{
+    flex:1
+  },
+  titlevar:{
+    flex:15
   }
 })

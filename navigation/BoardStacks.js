@@ -22,12 +22,12 @@ const BoardStack = createStackNavigator();
   const BoardStacks = () => {
     return (
     <BoardStack.Navigator>
-      <BoardStack.Screen name="Board_postLookUp" component={Board_postLookUp}/>
+      <BoardStack.Screen name="Board_bulletinBoard" component={Board_bulletinBoard}/>
       <BoardStack.Screen name="Board_write" component={Board_write}/>
+      <BoardStack.Screen name="Board_postLookUp" component={Board_postLookUp}/>
     </BoardStack.Navigator>  
-    )
-  }
+    );
+  };
 
   
-
 export default BoardStacks;

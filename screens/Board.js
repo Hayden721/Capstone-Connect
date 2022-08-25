@@ -11,17 +11,18 @@ import Board_bulletinBoard from "../screens/Board/Board_bulletinBoard";
 import Board_free from "../screens/Board/Board_free";
 import Board_competition from "../screens/Board/Board_competition";
 import Board_club from "../screens/Board/Board_club";
-
+import BoardStacks from "../navigation/BoardStacks";
 
 const BoardTopTab = createMaterialTopTabNavigator();
-const BoardStack = createStackNavigator();
+//const BoardStack = createStackNavigator();
 
 const Board = ({ navigation }) => {
   return (
+
     <BoardTopTab.Navigator>
       <BoardTopTab.Screen
-        name="Board_bulletinBoard"
-        component={Board_bulletinBoard}
+        name="bulletinBoard"
+        component={BoardStacks}  // Board_bulletinBoard연결 되있음
       />
       <BoardTopTab.Screen name="Board_free" component={Board_free} />
       <BoardTopTab.Screen
@@ -30,6 +31,7 @@ const Board = ({ navigation }) => {
       />
       <BoardTopTab.Screen name="Board_club" component={Board_club} />
     </BoardTopTab.Navigator>
+      
   );
 
 };

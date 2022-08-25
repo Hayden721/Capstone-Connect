@@ -80,13 +80,17 @@ function Register({navigation}) {
           Alert.alert("회원가입 실패", alertMessage);
         });
     } else if (!email) {
-      Alert.alert("회원가입 실패", "이메일을 입력해 주세요.");
+      Alert.alert("회원가입 실패", "이메일을 입력해주세요.");
+    } else if (!addName) {
+      Alert.alert("회원가입 실패", "이름을 입력해주세요.");
+    } else if (!addNumber){
+      Alert.alert("회원가입 실패", "학번을 입력해주세요.");
     } else if (!pwd) {
-      Alert.alert("회원가입 실패", "비밀번호를 입력해 주세요.");
+      Alert.alert("회원가입 실패", "비밀번호를 입력해주세요.");
     } else if (pwd != pwd2) {
       Alert.alert("회원가입 실패", "비밀번호가 다릅니다.");
     } else if (!agree) {
-      Alert.alert("회원가입 실패", "필수 약관을 동의해 주세요.");
+      Alert.alert("회원가입 실패", "필수 약관을 동의해주세요.");
     }
   }
   function touch() {

@@ -17,13 +17,14 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import { Picker } from "@react-native-picker/picker"; //선택박스 만들기
 
 const Board_write = ({ navigation }) => {
   const db = firebase.firestore();
+  const [category, setCategory] = useState(""); //카테고리
   const [imageUrl, setImageUrl] = useState(null); // 이미지 주소
   const [downUrl, setdownUrl] = useState(null);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
-
   const [boardTitle, setTitle] = useState("");
   const [boardContent, setContent] = useState("");
 
@@ -41,33 +42,32 @@ const Board_write = ({ navigation }) => {
 
   //보드 db에 저장
   function addText() {
-    db.collection("Free")
-      .add({
-        title: boardTitle,
-        content: boardContent,
-        timestamp: timestamp,
-        date: date,
-        writer: currentUser.email,
-        photoUrl: downUrl,
-      })
-      .then(() => {
-        console.log("Create Complete!");
-        navigation.navigate("Board");
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    if(category == ""){
+      Alert.alert("글작성 실패", "카테고리를 선택하세요.")
+    }else if(boardTitle == ""){
+      Alert.alert("글작성 실패", "제목을 입력하세요.")
+    }else if(boardContent == ""){
+      Alert.alert("글작성 실패", "내용을 입력하세요.")
+    }else {
+    db.collection(category).add({
+      title: boardTitle,
+      content: boardContent,
+      timestamp: timestamp,
+      date: date,
+      writer: currentUser.email,
+      photoUrl: downUrl,
+    })
+    .then(() => {
+      console.log('Create Complete!')
+      navigation.navigate('Board_bulletinBoard')
+    })
+   .catch((error) => {
+    console.log(error.message);
+   })  
+  }
   }
 
-  function touch() {
-    db.collection("Free")
-      .get()
-      .then((result) => {
-        result.forEach((doc) => {
-          console.log(doc.data());
-        });
-      });
-  }
+  
 
   const pickImage = async () => {
     // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
@@ -162,17 +162,26 @@ const checkWrite = () => {
       style={styles.Container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <TouchableOpacity style={styles.icon}>
-        <AntDesign name="checksquareo" size={30} color="black" />
-        <Text style={styles.Category}> 카테고리 </Text>
-      </TouchableOpacity>
-
+     <View style={styles.Category}>
+        <Picker
+          selectedValue={category}
+          onValueChange={(value, index) => setCategory(value)}
+          mode="dropdown" // Android only
+          style={styles.picker}
+        >
+          <Picker.Item label="카테고리를 선택해주세요." value="" />
+          <Picker.Item label="자유" value="Free" />
+          <Picker.Item label="공모전" value="Contest" />
+          <Picker.Item label="동아리" value="Club" />
+          <Picker.Item label="취미" value="Hobby" />
+        </Picker>
+      </View>
       <TouchableOpacity style={styles.icon} onPress={pickImage}>
         <AntDesign name="picture" size={30} color="black" />
         <Text style={styles.Category}> 사진 </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.icon} onPress={() => touch()}>
+      <TouchableOpacity style={styles.icon}>
         <MaterialIcons name="upload-file" size={30} color="black" />
         <Text style={styles.Category}> 첨부파일 </Text>
       </TouchableOpacity>
@@ -215,49 +224,51 @@ const checkWrite = () => {
 export default Board_write;
 
 const styles = StyleSheet.create({
+
   Container: {
-    flexDirection: "column",
+    flexDirection: 'column',
   },
 
   Container2: {
-    flexDirection: "column",
+    flexDirection: 'column',
   },
   Container3: {
-    alignItems: "center",
+   alignItems: "center",
   },
 
   icon: {
     marginTop: 20,
     marginLeft: 20,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
 
   Category: {
+    flexDirection: 'row',
+    marginHorizontal:20,
+    
+  },
+  
+  Picture:{
     marginLeft: 5,
-    marginTop: 3,
+    marginTop:3,
+    flexDirection: 'row',
   },
 
-  Picture: {
-    marginLeft: 5,
-    marginTop: 3,
-    flexDirection: "row",
+  Picture2:{
+    marginLeft:10,
   },
 
-  Picture2: {
-    marginLeft: 10,
-  },
-
-  customBtn: {
-    backgroundColor: "#D9D9D9",
+  customBtn:{
+    backgroundColor: '#D9D9D9',
     padding: 15,
     margin: 80,
     marginTop: 350,
     borderRadius: 10,
-    alignItems: "center",
+    alignItems:"center"
   },
 
   input: {
-    backgroundColor: "#ffffff",
+    backgroundColor:"#ffffff",
     height: 40,
     margin: 5,
     marginTop: 10,
@@ -267,15 +278,23 @@ const styles = StyleSheet.create({
   },
 
   input2: {
-    backgroundColor: "#ffffff",
+    backgroundColor:"#ffffff",
     height: 40,
     margin: 5,
     marginLeft: 20,
     marginRight: 20,
   },
 
-  icon2: {
+  icon2:{
     marginTop: 20,
     marginLeft: 10,
+
   },
+  picker: {
+    marginTop:30,
+    width: 250,
+  },
+
+
+
 });

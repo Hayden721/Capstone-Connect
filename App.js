@@ -13,6 +13,7 @@ import { useFonts } from "expo-font";
 //navigation import
 
 import Root from "./navigation/Root";
+import LoginRegister from "./navigation/LoginRegister";
 
 //Navi import
 import { NavigationContainer } from "@react-navigation/native";
@@ -23,7 +24,7 @@ import "react-native-gesture-handler";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import LoginScreen from "./screens/Account/Login";
+
 
 const Stack = createStackNavigator();
 
@@ -33,8 +34,7 @@ export default function App() {
   const firebaseConfig = {
     apiKey: "AIzaSyBiAMNvHOG2_2g9vbuxNBse5qIQP8drdOo",
     authDomain: "capstonconnect-8876a.firebaseapp.com",
-    databaseURL:
-      "https://capstonconnect-8876a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    databaseURL: "https://capstonconnect-8876a-default-rtdb.asia-southeast1.firebasedatabase.app",
     projectId: "capstonconnect-8876a",
     storageBucket: "capstonconnect-8876a.appspot.com",
     messagingSenderId: "434008796329",
@@ -67,7 +67,12 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {isLoggedIn ? <Root /> : <LoginScreen />}
+      {isLoggedIn ? <Stack.Navigator>
+        <Stack.Screen name="Root" component={Root} options={{headerShown: false}}/>
+      </Stack.Navigator> :
+      <Stack.Navigator>
+      <Stack.Screen name="LoginRegister" component={LoginRegister} options={{headerShown: false}} />
+      </Stack.Navigator>}
     </NavigationContainer>
   );
 }

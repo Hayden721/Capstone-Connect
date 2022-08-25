@@ -15,10 +15,9 @@ import { FlatList } from "react-native-gesture-handler";
 
 const Board_bulletinBoard = ({ navigation }) => {
   const [posts, setPosts] = useState(null);
-
   useEffect(() => {
     getPosts().then(setPosts);
-  }, []);
+  },[]);
 
   const db = firebase.firestore();
   async function getPosts() {

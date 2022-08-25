@@ -5,11 +5,16 @@ import 'react-native-gesture-handler';
 import Login from "../screens/Account/Login";
 import Register from "../screens/Account/Register";
 
-const LRstack = createStackNavigator();
 
+const LRstack = createStackNavigator();
 const LoginRegister = () => {
-  <LRstack.Navigator>
+  
+  return(
+    <LRstack.Navigator>
     <LRstack.Screen name="Login" component={Login}/>
     <LRstack.Screen name="Register" component={Register}/>
   </LRstack.Navigator>  
-}
+  );
+  
+};
+export default LoginRegister;

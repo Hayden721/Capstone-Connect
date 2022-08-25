@@ -7,12 +7,14 @@ import Tabs from "./Tabs";
 
 const Nav = createStackNavigator();
 
-const Root = () => (
+const Root = () => {
+  return(
   <Nav.Navigator screenOptions={{ headerShown: false }}>
     <Nav.Screen name="Tabs" component={Tabs} />
     <Nav.Screen name="Stack" component={Stack} />
-    
   </Nav.Navigator>
-);
+  );
+ 
+};
 
 export default Root;
