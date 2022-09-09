@@ -14,7 +14,7 @@ const noticeTab = createMaterialTopTabNavigator();
 function Notice() {
   return (
    
-      <noticeTab.Navigator screenOptions={{ headerShown: true }}>
+      <noticeTab.Navigator>
         <noticeTab.Screen name="NotiSchool" component={NotiSchool} />
         <noticeTab.Screen name="NotiSystem" component={NotiSystem} />
       </noticeTab.Navigator>

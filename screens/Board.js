@@ -1,43 +1,60 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import firebase from "firebase/app";
 import "firebase/auth";
-
+import { createStackNavigator } from "@react-navigation/stack";
 import "react-native-gesture-handler";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { createStackNavigator } from '@react-navigation/stack';
 
-import Board_bulletinBoard from "../screens/Board/Board_bulletinBoard";
-import Board_free from "../screens/Board/Board_free";
-import Board_competition from "../screens/Board/Board_competition";
-import Board_club from "../screens/Board/Board_club";
+
+
 import BoardStacks from "../navigation/BoardStacks";
 
-const BoardTopTab = createMaterialTopTabNavigator();
-//const BoardStack = createStackNavigator();
+const CategoryStacks = createStackNavigator();
+
 
 const Board = ({ navigation }) => {
-  return (
+  return(
+    <View style= {{
+      flexDirection: "row",
+      margin: 20,
+    }}>
+      <TouchableOpacity 
+      onPress={() => navigation.navigate("BoardStacks", {screen:"자유게시판"})}
+      style={{
+        height: 100,
+        width: 100,
+        marginRight: 20,
+        backgroundColor: "green",
+        borderRadius: 25,
+      }}>
+        <Text>자유</Text>
+      </TouchableOpacity>
 
-    <BoardTopTab.Navigator>
-      <BoardTopTab.Screen
-        name="bulletinBoard"
-        component={BoardStacks}  // Board_bulletinBoard연결 되있음
-      />
-      <BoardTopTab.Screen name="Board_free" component={Board_free} />
-      <BoardTopTab.Screen
-        name="Board_competition"
-        component={Board_competition}
-      />
-      <BoardTopTab.Screen name="Board_club" component={Board_club} />
-    </BoardTopTab.Navigator>
-      
-  );
+      <TouchableOpacity style={{
+        height: 100,
+        width: 100,
+        marginRight: 20,
+        backgroundColor: "white",
+      }}>
+        <Text>안녕</Text>
+      </TouchableOpacity>
 
+      <TouchableOpacity style={{
+        height: 100,
+        width: 100,
+        backgroundColor: "white",
+      }}>
+        <Text>안녕</Text>
+      </TouchableOpacity>
+    </View>
+  )
 };
-
-
-
 
 export default Board;
 

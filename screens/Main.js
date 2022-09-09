@@ -4,9 +4,8 @@ import { StyleSheet, Text, View, Alert } from "react-native";
 import React, { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Foundation } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
+
+// 아이콘 사용 import
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -16,18 +15,23 @@ const Main = ({ navigation }) => {
       <Text style={styles.Top}>Connect </Text>
       <Text style={styles.Top2}>공지사항 </Text>
 
-      <View style={styles.Container}></View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Notice", { screen: "NotiSchool"})}
-        style={styles.textContainerss}
-      ></TouchableOpacity>
+      <View>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Notice", { screen: "NotiSchool" })
+          }
+          style={styles.textContainerss}
+        ></TouchableOpacity>
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Notice", { screen: "NotiSystem" })}
-        style={styles.textContainerss}
-      >
-        <Ionicons name="build" size={24} color="black" />
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Notice", { screen: "NotiSystem" })
+          }
+          style={styles.textContainerss}
+        >
+          <Ionicons name="build" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.menuContainer} horizontal={true}>
         <TouchableOpacity style={styles.textContainer}>

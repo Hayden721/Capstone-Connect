@@ -1,45 +1,24 @@
 import React from "react";
+import { createStackNavigator } from '@react-navigation/stack';
 import { View, Text, TouchableOpacity,StyleSheet  } from "react-native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import firebase from 'firebase/app';
 import "firebase/auth";
 
 
+import Chat_free from "../screens/Chat/Chat_free";
+import Chat_job from "../screens/Chat/Chat_job";
 
+const ChatTopTab = createMaterialTopTabNavigator();
 
-const Chat = ({navigation}) => {
-  return (
-    <View>
-    <View style={styles.Container}>
-    <Text style={styles.Top}>채팅방</Text>
-      <View style={styles.menuContainer} horizontal ={true}>
-      <View style={styles.textContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate("전체 채팅방")} style={styles.textStyle}>
-      <Text style={styles.textStyle}> 전체 </Text>
-      </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity style={styles.textContainer}>
-      <Text style={styles.textStyle}> <Text onPress={()=> alert('자유게시판으로 이동 ')}></Text>자유</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.textContainer}>
-      <Text style={styles.textStyle}> <Text onPress={()=> alert('공모전 게시판으로 이동 ')}></Text>공모전</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.textContainer}>
-      <Text style={styles.textStyle}> <Text onPress={()=> alert('동아리 게시판으로 이동 ')}></Text>동아리</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.textContainer}>
-      <Text style={styles.textStyle}> <Text onPress={()=> alert('취업 게시판으로 이동 ')}></Text>취업</Text>
-      </TouchableOpacity>
-
-      </View>
-      </View>
-  </View>
-);
-}
-
+  const Chat = () => {
+    return (
+    <ChatTopTab.Navigator>
+      <ChatTopTab.Screen name="Chat_free" component={Chat_free}/>
+      <ChatTopTab.Screen name="Chat_job" component={Chat_job}/>
+    </ChatTopTab.Navigator>  
+    );
+  };
 export default Chat
 
 const styles = StyleSheet.create({

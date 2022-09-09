@@ -27,7 +27,6 @@ const Board_write = ({ navigation }) => {
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
   const [boardTitle, setTitle] = useState("");
   const [boardContent, setContent] = useState("");
-
   const currentUser = firebase.auth().currentUser; //현재 사용자
   const timestamp = firebase.firestore.FieldValue.serverTimestamp();
   const nowTime = () => {
@@ -42,32 +41,31 @@ const Board_write = ({ navigation }) => {
 
   //보드 db에 저장
   function addText() {
-    if(category == ""){
-      Alert.alert("글작성 실패", "카테고리를 선택하세요.")
-    }else if(boardTitle == ""){
-      Alert.alert("글작성 실패", "제목을 입력하세요.")
-    }else if(boardContent == ""){
-      Alert.alert("글작성 실패", "내용을 입력하세요.")
-    }else {
-    db.collection(category).add({
-      title: boardTitle,
-      content: boardContent,
-      timestamp: timestamp,
-      date: date,
-      writer: currentUser.email,
-      photoUrl: downUrl,
-    })
-    .then(() => {
-      console.log('Create Complete!')
-      navigation.navigate('Board_bulletinBoard')
-    })
-   .catch((error) => {
-    console.log(error.message);
-   })  
+    if (category == "") {
+      Alert.alert("글작성 실패", "카테고리를 선택하세요.");
+    } else if (boardTitle == "") {
+      Alert.alert("글작성 실패", "제목을 입력하세요.");
+    } else if (boardContent == "") {
+      Alert.alert("글작성 실패", "내용을 입력하세요.");
+    } else {
+      db.collection(category)
+        .add({
+          title: boardTitle,
+          content: boardContent,
+          timestamp: timestamp,
+          date: date,
+          writer: currentUser.email,
+          photoUrl: downUrl,
+        })
+        .then(() => {
+          console.log("Create Complete!");
+          navigation.navigate("자유게시판");
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    }
   }
-  }
-
-  
 
   const pickImage = async () => {
     // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
@@ -157,12 +155,13 @@ const checkWrite = () => {
   );
 };
 */
+
   return (
     <KeyboardAwareScrollView
       style={styles.Container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-     <View style={styles.Category}>
+      <View style={styles.Category}>
         <Picker
           selectedValue={category}
           onValueChange={(value, index) => setCategory(value)}
@@ -205,7 +204,12 @@ const checkWrite = () => {
           value={boardContent}
           onChangeText={(text) => setContent(text)}
         />
-        <TouchableOpacity onPress={() => addText()} style={styles.customBtn}>
+        <TouchableOpacity
+          onPress={() => {
+            addText();
+          }}
+          style={styles.customBtn}
+        >
           <Text
             style={{
               color: "#000000",
@@ -224,51 +228,49 @@ const checkWrite = () => {
 export default Board_write;
 
 const styles = StyleSheet.create({
-
   Container: {
-    flexDirection: 'column',
+    flexDirection: "column",
   },
 
   Container2: {
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   Container3: {
-   alignItems: "center",
+    alignItems: "center",
   },
 
   icon: {
     marginTop: 20,
     marginLeft: 20,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
 
   Category: {
-    flexDirection: 'row',
-    marginHorizontal:20,
-    
+    flexDirection: "row",
+    marginHorizontal: 20,
   },
-  
-  Picture:{
+
+  Picture: {
     marginLeft: 5,
-    marginTop:3,
-    flexDirection: 'row',
+    marginTop: 3,
+    flexDirection: "row",
   },
 
-  Picture2:{
-    marginLeft:10,
+  Picture2: {
+    marginLeft: 10,
   },
 
-  customBtn:{
-    backgroundColor: '#D9D9D9',
+  customBtn: {
+    backgroundColor: "#D9D9D9",
     padding: 15,
     margin: 80,
     marginTop: 350,
     borderRadius: 10,
-    alignItems:"center"
+    alignItems: "center",
   },
 
   input: {
-    backgroundColor:"#ffffff",
+    backgroundColor: "#ffffff",
     height: 40,
     margin: 5,
     marginTop: 10,
@@ -278,23 +280,19 @@ const styles = StyleSheet.create({
   },
 
   input2: {
-    backgroundColor:"#ffffff",
+    backgroundColor: "#ffffff",
     height: 40,
     margin: 5,
     marginLeft: 20,
     marginRight: 20,
   },
 
-  icon2:{
+  icon2: {
     marginTop: 20,
     marginLeft: 10,
-
   },
   picker: {
-    marginTop:30,
+    marginTop: 30,
     width: 250,
   },
-
-
-
 });
