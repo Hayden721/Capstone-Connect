@@ -23,34 +23,58 @@ const Board = ({ navigation }) => {
     <View style= {{
       flexDirection: "row",
       margin: 20,
+      justifyContent:"space-between"
     }}>
       <TouchableOpacity 
       onPress={() => navigation.navigate("BoardStacks", {screen:"자유게시판"})}
       style={{
         height: 100,
-        width: 100,
-        marginRight: 20,
+        width: 75,
         backgroundColor: "green",
         borderRadius: 25,
+        alignItems:"center",
+        justifyContent:"center"
       }}>
         <Text>자유</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{
+      <TouchableOpacity 
+      onPress={() => navigation.navigate("BoardStacks", {screen:"공모전게시판"})}
+      style={{
         height: 100,
-        width: 100,
-        marginRight: 20,
-        backgroundColor: "white",
+        width: 75,
+        backgroundColor: "blue",
+        borderRadius: 25,
+        alignItems:"center",
+        justifyContent:"center"
       }}>
-        <Text>안녕</Text>
+        <Text>공모전</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{
+      <TouchableOpacity 
+      onPress={() => navigation.navigate("BoardStacks", {screen:"동아리게시판"})}
+      style={{
         height: 100,
-        width: 100,
-        backgroundColor: "white",
+        width: 75,
+        backgroundColor: "red",
+        borderRadius: 25,
+        alignItems:"center",
+        justifyContent:"center"
       }}>
-        <Text>안녕</Text>
+        <Text>동아리</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity 
+      onPress={() => navigation.navigate("BoardStacks", {screen:"취미게시판"})} 
+      style={{
+        height: 100,
+        width: 75,
+        backgroundColor: "orange",
+        borderRadius: 25,
+        alignItems:"center",
+        justifyContent:"center"
+      }}>
+        <Text>취미</Text>
       </TouchableOpacity>
     </View>
   )

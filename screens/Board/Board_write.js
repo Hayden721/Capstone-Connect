@@ -18,6 +18,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import { Picker } from "@react-native-picker/picker"; //선택박스 만들기
+import Board from "../Board";
 
 const Board_write = ({ navigation }) => {
   const db = firebase.firestore();
@@ -59,7 +60,8 @@ const Board_write = ({ navigation }) => {
         })
         .then(() => {
           console.log("Create Complete!");
-          navigation.navigate("자유게시판");
+          Alert.alert("성공", "글을 작성했습니다.");
+          navigation.navigate(Board);
         })
         .catch((error) => {
           console.log(error.message);
@@ -170,7 +172,7 @@ const checkWrite = () => {
         >
           <Picker.Item label="카테고리를 선택해주세요." value="" />
           <Picker.Item label="자유" value="Free" />
-          <Picker.Item label="공모전" value="Contest" />
+          <Picker.Item label="공모전" value="Competition" />
           <Picker.Item label="동아리" value="Club" />
           <Picker.Item label="취미" value="Hobby" />
         </Picker>
