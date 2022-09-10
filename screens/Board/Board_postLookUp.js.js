@@ -17,6 +17,7 @@ import {
   useActionSheet,
   ActionSheetProvider,
 } from "@expo/react-native-action-sheet";
+import { ReloadInstructions } from "react-native/Libraries/NewAppScreen";
 
 // 글 조회
 const Board_postLookUp = ({ navigation, route }) => {
@@ -43,9 +44,11 @@ const Board_postLookUp = ({ navigation, route }) => {
       .collection(boardCategory)
       .doc(userId)
       .delete()
+      
       .then(() => {
         Alert.alert("삭제", "게시글을 삭제 완료했습니다.");
         navigation.navigate("자유게시판");
+      
       })
       .catch((error) => {
         console.error("Error removing document: ", error);

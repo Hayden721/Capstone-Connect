@@ -40,6 +40,9 @@ const Board_write = ({ navigation }) => {
   };
   const date = nowTime();
 
+  const reload = () => {
+
+  }
   //보드 db에 저장
   function addText() {
     if (category == "") {
@@ -61,13 +64,16 @@ const Board_write = ({ navigation }) => {
         .then(() => {
           console.log("Create Complete!");
           Alert.alert("성공", "글을 작성했습니다.");
-          navigation.navigate(Board);
+          navigation.navigate("자유게시판");
+
         })
         .catch((error) => {
           console.log(error.message);
         });
     }
   }
+  
+
 
   const pickImage = async () => {
     // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료

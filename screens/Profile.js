@@ -17,11 +17,30 @@ const Main_profile = () => {
       <ScrollView>
         <View>
           {/* 이름과 학번은 DB에서 호출 */}
-          <Text style={{ fontSize: 20, margin: 10 }}>이름: </Text> 
-          <Text style={{ fontSize: 20, margin: 10 }}>학번: </Text>
+          <Text style={{ fontSize: 20, margin: 10 }}>이름바로 뜨게 하면 될듯 </Text> 
+          <Text style={{ fontSize: 20, margin: 10 }}>학번도 </Text>
         </View>
         <View style={styles.separator} />
 
+        <View>
+          <Text style={{fontSize:25}}>계정</Text>
+          <TouchableOpacity>
+            <Text style={{ fontSize: 20}}>프로필 설정</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Text style={{ fontSize: 20}}>계정 설정</Text>
+          </TouchableOpacity>
+          
+          <View style={styles.separator} />
+          <TouchableOpacity>
+
+            <Text style={{ fontSize: 20}}></Text>
+          </TouchableOpacity>
+          
+        </View>
+
+        {/* 로그아웃 */}
         <TouchableOpacity
           style={styles.customBtn}
           onPress={() => firebase.auth().signOut()}
