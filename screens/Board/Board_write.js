@@ -19,6 +19,7 @@ import "firebase/firestore";
 import "firebase/storage";
 import { Picker } from "@react-native-picker/picker"; //선택박스 만들기
 import Board from "../Board";
+import Board_free from "./Board_free";
 
 const Board_write = ({ navigation }) => {
   const db = firebase.firestore();
@@ -39,9 +40,15 @@ const Board_write = ({ navigation }) => {
     return year + "-" + month + "-" + day;
   };
   const date = nowTime();
-
-  const reload = () => {
-
+  let gsp = "";
+  if(category == "Free"){
+    gsp ="자유게시판"
+  } else if(category == "Competition"){
+    gsp ="공모전게시판"
+  } else if(category == "Club"){
+    gsp ="동아리게시판"
+  } else if(category == "Hobby"){
+    gsp ="취미게시판"
   }
   //보드 db에 저장
   function addText() {
@@ -64,7 +71,11 @@ const Board_write = ({ navigation }) => {
         .then(() => {
           console.log("Create Complete!");
           Alert.alert("성공", "글을 작성했습니다.");
-          navigation.navigate("자유게시판");
+          navigation.reset({
+            routes: [{
+              name: gsp,
+            }]
+          });
 
         })
         .catch((error) => {

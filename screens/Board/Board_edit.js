@@ -28,6 +28,18 @@ const Board_edit = ({ navigation, route }) => {
   const timestamp = firebase.firestore.FieldValue.serverTimestamp();
   const userId = route.params.id;
   const boardCategory = route.params.boardCategory;
+
+  let gsp = "";
+  if(boardCategory == "Free"){
+    gsp ="자유게시판"
+  } else if(boardCategory == "Competition"){
+    gsp ="공모전게시판"
+  } else if(boardCategory == "Club"){
+    gsp ="동아리게시판"
+  } else if(boardCategory == "Hobby"){
+    gsp ="취미게시판"
+  }
+
   const nowTime = () => {
     let time = new Date();
     let year = time.getFullYear();
@@ -60,7 +72,11 @@ const Board_edit = ({ navigation, route }) => {
         .then(() => {
           console.log("게시글 수정 완료.");
           Alert.alert("수정 완료", "게시글 수정을 완료했습니다.");
-          navigation.navigate("자유게시판");
+         navigation.reset({
+            routes: [{
+              name: gsp,
+            }]
+          });
         })
         .catch((error) => {
           console.log(error.message);

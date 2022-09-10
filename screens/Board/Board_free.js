@@ -10,12 +10,16 @@ import React, { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import firebase from "firebase/app";
 import { FlatList } from "react-native-gesture-handler";
+import { useIsFocused } from '@react-navigation/native';
+
+
 
 const Board_free = ({ navigation }) => {
+  const isFocused = useIsFocused(); // isFoucesd Define
   const [posts, setPosts] = useState(null);
   useEffect(() => {
     getPosts().then(setPosts);
-  }, []);
+  }, [isFocused]);
   const boardCategory = "Free";
   const db = firebase.firestore();
   async function getPosts() {

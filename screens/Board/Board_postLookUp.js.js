@@ -38,6 +38,17 @@ const Board_postLookUp = ({ navigation, route }) => {
     }
   }, []);
 
+  let gsp = "";
+  if(boardCategory == "Free"){
+    gsp ="자유게시판"
+  } else if(boardCategory == "Competition"){
+    gsp ="공모전게시판"
+  } else if(boardCategory == "Club"){
+    gsp ="동아리게시판"
+  } else if(boardCategory == "Hobby"){
+    gsp ="취미게시판"
+  }
+
   const boardDelete = () => {
     firebase
       .firestore()
@@ -47,7 +58,11 @@ const Board_postLookUp = ({ navigation, route }) => {
       
       .then(() => {
         Alert.alert("삭제", "게시글을 삭제 완료했습니다.");
-        navigation.navigate("자유게시판");
+        navigation.reset({
+          routes: [{
+            name: gsp,
+          }]
+        });
       
       })
       .catch((error) => {
