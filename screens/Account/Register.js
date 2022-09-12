@@ -33,7 +33,7 @@ function Register({navigation}) {
   const [email, setAddEmail] = useState("");
   const [pwd, setAddPwd] = useState("");
   const [pwd2, setAddPwd2] = useState("");
-
+  const [modalVisible, setModalVisible] = useState(false);
   const db = firebase.firestore();
   const docEmail = email;
   function addText() {
@@ -53,7 +53,7 @@ function Register({navigation}) {
   }
 
   function SignUp() {
-    if (pwd == pwd2 && agree) {
+    if ( addNumber && addName && email && pwd == pwd2 && agree){
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, pwd)
@@ -70,6 +70,7 @@ function Register({navigation}) {
               Alert.alert("실패", "이메일 전송 실패");
             });
           Alert.alert("회원가입 성공", "회원가입을 축하드립니다.");
+          firebase.auth().signOut();
         })
         .catch((error) => {
           console.log(error.code);
@@ -94,72 +95,22 @@ function Register({navigation}) {
     }
   }
   function touch() {
-    console.log();
-  }
-  /*
-function touch() {
-  db.collection("users").get().then((result) => {
-    result.forEach((doc) => {
-      //console.log(doc.data().number)
-      if(addNumber == false){
-        setCertification(false)
-      } else if(doc.data().number != addNumber){
-        setCertification(true)
-      } else {
-        setCertification(false)
-      }
+    console.log(addNumber);
+    db.collection("HakbunName").get().then((result)=> {
+      result.forEach((doc)=> {
+        if(addNumber == doc.data().number && addName == doc.data().name){
+          console.log("확인되었습니다");
+          throw setModalVisible(true);
+        }else if(addNumber == "" || addName == ""){
+          Alert.alert("인증 실패", "학번 또는 이름을 입력해주세요.");
+          setModalVisible(false);
+        }else if (addNumber != doc.data().number || addName != doc.data().name){
+          Alert.alert("인증 실패", "학번 또는 이름이 다릅니다.")
+          setModalVisible(false);
+        }
+      });
     });
-    console.log(certification+ "1")
-    console.log(certification+ "2")
-});
-
-}
-
-/*
-const handleChange = () => {
-  db.collection("users").get().then((result) => {
-    result.forEach((doc) => {
-      //console.log(doc.data().number)
-      if(addNumber == false || addNumber ===""){
-        setCheckError("학번을 입력하세요.")
-        setCertification(false)
-      }
-      else if(doc.data().number == addNumber){
-        setCheckError("중복 학번 입니다.")
-        setCertification(false)
-        return true;
-      } else if(doc.data().number != addNumber && addNumber.length == 7) {
-        setCheckError("사용 가능한 학번 입니다.")
-        setCertification(true)
-      } else{
-        setCheckError("불가능한 학번 입니다.")
-      }
-    });
-});
-}
-function touch (){      무시해도 됨  나중에 학번 중복
-  db.collection("users").doc("363636")
-  .onSnapshot((doc) => {
-      console.log("Current data: ", doc.data());
-  });
-
-  const nn =  db.collection("users").where("number", "==", addNumber).get();
-  console.log(nn);
-  nn.then((result) => {
-    result.forEach((doc) => {
-    if(nn){
-      alert("학번 중복 입니다.");    
-      setCertification(false);
-      console.log("중복");
-    }else{
-      alert("중복 아님");
-      console.log("중복아님");
     }
-    });
-  
-});
-<Text style={{ color: 'red', fontSize: 15, fontFamily:'NanumGothic', marginTop: 33, marginLeft: 20 }}>{checkError}</Text> 학번옆에 쓸 글
-}*/
 
   return (
     <KeyboardAwareScrollView
@@ -178,19 +129,6 @@ function touch (){      무시해도 됨  나중에 학번 중복
             onChangeText={(text) => setAddNumber(text)}
           />
         </View>
-        <View style={styles.item2}>
-          <TouchableOpacity style={styles.checkBtn}>
-            <Text
-              style={{
-                color: "#000000",
-                fontSize: 20,
-                fontFamily: "NanumGothicBold",
-              }}
-            >
-              인증
-            </Text>
-          </TouchableOpacity>
-        </View>
       </View>
 
       <Text style={styles.NanumRG}>이름</Text>
@@ -200,6 +138,40 @@ function touch (){      무시해도 됨  나중에 학번 중복
         value={addName}
         onChangeText={(text) => setAddName(text)}
       />
+       <TouchableOpacity
+        style={{
+          backgroundColor: "#D9D9D9",
+          padding: 15,
+          margin: 20,
+          marginTop: 50,
+          borderRadius: 10,
+          alignItems: "center",
+        }}
+        onPress = {() => touch()}
+      >
+        <Text
+          style={{
+            color: "#000000",
+            fontSize: 24,
+            fontFamily: "NanumGothicBold",
+          }}
+        >
+          인증
+        </Text>
+      </TouchableOpacity>
+      <Modal presentationStyle={"formSheet"} visible ={modalVisible}>
+      
+      <Text style={styles.NanumRG}>학교 이메일</Text>
+      <View style={styles.check}>
+        <View style={styles.item1}>
+          <TextInput
+            placeholder={"ex) 20001234@shinhan.ac.kr"}
+            style={styles.input}
+            value={email}
+            onChangeText={(text) => setAddEmail(text)}
+          />
+        </View>
+      </View>
       <Text style={styles.NanumRG}>비밀번호</Text>
       <TextInput
         secureTextEntry={true}
@@ -214,30 +186,6 @@ function touch (){      무시해도 됨  나중에 학번 중복
         value={pwd2}
         onChangeText={(text) => setAddPwd2(text)}
       />
-      <Text style={styles.NanumRG}>학교 이메일</Text>
-      <View style={styles.check}>
-        <View style={styles.item1}>
-          <TextInput
-            placeholder={"ex) 20001234@shinhan.ac.kr"}
-            style={styles.input}
-            value={email}
-            onChangeText={(text) => setAddEmail(text)}
-          />
-        </View>
-        <View style={styles.item2}>
-          <TouchableOpacity style={styles.checkBtn} onPress={() => touch()}>
-            <Text
-              style={{
-                color: "#000000",
-                fontSize: 20,
-                fontFamily: "NanumGothicBold",
-              }}
-            >
-              인증
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
       <View style={styles.box}>
         <View style={styles.box1}>
           <CheckBox
@@ -279,6 +227,28 @@ function touch (){      무시해도 됨  나중에 학번 중복
           회원가입
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#D9D9D9",
+          padding: 15,
+          margin: 20,
+          marginTop: 20,
+          borderRadius: 10,
+          alignItems: "center",
+        }}
+        onPress={() =>setModalVisible(false)}
+      >
+        <Text
+          style={{
+            color: "#000000",
+            fontSize: 24,
+            fontFamily: "NanumGothicBold",
+          }}
+        >
+          뒤로가기
+        </Text>
+      </TouchableOpacity>
+      </Modal>
     </KeyboardAwareScrollView>
   );
 }

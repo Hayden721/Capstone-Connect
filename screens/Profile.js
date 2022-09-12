@@ -6,19 +6,29 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-import React from "react";
+import React, {useState} from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
-import { FlatList } from "react-native-gesture-handler";
+import "firebase/firestore";
 
 const Main_profile = () => {
+  const db = firebase.firestore();
+  const cu = firebase.auth().currentUser.email;
+  const [userName, setUserName] = useState("");
+  const [userNumber, setUserNumber] = useState("");
+  db.collection("users").where('email', '==' , cu).get().then((result)=> { //users 컬렉션 이메일과 현재 유저의 이메일을 비교하여 이름과 학번을 추출
+    result.forEach((doc)=> {
+      setUserName(doc.data().name)
+      setUserNumber(doc.data().number) 
+    });
+  });
   return (
     <SafeAreaView>
       <ScrollView>
         <View>
           {/* 이름과 학번은 DB에서 호출 */}
-          <Text style={{ fontSize: 20, margin: 10 }}>이름바로 뜨게 하면 될듯 </Text> 
-          <Text style={{ fontSize: 20, margin: 10 }}>학번도 </Text>
+          <Text style={{ fontSize: 20, margin: 10 }}>{userName}</Text> 
+          <Text style={{ fontSize: 20, margin: 10 }}>{userNumber}</Text>
         </View>
         <View style={styles.separator} />
 
