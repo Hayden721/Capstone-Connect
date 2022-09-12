@@ -11,7 +11,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 const Main = ({ navigation }) => {
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: "white"}}>
       <Text style={styles.Top}>Connect </Text>
       <Text style={styles.Top2}>공지사항 </Text>
 

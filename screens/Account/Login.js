@@ -110,7 +110,7 @@ function LoginScreen({}) {
               >
                 <Text
                   style={{
-                    color: "#000000",
+                    color: "white",
                     fontSize: 24,
                     fontFamily: "NanumGothicBold",
                   }}
@@ -124,7 +124,7 @@ function LoginScreen({}) {
               >
                 <Text
                   style={{
-                    color: "#000000",
+                    color: "white",
                     fontSize: 24,
                     fontFamily: "NanumGothicBold",
                   }}
@@ -150,7 +150,7 @@ function LoginScreen({}) {
         <TouchableOpacity style={styles.customBtn} onPress={() => Login()}>
           <Text
             style={{
-              color: "#000000",
+              color: "white",
               fontSize: 24,
               fontFamily: "NanumGothicBold",
             }}
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     fontFamily: "NanumGothic",
   },
   customBtn: {
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "#1e272e",
     padding: 15,
     margin: 20,
     marginTop: 50,
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     marginTop: "50%",
   },
   pwdFindBtn: {
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "#808e9b",
     padding: 15,
     margin: 20,
     marginTop: 50,

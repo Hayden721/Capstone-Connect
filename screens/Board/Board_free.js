@@ -77,18 +77,26 @@ const Board_free = ({ navigation }) => {
           keyExtractor={(item) => item.id}
         />
       </View>
-      <View style={styles.write}>
+      <View style={{
+        flex: 1,
+        marginBottom:10,
+      }}>
         <TouchableOpacity
           onPress={() => navigation.navigate("글쓰기")}
           style={{
             borderRadius: 20,
-            backgroundColor: "blue",
+            backgroundColor: "#485460",
             alignItems: "center",
+            justifyContent: "center", 
             height: 50,
             marginHorizontal: 60,
           }}
         >
-          <Text style={{ fontSize: 20 }}>글작성</Text>
+          <Text style={{ 
+            fontSize: 20,
+            fontWeight:"bold",
+            color: "white",
+            }}>글작성</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -131,7 +139,5 @@ const styles = StyleSheet.create({
   flatlist: {
     flex: 11,
   },
-  write: {
-    flex: 1,
-  },
+
 });

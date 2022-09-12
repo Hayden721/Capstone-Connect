@@ -24,7 +24,7 @@ const Main_profile = () => {
   });
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView style={{backgroundColor: "white"}}>
         <View>
           {/* 이름과 학번은 DB에서 호출 */}
           <Text style={{ fontSize: 20, margin: 10 }}>{userName}</Text> 

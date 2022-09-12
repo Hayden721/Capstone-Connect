@@ -35,6 +35,13 @@ const Tabs = () => {
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="clipboard-outline" size={24} color={color} />;
           },
+          headerRight: ({color}) => (
+            <Ionicons name="ios-alert-outline" size={24} color="black" 
+            onPress={() => alert('신고 버튼')}
+            style={{
+              marginRight: 10,
+            }} />
+          )
         }}
       />
       <Tab.Screen

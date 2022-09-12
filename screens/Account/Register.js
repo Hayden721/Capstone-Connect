@@ -140,7 +140,7 @@ function Register({navigation}) {
       />
        <TouchableOpacity
         style={{
-          backgroundColor: "#D9D9D9",
+          backgroundColor: "#1e272e",
           padding: 15,
           margin: 20,
           marginTop: 50,
@@ -151,7 +151,7 @@ function Register({navigation}) {
       >
         <Text
           style={{
-            color: "#000000",
+            color: "white",
             fontSize: 24,
             fontFamily: "NanumGothicBold",
           }}
