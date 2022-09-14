@@ -75,6 +75,8 @@ const Board_free = ({ navigation }) => {
           data={posts}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
+          initialNumToRender ={10} //최초 랜더링 갯수
+          maxToRenderPerBatch= {10} //스크롤시 랜더링 갯수
         />
       </View>
       <View style={{

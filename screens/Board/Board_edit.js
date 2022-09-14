@@ -199,6 +199,7 @@ const Board_edit = ({ navigation, route }) => {
           placeholder={"내용을 입력해주세요."}
           style={styles.input2}
           value={boardContent}
+          multiline={true}
           onChangeText={(text) => setContent(text)}
         />
         <TouchableOpacity onPress={() => Update()} style={styles.customBtn}>
