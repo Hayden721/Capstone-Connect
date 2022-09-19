@@ -18,8 +18,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import { Picker } from "@react-native-picker/picker"; //선택박스 만들기
-import Board from "../Board";
-import Board_free from "./Board_free";
+
 
 const Board_write = ({ navigation }) => {
   const db = firebase.firestore();
@@ -186,14 +185,15 @@ const checkWrite = () => {
           onValueChange={(value, index) => setCategory(value)}
           mode="dropdown" // Android only
           style={styles.picker}
-        >
-          <Picker.Item label="카테고리를 선택해주세요." value="" />
-          <Picker.Item label="자유" value="Free" />
-          <Picker.Item label="공모전" value="Competition" />
+        >    
+          <Picker.Item label="카테고리 선택" value="" />
+          <Picker.Item label="자유 " value="Free" />
+          <Picker.Item label="공모전 " value="Competition" />
           <Picker.Item label="동아리" value="Club" />
           <Picker.Item label="취미" value="Hobby" />
         </Picker>
       </View>
+
       <TouchableOpacity style={styles.icon} onPress={pickImage}>
         <AntDesign name="picture" size={30} color="black" />
         <Text style={styles.Category}> 사진 </Text>
@@ -204,13 +204,6 @@ const checkWrite = () => {
         <Text style={styles.Category}> 첨부파일 </Text>
       </TouchableOpacity>
 
-      <View style={styles.Container2}>
-        <View style={styles.Container3}>
-          <Image
-            source={{ uri: imageUrl }}
-            style={{ width: 200, height: 200 }} // 이미지 크기
-          />
-        </View>
         <TextInput
           placeholder={"제목"}
           style={styles.input}
@@ -224,6 +217,12 @@ const checkWrite = () => {
           multiline={true}
           onChangeText={(text) => setContent(text)}
         />
+         <View style={styles.Container3}>
+          <Image
+            source={{ uri: imageUrl }}
+            style={{ width: 200, height: 200 }} // 이미지 크기
+          />
+        </View>
         <TouchableOpacity
           onPress={() => {
             addText();
@@ -240,7 +239,6 @@ const checkWrite = () => {
             작성
           </Text>
         </TouchableOpacity>
-      </View>
     </KeyboardAwareScrollView>
   );
 };
@@ -252,9 +250,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
 
-  Container2: {
-    flexDirection: "column",
-  },
   Container3: {
     alignItems: "center",
   },
@@ -266,7 +261,7 @@ const styles = StyleSheet.create({
   },
 
   Category: {
-    flexDirection: "row",
+    marginTop:3,
     marginHorizontal: 20,
   },
 
@@ -284,7 +279,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#D9D9D9",
     padding: 15,
     margin: 80,
-    marginTop: 350,
     borderRadius: 10,
     alignItems: "center",
   },
@@ -292,17 +286,16 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "#ffffff",
     height: 40,
-    margin: 5,
-    marginTop: 10,
+    marginTop: 20,
     marginLeft: 20,
     marginRight: 20,
-    borderBottomWidth: 1.5,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#CBD0D8',
   },
 
   input2: {
     backgroundColor: "#ffffff",
-    height: 40,
-    margin: 5,
+    height: 300,
     marginLeft: 20,
     marginRight: 20,
   },
@@ -314,5 +307,11 @@ const styles = StyleSheet.create({
   picker: {
     marginTop: 30,
     width: 250,
+  },
+
+  separator: {
+    marginVertical: 5,
+    borderBottomColor: '#CBD0D8',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });
