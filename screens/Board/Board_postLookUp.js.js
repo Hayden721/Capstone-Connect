@@ -8,7 +8,6 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  FlatList,
   Platform
 } from "react-native";
 import React, { useState, useEffect } from "react";
@@ -17,7 +16,8 @@ import "firebase/auth";
 import "firebase/firestore";
 import { MaterialIcons } from "@expo/vector-icons";
 import Icon from "@expo/vector-icons/Ionicons";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import { FlatList } from "react-native-gesture-handler";
 
 // 글 조회
 const Board_postLookUp = ({ navigation, route }) => {
@@ -26,12 +26,14 @@ const Board_postLookUp = ({ navigation, route }) => {
   const date = route.params.date;
   const writer = route.params.writer;
   const photoUrl = route.params.photoUrl;
-  const userId = route.params.id;
+  const userId = route.params.id; //게시글 ID
+  const [commentsId, setCommentsId] = useState(""); //댓글 ID
+  const userEmail = firebase.auth().currentUser.email;
   const boardCategory = route.params.boardCategory;
   const [display, setDisplay] = useState(false);
   const [Comments, setComments] = useState("");
   const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-  const myBoard = writer === firebase.auth().currentUser.email; //햄버거 버튼 자신이 쓴 글 확인
+  const myBoard = writer === userEmail; //햄버거 버튼 자신이 쓴 글 확인
   const db = firebase.firestore();
   const [posts, setPosts] = useState(null);
   useEffect(() => {
@@ -39,7 +41,7 @@ const Board_postLookUp = ({ navigation, route }) => {
       setDisplay(true);
     }
     getPosts().then(setPosts);
-  },[{addComments}]);
+  },[{addComments},{commentsDelete}]);
 
   let gsp = "";
   if(boardCategory == "Free"){
@@ -63,13 +65,37 @@ const Board_postLookUp = ({ navigation, route }) => {
     }));
     return posts;
   }
-  const renderItem = ({ item }) => (  //랜더링할 UI
+  const renderItem = ({ item }) =>{ 
+    return(  
       <View style={[styles.box]}>
-        <Text>{item.writer}</Text>
+        <View style={styles.commentsDelete}>
+          <View style={{flex:5}}>
+            <Text>{item.userEmail}</Text>
+          </View>
+          {item.userEmail == userEmail && (
+          <View style={styles.editDelete}>
+            <TouchableOpacity
+              onPress={() => commentsDelete(item.id)}
+              style={styles.customBtn}
+            >
+              <Text
+                style={{
+                  color: "#000000",
+                  fontSize: 10,
+                  fontFamily: "NanumGothicBold",
+                }}
+              >
+                삭제
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        </View>
         <Text>{item.Comments}</Text>
         <Text>{item.date}</Text>
       </View>
   );
+}
 
   const boardDelete = () => { //글 삭제
     firebase
@@ -94,7 +120,7 @@ const Board_postLookUp = ({ navigation, route }) => {
   const boardEdit = () => {  //글수정
     navigation.navigate("글수정", {
       title: title,
-      writer: writer,
+      wirter: writer,
       content: content,
       photoUrl: photoUrl,
       id: userId,
@@ -110,7 +136,7 @@ const Board_postLookUp = ({ navigation, route }) => {
           Comments: Comments,
           timestamp: timestamp,
           date: date,
-          writer: writer,
+          userEmail: userEmail,
         })
         .then(() => {
           console.log("Create Complete!");
@@ -122,11 +148,28 @@ const Board_postLookUp = ({ navigation, route }) => {
         });
     }
   }
+
+  const commentsDelete = (commentsId) => { //댓글 삭제
+    firebase
+      .firestore()
+      .collection(boardCategory)
+      .doc(userId)
+      .collection("Comments")
+      .doc(commentsId)
+      .delete()
+      .then(() => {
+        Alert.alert("삭제", "댓글 삭제를 완료했습니다.");
+      
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+  };
+
+
   return (
     <KeyboardAwareScrollView
-      style={styles.container}
-      nestedScrollEnabled={false}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={[styles.container,styles.flex]}
     >
       <View style={styles.titleContainer}>
         <View style={styles.titlevar}>
@@ -191,14 +234,14 @@ const Board_postLookUp = ({ navigation, route }) => {
         <Text>{content}</Text>
       </View>
       <View style = {styles.flex}>
-        <View style={styles.container}>
+        <View style={{flex :1.2}}>
           <FlatList
             data={posts}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             initialNumToRender ={10} //최초 랜더링 갯수
             maxToRenderPerBatch= {10} //스크롤시 랜더링 갯수
-           
+            scrollEnabled={false}
           />
         </View>
           <View style={styles.comments}>
@@ -210,8 +253,8 @@ const Board_postLookUp = ({ navigation, route }) => {
               height={50}
               flex={1}
               onChangeText={(text) => setComments(text)}
-            >
-            </TextInput>
+              
+            />
             <Icon name="chevron-forward-outline" size={50} onPress = {() => addComments()}></Icon>
           </View>
       </View>
@@ -225,7 +268,6 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginTop: 30,
-    flex:1
   },
   titleContainer: {
     flexDirection: "row",
@@ -255,6 +297,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     marginTop: 30,
+    marginBottom: 30,
     fontFamily: "NanumGothic",
   },
   var: {
@@ -277,7 +320,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent:"space-between",
     alignItems:"center",
-    marginTop:20,
+    //marginTop:10,
     flex:1
   },
   box: {
@@ -287,5 +330,8 @@ const styles = StyleSheet.create({
   },
   flex:{
     flex:1
+  },
+  commentsDelete:{
+    flexDirection:"row"
   }
 });

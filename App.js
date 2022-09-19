@@ -29,6 +29,8 @@ import "firebase/firestore";
 const Stack = createStackNavigator();
 
 export default function App() {
+  console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed']; //경고문, 노란색 경고 폰 화면에 안뜨게
+  console.disableYellowBox = true;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const firebaseConfig = {

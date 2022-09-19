@@ -5,20 +5,23 @@ import {
   StyleSheet,
   Image,
   Pressable,
+  TextInput
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
 import firebase from "firebase/app";
 import { FlatList } from "react-native-gesture-handler";
 import { useIsFocused } from '@react-navigation/native';
 
 
 const Board_club = ({ navigation }) => {
+  const isFocused = useIsFocused(); // isFoucesd Define
   const [posts, setPosts] = useState(null);
   useEffect(() => {
     getPosts().then(setPosts);
+    setTerm("")
   }, [isFocused]);
-  const isFocused = useIsFocused(); // isFoucesd Define
+
+ 
   const boardCategory = "Club";
   const db = firebase.firestore();
   async function getPosts() {
@@ -30,8 +33,30 @@ const Board_club = ({ navigation }) => {
       id: doc.id,
       ...doc.data(),
     }));
+    setData(posts)
     return posts;
   }
+
+
+  const [data, setData] = useState(posts);
+  const [term, setTerm] = useState(""); 
+  const searchName = (text)=>{
+    if(text){
+      const searchData = data.filter((item)=>{
+        const itemData = item.title ? 
+                          item.title.toUpperCase()
+                          : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setPosts(searchData);
+      setTerm(text);
+    } else {
+      setPosts(data);
+      setTerm(text);
+    }
+  }
+
 
   const renderItem = ({ item }) => (
     <Pressable
@@ -69,6 +94,16 @@ const Board_club = ({ navigation }) => {
   );
   return (
     <View style={styles.container2}>
+      <View>
+          <TextInput
+            placeholder = "Sarch Name"
+            value={term}
+            onChangeText={(text)=>{
+              searchName(text)
+            }}
+          />
+      </View>
+
       <View style={styles.flatlist}>
         <FlatList
           data={posts}
