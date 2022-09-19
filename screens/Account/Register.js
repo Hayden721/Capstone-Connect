@@ -27,6 +27,7 @@ const resultMessages = {
 };
 
 function Register({navigation}) {
+  const [admin] = useState("0");
   const [agree, setAgree] = useState(false);
   const [addName, setAddName] = useState("");
   const [addNumber, setAddNumber] = useState("");
@@ -43,6 +44,7 @@ function Register({navigation}) {
         name: addName,
         number: addNumber,
         email: email,
+        admin: admin,
       })
       .then(() => {
         console.log("Create Complete!");
