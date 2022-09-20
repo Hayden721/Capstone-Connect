@@ -1,5 +1,6 @@
 import {
   View,
+  ScrollView,
   Text,
   TouchableOpacity,
   StyleSheet,
@@ -175,10 +176,12 @@ const checkWrite = () => {
 */
 
   return (
-    <KeyboardAwareScrollView
+    <ScrollView
       style={styles.Container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+      <View style={styles.background}>
+      <View style={styles.separator} />
       <View style={styles.Category}>
         <Picker
           selectedValue={category}
@@ -193,23 +196,26 @@ const checkWrite = () => {
           <Picker.Item label="취미" value="Hobby" />
         </Picker>
       </View>
-
-      <TouchableOpacity style={styles.icon} onPress={pickImage}>
-        <AntDesign name="picture" size={30} color="black" />
-        <Text style={styles.Category}> 사진 </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.icon}>
-        <MaterialIcons name="upload-file" size={30} color="black" />
-        <Text style={styles.Category}> 첨부파일 </Text>
-      </TouchableOpacity>
-
-        <TextInput
+      <View style={styles.separator} />
+      <TextInput
           placeholder={"제목"}
           style={styles.input}
           value={boardTitle}
           onChangeText={(text) => setTitle(text)}
         />
+      
+      <View style={styles.separator} />
+      <TouchableOpacity style={styles.icon} onPress={pickImage}>
+        <AntDesign name="picture" size={30} color="green" />
+        <Text style={styles.Category}> 사진 </Text>
+      </TouchableOpacity>
+      <View style={styles.separator} />
+        <View style={styles.Container3}>
+          <Image
+            source={{ uri: imageUrl }}
+            style={{ width: 400, height: 400 }} // 이미지 크기
+          />
+        </View>
         <TextInput
           placeholder={"내용을 입력해주세요."}
           style={styles.input2}
@@ -217,29 +223,36 @@ const checkWrite = () => {
           multiline={true}
           onChangeText={(text) => setContent(text)}
         />
-         <View style={styles.Container3}>
-          <Image
-            source={{ uri: imageUrl }}
-            style={{ width: 200, height: 200 }} // 이미지 크기
-          />
-        </View>
+         
+
+        <View style={{
+        marginBottom:20,
+      }}>
         <TouchableOpacity
           onPress={() => {
             addText();
           }}
-          style={styles.customBtn}
+
+          style={{
+            borderRadius: 20,
+            backgroundColor: "#485460",
+            alignItems: "center",
+            justifyContent: "center", 
+            height: 50,
+            marginHorizontal: 70,
+            marginTop:330,
+          }}
         >
-          <Text
-            style={{
-              color: "#000000",
-              fontSize: 24,
-              fontFamily: "NanumGothicBold",
-            }}
-          >
-            작성
-          </Text>
+          <Text style={{ 
+            fontSize: 20,
+            fontWeight:"bold",
+            color: "white",
+            }}>등록</Text>
         </TouchableOpacity>
-    </KeyboardAwareScrollView>
+      </View>     
+        </View>
+    </ScrollView>
+    
   );
 };
 
@@ -255,19 +268,19 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    marginTop: 20,
+    marginTop: 5,
     marginLeft: 20,
     flexDirection: "row",
   },
 
   Category: {
     marginTop:3,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
   },
 
   Picture: {
     marginLeft: 5,
-    marginTop: 3,
+    marginTop: 5,
     flexDirection: "row",
   },
 
@@ -286,27 +299,24 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "#ffffff",
     height: 40,
-    marginTop: 20,
     marginLeft: 20,
-    marginRight: 20,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#CBD0D8',
   },
 
   input2: {
     backgroundColor: "#ffffff",
-    height: 300,
     marginLeft: 20,
-    marginRight: 20,
+    marginRight:10,
+    height: 40,
   },
 
   icon2: {
     marginTop: 20,
     marginLeft: 10,
+    
   },
+
   picker: {
-    marginTop: 30,
-    width: 250,
+    width: 170,
   },
 
   separator: {
@@ -314,4 +324,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#CBD0D8',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
+
+  background: {
+    backgroundColor: "#ffffff"
+  },
+
+  
 });

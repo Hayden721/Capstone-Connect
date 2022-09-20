@@ -7,7 +7,6 @@ import {
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
 import firebase from "firebase/app";
 import { FlatList } from "react-native-gesture-handler";
 import { useIsFocused } from '@react-navigation/native'; //새로고침 랜더링
@@ -48,6 +47,7 @@ const Board_free = ({ navigation }) => {
         })
       }
     >
+      <View style={styles.background}>
       <View style={[styles.container, styles.box]}>
         <View style={[styles.container2, styles.title]}>
           <Text style={styles.font}>{item.title}</Text>
@@ -66,6 +66,7 @@ const Board_free = ({ navigation }) => {
           />
         </View>
       </View>
+      </View>
     </Pressable>
   );
   return (
@@ -80,8 +81,9 @@ const Board_free = ({ navigation }) => {
         />
       </View>
       <View style={{
-        flex: 1,
+        flex: 1.25,
         marginBottom:10,
+        backgroundColor:"#ffffff"
       }}>
         <TouchableOpacity
           onPress={() => navigation.navigate("글쓰기")}
@@ -91,7 +93,8 @@ const Board_free = ({ navigation }) => {
             alignItems: "center",
             justifyContent: "center", 
             height: 50,
-            marginHorizontal: 60,
+            marginHorizontal: 70,
+            marginTop:10,
           }}
         >
           <Text style={{ 
@@ -141,5 +144,8 @@ const styles = StyleSheet.create({
   flatlist: {
     flex: 11,
   },
+  background:{
+    backgroundColor: "#ffffff"
+  }
 
 });
