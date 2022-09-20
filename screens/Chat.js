@@ -13,10 +13,9 @@ const ChatTopTab = createMaterialTopTabNavigator();
 
   const Chat = () => {
     return (
-    <ChatTopTab.Navigator>
-      <ChatTopTab.Screen name="Chat_free" component={Chat_free}/>
-      <ChatTopTab.Screen name="Chat_job" component={Chat_job}/>
-    </ChatTopTab.Navigator>  
+      <View>
+        <Text>chat</Text>
+      </View>
     );
   };
 export default Chat
