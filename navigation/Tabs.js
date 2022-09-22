@@ -4,8 +4,6 @@ import 'react-native-gesture-handler';
 import { Text, View } from "react-native";
 import { useColorScheme } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
-import { BLACK_COLOR, YELLOW_COLOR, LIGHT_GREY } from "../styles/colors/colors";
 import Stacks from "./Stack";
 //stack screens import
 import Main from "../screens/Main";

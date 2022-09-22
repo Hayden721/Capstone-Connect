@@ -1,214 +1,210 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
+import { StatusBar } from 'expo-status-bar';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   TextInput,
   TouchableOpacity,
+  Text,
   Alert,
   Modal,
-} from "react-native";
-import { useNavigation } from '@react-navigation/native';
-//import { useFonts } from 'expo-font';
+  SafeAreaView,
+} from 'react-native';
+import styled from 'styled-components/native';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import { Image, Input, Button } from '../../components';
+import { images } from '../../utils/images';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { validateEmail, removeWhitespace } from '../../utils/common';
 
-import firebase from "firebase/app";
-import "firebase/auth";
-//import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-
+const Container = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.background};
+  padding: 20px;
+`;
+const ErrorText = styled.Text`
+  align-items: flex-start;
+  height: 20px;
+  margin-bottom: 10px;
+  line-height: 20px;
+  color: ${({ theme }) => theme.errorText};
+`;
 const resultMessages = {
-  "auth/email-already-in-use": "이미 가입된 이메일입니다.",
-  "auth/wrong-password": "잘못된 비밀번호입니다.",
-  "auth/user-not-found": "존재하지 않는 계정입니다.",
-  "auth/invalid-email": "유효하지 않은 이메일 주소입니다.",
-  "auth/weak-password": "비밀번호를 입력해 주세요.",
+  //메시지
+  'auth/email-already-in-use': '이미 가입된 이메일입니다.',
+  'auth/wrong-password': '잘못된 비밀번호입니다.',
+  'auth/user-not-found': '존재하지 않는 계정입니다.',
+  'auth/invalid-email': '유효하지 않은 이메일 주소입니다.',
+  'auth/weak-password': '비밀번호를 입력해 주세요.',
 };
 
+function LoginScreen({ navigation }) {
+  console.disableYellowBox = false;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const passwordRef = useRef();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [disabled, setDisabled] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false); //비밀번호 찾기 모달
 
+  useEffect(() => {
+    setDisabled(!(email && password && !errorMessage));
+  }, [email, password, errorMessage]);
 
-function LoginScreen({}) {
-  const navigation = useNavigation();
-  
-  const [values, setValues] = useState({
-    email: "",
-    pwd: "",
-  });
-
-  function handleChange(text, eventName) {
-    setValues((prev) => {
-      return {
-        ...prev,
-        [eventName]: text,
-      };
-    });
-  }
+  const _handleEmailChange = email => {
+    const changedEmail = removeWhitespace(email);
+    setEmail(changedEmail);
+    setErrorMessage(
+      validateEmail(changedEmail) ? '' : 'Please verify your email.'
+    );
+  };
+  const _handlePasswordChange = password => {
+    setPassword(removeWhitespace(password));
+  };
 
   //로그인
-  function Login() {
-    const { email, pwd } = values;
-
+  const _handleLoginButtonPress = () => {
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, pwd)
-      .then((value) => {
+      .signInWithEmailAndPassword(email, password)
+      .then(value => {
         if (value.user.emailVerified == false) {
           firebase.auth().signOut(); //이메일 인증 안하면 로그아웃
-          Alert("로그인 실패", "이메일 인증 하세요."); // 이게 안나오고 밑에 알수없는 이유로가 나옴;;
+          Alert('로그인 실패', '이메일 인증 하세요.'); // 이게 안나오고 밑에 알수없는 이유로가 나옴;;
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error.code);
         // ..
         const alertMessage = resultMessages[error.code]
           ? resultMessages[error.code]
-          : "알 수 없는 이유로 로그인에 실패하였습니다.";
-        Alert.alert("로그인 실패", alertMessage);
+          : '알 수 없는 이유로 로그인에 실패하였습니다.';
+        Alert.alert('로그인 실패', alertMessage);
       });
-  }
-
-  //비밀번호 찾기 모달
-  const [modalVisible, setModalVisible] = useState(false);
-
-  //비밀번호 찾기 이메일 전송
-
-  const [emailAddress, setEmailAddress] = useState("");
-  function findPwd() {
-    firebase
-      .auth()
-      .sendPasswordResetEmail(emailAddress)
-      .then(() => {
-        setModalVisible(!modalVisible);
-        Alert.alert("전송 완료", "이메일을 확인하세요.");
-        console.log("비밀번호 전송완료");
-      })
-      .catch((error) => {
-        const alertMessage = resultMessages[error.code];
-        Alert.alert("비밀번호 찾기 실패", alertMessage);
-      });
-  }
+  };
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto"></StatusBar>
-      <View style={styles.top}>
-        <Text style={styles.connect}>CONNECT</Text>
-      </View>
-      <View style={styles.mid}>
-        <Modal visible={modalVisible}>
-          <Text style={styles.NanumRG}>비밀번호 찾기</Text>
-          <View style={styles.pwdFind}>
-            <Text style={styles.NanumRG}>이메일</Text>
-            <TextInput
-              placeholder={"이메일을 입력 하세요."}
-              style={styles.input}
-              onChangeText={(text) => setEmailAddress(text)}
-            />
-            <View style={styles.bottom}>
-              <TouchableOpacity
-                style={styles.pwdFindBtn}
-                onPress={() => findPwd()}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    fontSize: 24,
-                    fontFamily: "NanumGothicBold",
-                  }}
-                >
-                  찾기
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.pwdFindBtn}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text
-                  style={{
-                    color: "white",
-                    fontSize: 24,
-                    fontFamily: "NanumGothicBold",
-                  }}
-                >
-                  취소
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-        <Text style={styles.NanumRG}>이메일</Text>
-        <TextInput
-          placeholder={"ex) 20171111@naver.com"}
-          style={styles.input}
-          onChangeText={(text) => handleChange(text, "email")}
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flex: 1 }}
+      extraScrollHeight={20}
+    >
+      <Container>
+        <Image url={images.logo} />
+        <Input
+          label="Email"
+          value={email}
+          onChangeText={_handleEmailChange}
+          onSubmitEditing={() => passwordRef.current.focus()}
+          placeholder="Email"
+          returnKetType="next"
         />
-        <Text style={styles.NanumRG}>비밀번호</Text>
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          onChangeText={(text) => handleChange(text, "pwd")}
+        <Input
+          ref={passwordRef}
+          label="Password"
+          value={password}
+          onChangeText={_handlePasswordChange}
+          onSubmitEditing={_handleLoginButtonPress}
+          placeholder="Password"
+          returnKetType="done"
+          isPassword
         />
-        <TouchableOpacity style={styles.customBtn} onPress={() => Login()}>
-          <Text
-            style={{
-              color: "white",
-              fontSize: 24,
-              fontFamily: "NanumGothicBold",
-            }}
-          >
-            로그인
-          </Text>
-        </TouchableOpacity>
-        <View style={styles.bottom}>
-          <Text style={styles.membership}>
-            <Text onPress={() => navigation.navigate("Register")}>
-              회원가입
-            </Text>
-          </Text>
-
-          <Text style={styles.membership}>
-            <Text onPress={() => setModalVisible(!modalVisible)}>
+        <ErrorText>{errorMessage}</ErrorText>
+        <Button
+          title="Login"
+          onPress={_handleLoginButtonPress}
+          disabled={disabled}
+        />
+        <Button
+          title="Signup"
+          onPress={() => navigation.navigate('Register')}
+          isFilled={false}
+        />
+        <Text onPress={() => setModalVisible(!modalVisible)}>
               비밀번호 찾기
             </Text>
-          </Text>
-        </View>
-      </View>
-    </View>
+          <Modal visible={modalVisible}>
+            <Text style={styles.NanumRG}>비밀번호 찾기</Text>
+            <View style={styles.pwdFind}>
+              <Text style={styles.NanumRG}>이메일</Text>
+              <TextInput
+                placeholder={'이메일을 입력 하세요.'}
+                onChangeText={text => setEmailAddress(text)}
+              />
+              <View style={styles.bottom}>
+                <TouchableOpacity
+                  style={styles.pwdFindBtn}
+                  onPress={() => findPwd()}
+                >
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: 24,
+                      fontFamily: 'NanumGothicBold',
+                    }}
+                  >
+                    찾기
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.pwdFindBtn}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: 24,
+                      fontFamily: 'NanumGothicBold',
+                    }}
+                  >
+                    취소
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+      </Container>
+    </KeyboardAwareScrollView>
   );
 }
 export default LoginScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   top: {
     flex: 1,
-    backgroundColor: "white",
-    justifyContent: "flex-end",
-    alignItems: "center",
+    backgroundColor: 'white',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
     marginBottom: 30,
   },
   mid: {
     flex: 2.5,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   bottom: {
-    justifyContent: "space-around",
-    flexDirection: "row",
+    justifyContent: 'space-around',
+    flexDirection: 'row',
     marginTop: 20,
   },
   connect: {
     fontSize: 50,
-    fontFamily: "Audiowide",
+    fontFamily: 'Audiowide',
   },
   NanumRG: {
     fontSize: 25,
-    fontFamily: "NanumGothic",
+    fontFamily: 'NanumGothic',
     marginLeft: 20,
     marginTop: 40,
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     height: 40,
     margin: 5,
     marginLeft: 20,
@@ -217,27 +213,27 @@ const styles = StyleSheet.create({
   },
   membership: {
     fontSize: 20,
-    fontFamily: "NanumGothic",
+    fontFamily: 'NanumGothic',
   },
   customBtn: {
-    backgroundColor: "#1e272e",
+    backgroundColor: '#1e272e',
     padding: 15,
     margin: 20,
     marginTop: 50,
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
   pwdFind: {
     //alignItems:"center",
-    justifyContent: "center",
-    marginTop: "50%",
+    justifyContent: 'center',
+    marginTop: '50%',
   },
   pwdFindBtn: {
-    backgroundColor: "#808e9b",
+    backgroundColor: '#808e9b',
     padding: 15,
     margin: 20,
     marginTop: 50,
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
 });
