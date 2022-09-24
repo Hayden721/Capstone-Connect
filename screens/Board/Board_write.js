@@ -18,8 +18,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import { Picker } from "@react-native-picker/picker"; //선택박스 만들기
-import Board from "../Board";
-import Board_free from "./Board_free";
+
 
 const Board_write = ({ navigation }) => {
   const db = firebase.firestore();
@@ -177,137 +176,119 @@ const checkWrite = () => {
 
   return (
     <KeyboardAwareScrollView
-      style={styles.Container}
+      style={{
+        flexDirection: "column",
+      }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <View style={styles.Category}>
+      <View style={styles.separator} />
+      <View style={{
+        backgroundColor:"#ffffff"
+      }}>
+      <View style={{
+            marginTop:3,
+            marginHorizontal: 5,
+      }}>
+        
         <Picker
           selectedValue={category}
           onValueChange={(value, index) => setCategory(value)}
           mode="dropdown" // Android only
-          style={styles.picker}
-        >
-          <Picker.Item label="카테고리를 선택해주세요." value="" />
-          <Picker.Item label="자유" value="Free" />
-          <Picker.Item label="공모전" value="Competition" />
+          style={{
+            width: 165,
+          }}
+          
+        >    
+          <Picker.Item label="카테고리 선택" value="" />
+          <Picker.Item label="자유 " value="Free" />
+          <Picker.Item label="공모전 " value="Competition" />
           <Picker.Item label="동아리" value="Club" />
           <Picker.Item label="취미" value="Hobby" />
         </Picker>
-      </View>
-      <TouchableOpacity style={styles.icon} onPress={pickImage}>
-        <AntDesign name="picture" size={30} color="black" />
-        <Text style={styles.Category}> 사진 </Text>
-      </TouchableOpacity>
 
-      <View style={styles.Container2}>
-        <View style={styles.Container3}>
-          <Image
-            source={{ uri: imageUrl }}
-            style={{ width: 200, height: 200 }} // 이미지 크기
-          />
-        </View>
-        <TextInput
+      </View>
+      <View style={styles.separator} />
+      <TextInput
           placeholder={"제목"}
-          style={styles.input}
+          style={{
+            padding:10,
+            height: 50,
+            marginLeft: 5,
+            borderBottomColor: '#CBD0D8',
+            borderBottomWidth: StyleSheet.hairlineWidth,
+          }}
           value={boardTitle}
           onChangeText={(text) => setTitle(text)}
         />
-        <TextInput
+      
+      <TouchableOpacity style={{
+            marginTop:5,
+            padding:5,
+            marginLeft:5,
+            flexDirection: "row",
+      }} onPress={pickImage}>
+        <AntDesign name="picture" size={30} color="green" />
+        <Text style={{
+              marginTop:3,
+              marginHorizontal: 5,
+        }}> 사진 </Text>
+      </TouchableOpacity>
+    <View style={{
+          borderBottomColor: '#CBD0D8',
+          borderBottomWidth: StyleSheet.hairlineWidth,
+    }} />
+    <View style={{
+         marginLeft:10,
+    }}>
+    <TextInput
           placeholder={"내용을 입력해주세요."}
-          style={styles.input2}
+          style={{
+            backgroundColor:"#ffffff",
+            right:5,
+            height: 50,
+          }}
           value={boardContent}
           multiline={true}
           onChangeText={(text) => setContent(text)}
         />
+          <Image
+            source={{ uri: imageUrl }}
+            style={{ width: 400, height: 400 }} // 이미지 크기
+          />
+        </View> 
+        <View style={{
+        flex: 1,
+        marginBottom:10,
+        justifyContent: "center", 
+        backgroundColor:"#ffffff"
+
+      }}>
         <TouchableOpacity
           onPress={() => {
             addText();
           }}
-          style={styles.customBtn}
+          style={{
+            marginTop:50,
+            borderRadius: 20,
+            backgroundColor: "#485460",
+            alignItems: "center",
+            justifyContent: "center", 
+            height: 50,
+            marginHorizontal: 60,
+          }}
         >
-          <Text
-            style={{
-              color: "#000000",
-              fontSize: 24,
-              fontFamily: "NanumGothicBold",
-            }}
-          >
-            작성
-          </Text>
+          <Text style={{ 
+            fontSize: 20,
+            fontWeight:"bold",
+            color: "white",
+            }}>등록</Text>
         </TouchableOpacity>
-      </View>
+        </View>
+        </View>
     </KeyboardAwareScrollView>
   );
 };
 
 export default Board_write;
 
-const styles = StyleSheet.create({
-  Container: {
-    flexDirection: "column",
-  },
-
-  Container2: {
-    flexDirection: "column",
-  },
-  Container3: {
-    alignItems: "center",
-  },
-
-  icon: {
-    marginTop: 20,
-    marginLeft: 20,
-    flexDirection: "row",
-  },
-
-  Category: {
-    flexDirection: "row",
-    marginHorizontal: 20,
-  },
-
-  Picture: {
-    marginLeft: 5,
-    marginTop: 3,
-    flexDirection: "row",
-  },
-
-  Picture2: {
-    marginLeft: 10,
-  },
-
-  customBtn: {
-    backgroundColor: "#D9D9D9",
-    padding: 15,
-    margin: 80,
-    marginTop: 350,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-
-  input: {
-    backgroundColor: "#ffffff",
-    height: 40,
-    margin: 5,
-    marginTop: 10,
-    marginLeft: 20,
-    marginRight: 20,
-    borderBottomWidth: 1.5,
-  },
-
-  input2: {
-    backgroundColor: "#ffffff",
-    height: 40,
-    margin: 5,
-    marginLeft: 20,
-    marginRight: 20,
-  },
-
-  icon2: {
-    marginTop: 20,
-    marginLeft: 10,
-  },
-  picker: {
-    marginTop: 30,
-    width: 250,
-  },
-});
+const styles = StyleSheet.create({});

@@ -168,12 +168,15 @@ const Board_postLookUp = ({ navigation, route }) => {
 
 
   return (
+    <View style={styles.background}>
     <KeyboardAwareScrollView
-      style={[styles.container,styles.flex]}
-    >
+      style={[styles.container]}>
+    
+ 
       <View style={styles.titleContainer}>
         <View style={styles.titlevar}>
           <Text style={styles.title}>{title}</Text>
+          
         </View>
         {myBoard && (
           <View style={styles.editDelete}>
@@ -183,7 +186,7 @@ const Board_postLookUp = ({ navigation, route }) => {
             >
               <Text
                 style={{
-                  color: "#000000",
+                  color: "blue",
                   fontSize: 10,
                   fontFamily: "NanumGothicBold",
                 }}
@@ -201,7 +204,7 @@ const Board_postLookUp = ({ navigation, route }) => {
             >
               <Text
                 style={{
-                  color: "#000000",
+                  color: "red",
                   fontSize: 10,
                   fontFamily: "NanumGothicBold",
                 }}
@@ -224,7 +227,7 @@ const Board_postLookUp = ({ navigation, route }) => {
         <View style={styles.photoUrl}>
           <Image
             source={{ uri: photoUrl }}
-            style={{ width: 250, height: 250 }}
+            style={{ width: 400, height: 200 }}
             resizeMethod="resize"
             resizeMode="cover"
           />
@@ -233,7 +236,7 @@ const Board_postLookUp = ({ navigation, route }) => {
       <View style={styles.contentContainer}>
         <Text>{content}</Text>
       </View>
-      <View style = {styles.flex}>
+      <View>
         <View style={{flex :1.2}}>
           <FlatList
             data={posts}
@@ -249,7 +252,7 @@ const Board_postLookUp = ({ navigation, route }) => {
               placeholder ={'댓글을 입력하세요.'}
               value={Comments}
               multiline={true}
-              backgroundColor="#d2dae2"
+              backgroundColor="#ffffff"
               height={50}
               flex={1}
               onChangeText={(text) => setComments(text)}
@@ -258,17 +261,25 @@ const Board_postLookUp = ({ navigation, route }) => {
             <Icon name="chevron-forward-outline" size={50} onPress = {() => addComments()}></Icon>
           </View>
       </View>
+     
+
     </KeyboardAwareScrollView>
+    </View>
   );
 };
 
 export default Board_postLookUp;
 
 const styles = StyleSheet.create({
+  background: {
+    backgroundColor:"#ffffff",
+  },
+  
   container: {
     marginHorizontal: 20,
     marginTop: 30,
   },
+
   titleContainer: {
     flexDirection: "row",
     marginBottom: 10,
@@ -276,46 +287,63 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 30,
   },
+
   title: {
     fontFamily: "NanumGothicBold",
     fontSize: 20,
   },
+
   profile: {
     fontFamily: "NanumGothic",
     fontSize: 15,
   },
+
   writerContainer: {
     padding: 10,
     borderBottomWidth: 1,
   },
+
   dateContainer: {
     padding: 10,
   },
+
   photoUrl: {
     marginTop: 30,
     alignItems: "center",
   },
+
   contentContainer: {
     marginTop: 30,
     marginBottom: 30,
     fontFamily: "NanumGothic",
   },
+
   var: {
     flex: 1,
   },
+
   titlevar: {
     flex: 5,
   },
+
   customBtn: {
     backgroundColor: "#D9D9D9",
     padding: 5,
     borderRadius: 10,
     alignItems: "center",
   },
+
   editDelete: {
     flex: 1,
     marginHorizontal: 5,
   },
+
+  editDelete2: {
+    flex: 1,
+    marginHorizontal: 5,
+    marginTop:5,
+  },
+
   comments:{
     flexDirection: "row",
     justifyContent:"space-between",
@@ -333,5 +361,13 @@ const styles = StyleSheet.create({
   },
   commentsDelete:{
     flexDirection:"row"
-  }
+  },
+
+  separator: {
+    marginVertical: 5,
+    marginHorizontal: 10,
+    borderBottomColor: '#CBD0D8',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  
 });
