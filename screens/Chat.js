@@ -1,21 +1,28 @@
-import React from "react";
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View, Text, TouchableOpacity,StyleSheet  } from "react-native";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { View, TouchableOpacity } from 'react-native';
+
+import styled from 'styled-components';
+import { Text, Button } from 'react-native';
+
 import firebase from 'firebase/app';
-import "firebase/auth";
+import 'firebase/auth';
 
+const Container = styled.View`
+  flex: 1;
+  background-color: ${({ theme }) => theme.background};
+`;
 
-import Chat_free from "../screens/Chat/Chat_free";
-import Chat_job from "../screens/Chat/Chat_job";
-
-const ChatTopTab = createMaterialTopTabNavigator();
-
-  const Chat = () => {
-    return (
-      <View>
-        <Text>chat</Text>
-      </View>
-    );
-  };
-export default Chat
+const Chat = ({ navigation }) => {
+  return (
+    <Container>
+      <Text style={{ fontSize: 24 }}>Channel List</Text>
+      <Button
+        title="Channel Creation"
+        onPress={() =>
+          navigation.navigate("ChatStack", { screen: "ChannelCreation" })}
+      />
+    </Container>
+  );
+};
+export default Chat;

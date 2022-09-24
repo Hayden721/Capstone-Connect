@@ -13,6 +13,8 @@ import { useFonts } from 'expo-font';
 import Root from './navigation/Root';
 import LoginRegister from './navigation/LoginRegister';
 
+import { ThemeProvider } from 'styled-components/native';
+import { theme } from './styles/theme';
 //Navi import
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -66,6 +68,7 @@ export default function App() {
   }
 
   return (
+  <ThemeProvider theme={theme}>
     <NavigationContainer>
       {isLoggedIn ? (
         <Stack.Navigator>
@@ -85,5 +88,6 @@ export default function App() {
         </Stack.Navigator>
       )}
     </NavigationContainer>
+    </ThemeProvider>
   );
 }

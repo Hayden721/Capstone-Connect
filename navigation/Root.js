@@ -5,6 +5,7 @@ import Stack from "./Stack";
 import Tabs from "./Tabs";
 import Notice from "./Notice";
 import BoardStacks from "./BoardStacks";
+import ChatStack from "./ChatStack";
 const Nav = createStackNavigator();
 
 const Root = () => {
@@ -14,11 +15,9 @@ const Root = () => {
     <Nav.Screen  name="Stack" component={Stack} />
     <Nav.Screen options={{headerShown: true}} name="Notice" component={Notice} />
     <Nav.Screen name="BoardStacks" component={BoardStacks}/>
+    <Nav.Screen name="ChatStack" component={ChatStack}/>
   </Nav.Navigator>
-
-
   );
- 
 };
 
 export default Root;
