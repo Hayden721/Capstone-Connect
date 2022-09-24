@@ -67,22 +67,48 @@ const Board_postLookUp = ({ navigation, route }) => {
   }
   const renderItem = ({ item }) =>{ 
     return(  
-      <View style={[styles.box]}>
-        <View style={styles.commentsDelete}>
-          <View style={{flex:5}}>
+      <View style={{
+        height: 75,
+        borderTopWidth: 0.5,
+        borderBottomWidth: 0.5,
+      }}
+      >
+
+        <View style={{
+              flexDirection:"row"
+        }}
+        >
+
+          <View style={{
+            flex:5
+          }}
+          >
+
             <Text>{item.userEmail}</Text>
           </View>
           {item.userEmail == userEmail && (
-          <View style={styles.editDelete}>
+          <View style={{
+            flex: 1,
+            marginHorizontal: 5,
+            marginTop:5,
+          }}
+          >
+
             <TouchableOpacity
               onPress={() => commentsDelete(item.id)}
-              style={styles.customBtn}
+              style={{
+                backgroundColor: "#D9D9D9",
+                padding: 5,
+                borderRadius: 10,
+                alignItems: "center",
+              }}
             >
               <Text
                 style={{
-                  color: "#000000",
-                  fontSize: 10,
+                  color: "red",
+                  fontSize: 10,           
                   fontFamily: "NanumGothicBold",
+                  
                 }}
               >
                 삭제
@@ -168,21 +194,52 @@ const Board_postLookUp = ({ navigation, route }) => {
 
 
   return (
-    <View style={styles.background}>
+    <View style={{
+      backgroundColor:"#ffffff",
+    }}
+    >
+
     <KeyboardAwareScrollView
-      style={[styles.container]}>
+      style={{
+        marginHorizontal: 20,
+        marginTop: 30,
+      }}>
     
  
-      <View style={styles.titleContainer}>
-        <View style={styles.titlevar}>
-          <Text style={styles.title}>{title}</Text>
+      <View style={{
+            flexDirection: "row",
+            marginBottom: 10,
+            alignItems: "center",
+            justifyContent: "center",
+            height: 30,
+      }}
+      >
+
+        <View style={{
+              flex: 5,
+        }}
+        >
+          <Text style={{
+                fontFamily: "NanumGothicBold",
+                fontSize: 25,
+                marginLeft:10,
+          }}>{title}</Text>
           
         </View>
         {myBoard && (
-          <View style={styles.editDelete}>
+          <View style={{
+            flex: 1,
+            marginHorizontal: 5,
+            marginTop:5,
+          }}>
             <TouchableOpacity
               onPress={() => boardEdit()}
-              style={styles.customBtn}
+              style={{
+                backgroundColor: "#D9D9D9",
+                padding: 5,
+                borderRadius: 10,
+                alignItems: "center",
+              }}
             >
               <Text
                 style={{
@@ -197,10 +254,19 @@ const Board_postLookUp = ({ navigation, route }) => {
           </View>
         )}
         {myBoard && (
-          <View style={styles.editDelete}>
+          <View style={{
+            flex: 1,
+            marginHorizontal: 5,
+            marginTop:5,
+          }}>
             <TouchableOpacity
               onPress={() => boardDelete()}
-              style={styles.customBtn}
+              style={{
+                backgroundColor: "#D9D9D9",
+                padding: 5,
+                borderRadius: 10,
+                alignItems: "center",
+              }}
             >
               <Text
                 style={{
@@ -216,24 +282,42 @@ const Board_postLookUp = ({ navigation, route }) => {
         )}
       </View>
       <View>
-        <View style={styles.writerContainer}>
-          <Text style={styles.profile}>{writer}</Text>
+        <View style={{
+              padding: 10,
+              borderBottomWidth: 1,
+        }}>
+          <Text style={{
+                fontFamily: "NanumGothic",
+                fontSize: 15,
+          }}>{writer}</Text>
         </View>
-        <View style={styles.dateContainer}>
-          <Text style={styles.profile}>{date}</Text>
+        <View style={{
+              padding: 10,
+        }}>
+          <Text style={{
+                fontFamily: "NanumGothic",
+                fontSize: 15,
+          }}>{date}</Text>
         </View>
       </View>
       {display && (
-        <View style={styles.photoUrl}>
+        <View style={{
+          marginTop: 30,
+          alignItems: "center",
+        }}>
           <Image
             source={{ uri: photoUrl }}
-            style={{ width: 400, height: 200 }}
+            style={{ width: 400, height: 350 }}
             resizeMethod="resize"
             resizeMode="cover"
           />
         </View>
       )}
-      <View style={styles.contentContainer}>
+      <View style={{
+            marginTop: 30,
+            marginBottom: 30,
+            fontFamily: "NanumGothic",
+      }}>
         <Text>{content}</Text>
       </View>
       <View>
@@ -247,7 +331,14 @@ const Board_postLookUp = ({ navigation, route }) => {
             scrollEnabled={false}
           />
         </View>
-          <View style={styles.comments}>
+
+          <View style={{
+                flexDirection: "row",
+                justifyContent:"space-between",
+                alignItems:"center",
+                flex:1,
+                marginTop:20,
+          }}>
             <TextInput
               placeholder ={'댓글을 입력하세요.'}
               value={Comments}
@@ -258,7 +349,7 @@ const Board_postLookUp = ({ navigation, route }) => {
               onChangeText={(text) => setComments(text)}
               
             />
-            <Icon name="chevron-forward-outline" size={50} onPress = {() => addComments()}></Icon>
+            <Icon name="chevron-forward-outline" size={30} onPress = {() => addComments()}></Icon>
           </View>
       </View>
      
@@ -270,104 +361,4 @@ const Board_postLookUp = ({ navigation, route }) => {
 
 export default Board_postLookUp;
 
-const styles = StyleSheet.create({
-  background: {
-    backgroundColor:"#ffffff",
-  },
-  
-  container: {
-    marginHorizontal: 20,
-    marginTop: 30,
-  },
-
-  titleContainer: {
-    flexDirection: "row",
-    marginBottom: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    height: 30,
-  },
-
-  title: {
-    fontFamily: "NanumGothicBold",
-    fontSize: 20,
-  },
-
-  profile: {
-    fontFamily: "NanumGothic",
-    fontSize: 15,
-  },
-
-  writerContainer: {
-    padding: 10,
-    borderBottomWidth: 1,
-  },
-
-  dateContainer: {
-    padding: 10,
-  },
-
-  photoUrl: {
-    marginTop: 30,
-    alignItems: "center",
-  },
-
-  contentContainer: {
-    marginTop: 30,
-    marginBottom: 30,
-    fontFamily: "NanumGothic",
-  },
-
-  var: {
-    flex: 1,
-  },
-
-  titlevar: {
-    flex: 5,
-  },
-
-  customBtn: {
-    backgroundColor: "#D9D9D9",
-    padding: 5,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-
-  editDelete: {
-    flex: 1,
-    marginHorizontal: 5,
-  },
-
-  editDelete2: {
-    flex: 1,
-    marginHorizontal: 5,
-    marginTop:5,
-  },
-
-  comments:{
-    flexDirection: "row",
-    justifyContent:"space-between",
-    alignItems:"center",
-    //marginTop:10,
-    flex:1
-  },
-  box: {
-    height: 75,
-    borderTopWidth: 0.5,
-    borderBottomWidth: 0.5,
-  },
-  flex:{
-    flex:1
-  },
-  commentsDelete:{
-    flexDirection:"row"
-  },
-
-  separator: {
-    marginVertical: 5,
-    marginHorizontal: 10,
-    borderBottomColor: '#CBD0D8',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  
-});
+const styles = StyleSheet.create({});

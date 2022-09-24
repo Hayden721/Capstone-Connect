@@ -15,99 +15,39 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Linking } from 'react-native';
 // 학교, 종정, 셔틀 링크 사용 import
 
-const Container = styled.View`
-  width: 60px
-  height: 60px;
-  borderWidth: 2px;
-  borderRadius: 15px;
-  margin:10px;
-  padding: 15px;
-  backgroundColor: #F4F3EA;
-  borderColor: #E6E7E8;
-`;
-
-const Top = styled.Text`
-  fontSize: 20px;
-  marginLeft: 15px;
-  marginTop: 10px;
-  fontFamily: 'NanumGothicBold';
-`;
-
-const TextContainer = styled.TouchableOpacity`
-  width: 60px;
-  height: 60px;
-  borderWidth: 2px;
-  borderRadius: 40px;
-  margin: 20px;
-  padding: 15px;
-  backgroundColor: #F4F3EA;
-  borderColor: #E6E7E8;
-`;
-
 const Main = ({ navigation }) => {
   return (
-    <ScrollView 
-      style={{ 
-        backgroundColor: '#ffffff' 
+    <ScrollView
+      style={{
+        backgroundColor: '#ffffff',
       }}
-    >   
-      <View style={styles.separator}/>
-      
-      <Top>
-        공지사항
-        <Entypo name="megaphone" size={24} color="red" />
-      </Top>
-      
-      <Container>
-      <TouchableOpacity>
-        <Ionicons name="home-outline" size={24} color="#E2495B" />
-        <Text
-          style={{
-            justifyContent: 'center',
-            textAlign: 'center',
-            fontSize: 8,
-          }}
-          onPress={() =>
-            navigation.navigate('Notice', { screen: 'NotiSchool' })
-          }
-        >
-          학교
-        </Text>
-      </TouchableOpacity>
-      </Container>
-
-      <Container>
-      <TouchableOpacity>
-        <Entypo name="laptop" size={24} color="#0C4A60" />
-        <Text
-          style={{
-            justifyContent: 'center',
-            textAlign: 'center',
-            fontSize: 8,
-          }}
-          onPress={() =>
-            navigation.navigate('Notice', { screen: 'NotiSystem' })
-          }
-        >
-          시스템
-        </Text>
-      </TouchableOpacity>
-      </Container>
-
+    >
       <View style={styles.separator} />
 
-      <Top>
-        바로가기
-        <AntDesign name="swapright" size={24} color="black" />
-      </Top>
-
-      <View style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'row',
-        }} horizontal={true}
+      <Text
+        style={{
+          fontSize: 20,
+          marginLeft: 15,
+          marginTop: 10,
+          fontFamily: 'NanumGothicBold',
+        }}
       >
-        <TextContainer>
+        공지사항
+        <Entypo name="megaphone" size={24} color="red" />
+      </Text>
+
+      <View
+        style={{
+          width: 60,
+          height: 60,
+          borderWidth: 2,
+          borderRadius: 15,
+          margin: 10,
+          padding: 15,
+          backgroundColor: '#F4F3EA',
+          borderColor: '#E6E7E8',
+        }}
+      >
         <TouchableOpacity>
           <Ionicons name="home-outline" size={24} color="#E2495B" />
           <Text
@@ -117,35 +57,28 @@ const Main = ({ navigation }) => {
               fontSize: 8,
             }}
             onPress={() =>
-              Linking.openURL('https://www.shinhan.ac.kr/sites/kr/index.do')
+              navigation.navigate('Notice', { screen: 'NotiSchool' })
             }
           >
             학교
           </Text>
         </TouchableOpacity>
-        </TextContainer>
+      </View>
 
-        <TextContainer>
+      <View
+        style={{
+          width: 60,
+          height: 60,
+          borderWidth: 2,
+          borderRadius: 15,
+          margin: 10,
+          padding: 15,
+          backgroundColor: '#F4F3EA',
+          borderColor: '#E6E7E8',
+        }}
+      >
         <TouchableOpacity>
-          <AntDesign name="earth" size={24} color="#0C4A60" />
-          <Text
-            style={{
-            justifyContent: 'center',
-            extAlign: 'center',
-            fontSize: 8,
-            }}
-            onPress={() =>
-              Linking.openURL('https://stins.shinhan.ac.kr/irj/portal')
-            }
-          >
-            종정시
-          </Text>
-        </TouchableOpacity>
-        </TextContainer>
-
-        <TextContainer>
-        <TouchableOpacity>
-          <Ionicons name="bus" size={24} color="#D3AC2B" />
+          <Entypo name="laptop" size={24} color="#0C4A60" />
           <Text
             style={{
               justifyContent: 'center',
@@ -153,30 +86,149 @@ const Main = ({ navigation }) => {
               fontSize: 8,
             }}
             onPress={() =>
-              Linking.openURL('https://www.shinhan.ac.kr/kr/125/subview.do')
+              navigation.navigate('Notice', { screen: 'NotiSystem' })
             }
           >
-            셔틀
+            시스템
           </Text>
         </TouchableOpacity>
-        </TextContainer>
       </View>
-      <View style={{
-         justifyContent: 'center',
-         textAlign: 'center',
-         fontSize: 8,
-      }} />
 
-      <Top>
-      <Text>카테고리: 게시판</Text>
-      </Top>
+      <View style={styles.separator} />
 
-      <View style={{
-        marginTop: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+      <Text
+        style={{
+          fontSize: 20,
+          marginLeft: 15,
+          marginTop: 10,
+          fontFamily: 'NanumGothicBold',
+        }}
+      >
+        바로가기
+        <AntDesign name="swapright" size={24} color="black" />
+      </Text>
+
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+        horizontal={true}
+      >
+        <Text
+          style={{
+            width: 60,
+            height: 60,
+            borderWidth: 2,
+            borderRadius: 40,
+            margin: 20,
+            padding: 15,
+            backgroundColor: '#F4F3EA',
+            borderColor: '#E6E7E8',
+          }}
+        >
+          <TouchableOpacity>
+            <Ionicons name="home-outline" size={24} color="#E2495B" />
+            <Text
+              style={{
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: 8,
+              }}
+              onPress={() =>
+                Linking.openURL('https://www.shinhan.ac.kr/sites/kr/index.do')
+              }
+            >
+              학교
+            </Text>
+          </TouchableOpacity>
+        </Text>
+
+        <Text
+          style={{
+            width: 60,
+            height: 60,
+            borderWidth: 2,
+            borderRadius: 40,
+            margin: 20,
+            padding: 15,
+            backgroundColor: '#F4F3EA',
+            borderColor: '#E6E7E8',
+          }}
+        >
+          <TouchableOpacity>
+            <AntDesign name="earth" size={24} color="#0C4A60" />
+            <Text
+              style={{
+                justifyContent: 'center',
+                extAlign: 'center',
+                fontSize: 8,
+              }}
+              onPress={() =>
+                Linking.openURL('https://stins.shinhan.ac.kr/irj/portal')
+              }
+            >
+              종정시
+            </Text>
+          </TouchableOpacity>
+        </Text>
+
+        <Text
+          style={{
+            width: 60,
+            height: 60,
+            borderWidth: 2,
+            borderRadius: 40,
+            margin: 20,
+            padding: 15,
+            backgroundColor: '#F4F3EA',
+            borderColor: '#E6E7E8',
+          }}
+        >
+          <TouchableOpacity>
+            <Ionicons name="bus" size={24} color="#D3AC2B" />
+            <Text
+              style={{
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: 8,
+              }}
+              onPress={() =>
+                Linking.openURL('https://www.shinhan.ac.kr/kr/125/subview.do')
+              }
+            >
+              셔틀
+            </Text>
+          </TouchableOpacity>
+        </Text>
       </View>
+      <View
+        style={{
+          justifyContent: 'center',
+          textAlign: 'center',
+          fontSize: 8,
+        }}
+      />
+
+      <Text
+        style={{
+          fontSize: 20,
+          marginLeft: 15,
+          marginTop: 10,
+          fontFamily: 'NanumGothicBold',
+        }}
+      >
+        <Text>카테고리: 게시판</Text>
+      </Text>
+
+      <View
+        style={{
+          marginTop: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      ></View>
 
       <TouchableOpacity
         onPress={() => navigation.navigate('Tabs', { screen: 'Board' })}
@@ -189,17 +241,25 @@ const Main = ({ navigation }) => {
           margin: 10,
         }}
       ></TouchableOpacity>
-      
-      <Top>
-      <Text>채팅방</Text>
-      </Top>
-      
-      <View style={{
-        marginTop: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      </View>
+
+      <Text
+        style={{
+          fontSize: 20,
+          marginLeft: 15,
+          marginTop: 10,
+          fontFamily: 'NanumGothicBold',
+        }}
+      >
+        <Text>채팅방</Text>
+      </Text>
+
+      <View
+        style={{
+          marginTop: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      ></View>
       <TouchableOpacity
         onPress={() => navigation.navigate('Tabs', { screen: 'Chat' })}
         style={{
