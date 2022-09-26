@@ -9,7 +9,8 @@ const Container = styled.View`
   background-color: ${({ theme }) => theme.background};
 `;
 const Channel = ({ navigation, route: { params } }) => {
-  const [messages, setMessages] = useState('');
+  const [messages, setMessages] = useState([]);
+  
 
   useEffect(() => {
     const unsubscribe = DB.collection('channels')
@@ -27,7 +28,7 @@ const Channel = ({ navigation, route: { params } }) => {
   }, []);
 
   useLayoutEffect(() => {
-    navigation.setOptions({ headerTitle: params.title || 'Channel' });
+    navigation.setOptions({ headerTitle: params.title || 'ChatChannel' });
   }, []);
 
   //navigation.navigate("ChatStack", {screen:"ChannelCreation"})
@@ -40,6 +41,7 @@ const Channel = ({ navigation, route: { params } }) => {
           <Text style={{ fontSize: 24 }}>{item.text}</Text>
         )}
       />
+      
     </Container>
   );
 };

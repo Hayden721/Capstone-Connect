@@ -24,3 +24,6 @@ export const logout = async () => {
   return await Auth.signOut();
 };
 
+export const createMessage = async ({channelId, text}) => {
+
+}

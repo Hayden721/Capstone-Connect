@@ -19,7 +19,7 @@ const NoticeStack = createStackNavigator();
 const BoardStack = createStackNavigator();
 const Stack = () => {
   return (
-    <NoticeStacks.Navigator screenOptions={{}}>
+    <NoticeStacks.Navigator>
       <NoticeStack.Screen name="NotiSchool" component={NotiSchool} />
       <NoticeStack.Screen name="NotiSystem" component={NotiSystem} />
     </NoticeStacks.Navigator>

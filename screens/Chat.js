@@ -1,13 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { View, TouchableOpacity } from 'react-native';
 import styled, {ThemeContext} from 'styled-components';
-import { Text, Button } from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
 import moment from 'moment';
 
-import firebase from 'firebase/app';
 import 'firebase/auth';
 import { DB } from '../utils/firebase';
 
@@ -15,7 +11,6 @@ const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
 `;
-
 const ItemContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
@@ -48,45 +43,46 @@ const getDateOrTime = ts => {
 };
 
 const Item = React.memo(
-({ item: { id, title, description, createdAt}, onPress}) => {
-  const theme = useContext(ThemeContext);
-  console.log(`Item:${id}`);
+  ({ item: { id, title, description, createdAt }, onPress }) => {
+    const theme = useContext(ThemeContext);
 
-  return (
-    <ItemContainer onPress={() => onPress({id, title})}>
-      <ItemTextContainer>
-        <ItemTitle>{title}</ItemTitle>
-        <ItemDescription>{description}</ItemDescription>
-      </ItemTextContainer>
+    return (
+      <ItemContainer onPress={() => onPress({ id, title })}>
+        <ItemTextContainer>
+          <ItemTitle>{title}</ItemTitle>
+          <ItemDescription>{description}</ItemDescription>
+        </ItemTextContainer>
         <ItemTime>{getDateOrTime(createdAt)}</ItemTime>
         <MaterialIcons
           name="keyboard-arrow-right"
           size={24}
           color={theme.listIcon}
-          />
-    </ItemContainer>
+        />
+      </ItemContainer>
     );
   }
 );
 
-const Chat = ({ navigation }) => {
+const ChannelList = ({ navigation }) => {
   const [channels, setChannels] = useState([]);
 
-  const _handleItemPress = parms => {
-    navigation.navigate('ChatChannel', parms);
-  }
   useEffect(() => {
     const unsubscribe = DB.collection('channels')
-    .orderBy('createdAt', 'desc')
-    .onSnapshot(snapshot => {
-      const list = [];
-      snapshot.forEach(doc => {
-        list.push(doc.data());
+      .orderBy('createdAt', 'desc')
+      .onSnapshot(snapshot => {
+        const list = [];
+        snapshot.forEach(doc => {
+          list.push(doc.data());
+        });
+        setChannels(list);
       });
-      setChannels(list);
-    });
+
     return () => unsubscribe();
   }, []);
+
+  const _handleItemPress = params => {
+    navigation.navigate('ChatChannel', params);
+  };
 
   return (
     <Container>
@@ -101,4 +97,5 @@ const Chat = ({ navigation }) => {
     </Container>
   );
 };
-export default Chat;
+
+export default ChannelList;

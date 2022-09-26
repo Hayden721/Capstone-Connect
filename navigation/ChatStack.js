@@ -13,7 +13,6 @@ const ChatStack = () => {
   return (
     <ChatStacks.Navigator>
       <ChatStacks.Screen name="ChannelCreation" component={ChannelCreation} />
-      <ChatStacks.Screen name="ChatChannel" component={ChatChannel}/>
     </ChatStacks.Navigator>
   );
 };
