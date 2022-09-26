@@ -24,7 +24,7 @@ const ErrorText = styled.Text`
 const ChannelCreation = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const descriptionRef = useRef;
+  const descriptionRef = useRef();
   const [errorMessage, setErrorMessage] = useState('');
   const [disabled, setDisabled] = useState(true);
 
@@ -38,7 +38,7 @@ const ChannelCreation = ({ navigation }) => {
   };
   const _handleCreateButtonPress = async () => {
     const id = await createChannel({ title, description});
-    navigation.replace('ChannelCreation', { id, title});
+    navigation.replace('ChatChannel', { id, title});
     }
   
 
@@ -48,7 +48,7 @@ const ChannelCreation = ({ navigation }) => {
       extraScrollHeight={20}
     >
       <Container>
-        <Input
+      <Input
           label="Title"
           value={title}
           onChangeText={_handleTitleChange}
@@ -56,12 +56,13 @@ const ChannelCreation = ({ navigation }) => {
             setTitle(title.trim());
             descriptionRef.current.focus();
           }}
-          onBlur={() => setDescription(title.trim())}
+          onBlur={() => setTitle(title.trim())}
           placeholder="Title"
           returnKeyType="next"
           maxLength={20}
         />
         <Input
+          ref={descriptionRef}
           label="Description"
           value={description}
           onChangeText={text => setDescription(text)}

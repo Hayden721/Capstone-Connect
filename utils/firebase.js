@@ -1,9 +1,9 @@
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+import config from '../firebase.json';
 //로그인
-
-
+const app = !firebase.apps.length ? firebase.initializeApp(config) : firebase.app();
+const Auth = app.auth();
 
 export const DB = firebase.firestore();
 
@@ -14,9 +14,13 @@ export const createChannel = async ({ title, description }) => {
     id,
     title,
     description,
-    createdAt:Date.now(),
+    createdAt: Date.now(),
   };
-  await newChannel.set(newChannel);
+  await newChannelRef.set(newChannel);
   return id;
+};
+
+export const logout = async () => {
+  return await Auth.signOut();
 };
 

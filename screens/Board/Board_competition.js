@@ -2,7 +2,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   Image,
   Pressable,
   TextInput,
@@ -198,5 +197,3 @@ const Board_competition = ({ navigation }) => {
 };
 
 export default Board_competition;
-
-const styles = StyleSheet.create({});

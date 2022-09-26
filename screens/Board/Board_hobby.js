@@ -2,7 +2,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   Image,
   Pressable,
   TextInput,
@@ -201,4 +200,3 @@ const Board_hobby = ({ navigation }) => {
 
 export default Board_hobby;
 
-const styles = StyleSheet.create({});

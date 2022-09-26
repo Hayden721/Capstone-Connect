@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import 'react-native-gesture-handler';
 import { Text, View } from "react-native";
-import { useColorScheme } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Stacks from "./Stack";
 //stack screens import
@@ -11,10 +10,21 @@ import Board from "../screens/Board";
 import Chat from "../screens/Chat";
 import Profile from "../screens/Profile";
 
-const Tab = createBottomTabNavigator();
+import { ThemeConsumer, ThemeContext } from "styled-components/native";
 
-const Tabs = () => {
-  const isDarks = useColorScheme() === "dark";
+const Tab = createBottomTabNavigator();
+const tabBarIcon = ({ focused, name }) => {
+  const theme = useContext(ThemeConsumer);
+  return (
+    <Ionicons
+      name="name"
+      size={24}
+    />
+  )
+}
+
+const Tabs = ({ navigation, route}) => {
+  const theme = useContext(ThemeContext);
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -49,6 +59,13 @@ const Tabs = () => {
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="chatbubble-ellipses-outline" size={24} color={color} />;
           },
+          headerRight: ({color, size}) => (
+            <Ionicons name="ios-alert-outline" size={24} color="black" 
+            onPress={() => navigation.navigate("ChatStack", {screen:"ChannelCreation"})}
+            style={{
+              marginRight: 10,
+            }} />
+          )
         }}
       />
       <Tab.Screen

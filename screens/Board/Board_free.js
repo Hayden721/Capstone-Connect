@@ -2,7 +2,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   Image,
   Pressable,
   TextInput,
@@ -227,4 +226,4 @@ const Board_free = ({ navigation }) => {
 
 export default Board_free;
 
-const styles = StyleSheet.create({});
+
