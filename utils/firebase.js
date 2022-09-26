@@ -7,6 +7,11 @@ const Auth = app.auth();
 
 export const DB = firebase.firestore();
 
+export const getCurrentUser = () => {
+  const { uid, displayName, email, photoURL } = Auth.currentUser;
+  return { uid, name: displayName, email, photoUrl: photoURL };
+};
+
 export const createChannel = async ({ title, description }) => {
   const newChannelRef = DB.collection('channels').doc();
   const id = newChannelRef.id;
@@ -24,6 +29,13 @@ export const logout = async () => {
   return await Auth.signOut();
 };
 
-export const createMessage = async ({channelId, text}) => {
-
-}
+export const createMessage = async ({ channelId, message }) => {
+  return await DB.collection('channels')
+    .doc(channelId)
+    .collection('messages')
+    .doc(message._id)
+    .set({
+      ...message,
+      createdAt: Date.now(),
+    });
+};
