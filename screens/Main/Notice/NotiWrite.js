@@ -1,271 +1,238 @@
 import {
-    View,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
-    TextInput,
-    Image,
-    Alert,
-  } from 'react-native';
-  import { AntDesign } from '@expo/vector-icons';
-  import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-  import React, { useState, useEffect } from 'react';
-  import * as ImagePicker from 'expo-image-picker';
-  import firebase from 'firebase/app';
-  import 'firebase/auth';
-  import 'firebase/firestore';
-  import 'firebase/storage';
-  import { Picker } from '@react-native-picker/picker'; //선택박스 만들기
-  
-  const NotiWrite = ({ navigation }) => {
-    const db = firebase.firestore();
-    const [category, setCategory] = useState(''); //카테고리
-    const [imageUrl, setImageUrl] = useState(null); // 이미지 주소
-    const [downUrl, setdownUrl] = useState(null);
-    const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
-    const [boardTitle, setTitle] = useState('');
-    const [boardContent, setContent] = useState('');
-    const currentUser = firebase.auth().currentUser; //현재 사용자
-    const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-    const nowTime = () => {
-      let time = new Date();
-      let year = time.getFullYear();
-      let month = time.getMonth() + 1;
-      let day = time.getDate();
-  
-      return year + '-' + month + '-' + day;
-    };
-    const date = nowTime();
-    let gsp = '';
-    if (category == 'NotiSchool') {
-      gsp = 'NotiSchool';
-    } else if (category == 'NotiSystem') {
-      gsp = 'NotiSystem';
-    }
-    //보드 db에 저장
-    function addText() {
-      if (category == '') {
-        Alert.alert('글작성 실패', '카테고리를 선택하세요.');
-      } else if (boardTitle == '') {
-        Alert.alert('글작성 실패', '제목을 입력하세요.');
-      } else if (boardContent == '') {
-        Alert.alert('글작성 실패', '내용을 입력하세요.');
-      } else {
-        db.collection(category)
-          .add({
-            title: boardTitle,
-            content: boardContent,
-            timestamp: timestamp,
-            date: date,
-            writer: currentUser.email,
-            photoUrl: downUrl,
-          })
-          .then(() => {
-            console.log('Create Complete!');
-            Alert.alert('성공', '글을 작성했습니다.');
-            navigation.goBack();
-          })
-          .catch(error => {
-            console.log(error.message);
-          });
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  Image,
+  Alert,
+} from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import React, { useState, useEffect } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/storage';
+import { Picker } from '@react-native-picker/picker'; //선택박스 만들기
+import { addNotice} from '../../../utils/firebase';
+
+const NotiWrite = ({ navigation }) => {
+  const db = firebase.firestore();
+  const [category, setCategory] = useState(''); //카테고리
+  const [imageUrl, setImageUrl] = useState(null); // 이미지 주소
+  const [photoUrl, setPhotoUrl] = useState(null);
+  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+  const nowTime = () => {
+    let time = new Date();
+    let year = time.getFullYear();
+    let month = time.getMonth() + 1;
+    let day = time.getDate();
+
+    return year + '-' + month + '-' + day;
+  };
+  const date = nowTime();
+  //보드 db에 저장
+
+  const pickImage = async () => {
+    // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
+    if (!status?.granted) {
+      const permission = await requestPermission();
+      if (!permission.granted) {
+        return null;
       }
     }
-  
-    const pickImage = async () => {
-      // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
-      if (!status?.granted) {
-        const permission = await requestPermission();
-        if (!permission.granted) {
-          return null;
-        }
-      }
-      // 이미지 업로드 기능
-      const imageData = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: false,
-        quality: 1,
-        aspect: [1, 1],
+    // 이미지 업로드 기능
+    const imageData = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: false,
+      quality: 1,
+      aspect: [1, 1],
+    });
+    if (imageData.cancelled) {
+      return null; //이미지 업로드 취소
+    }
+
+    console.log(imageData);
+    setImageUrl(imageData.uri);
+
+    //파이어베이스 스토리지 업로드
+    let uri = imageData.uri;
+    const filename = imageData.uri.split('/').pop();
+    // const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      xhr.send(null);
+    });
+
+    const reference = firebase
+      .storage()
+      .ref()
+      .child('images/' + filename);
+    await reference
+      .put(blob)
+      .then(() => {
+        console.log('성공');
+      })
+      .catch(error => {
+        console.log(error);
       });
-      if (imageData.cancelled) {
-        return null; //이미지 업로드 취소
-      }
-  
-      console.log(imageData);
-      setImageUrl(imageData.uri);
-  
-      //파이어베이스 스토리지 업로드
-      let uri = imageData.uri;
-      const filename = imageData.uri.split('/').pop();
-      // const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-  
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-          resolve(xhr.response);
-        };
-        xhr.onerror = function (e) {
-          console.log(e);
-          reject(new TypeError('Network request failed'));
-        };
-        xhr.responseType = 'blob';
-        xhr.open('GET', uri, true);
-        xhr.send(null);
+
+    //이미지 다운로드 url
+    await reference
+      .getDownloadURL()
+      .then(url => {
+        console.log(url);
+        setPhotoUrl(url);
+      })
+      .catch(error => {
+        console.log(error);
       });
-  
-      const reference = firebase
-        .storage()
-        .ref()
-        .child('images/' + filename);
-      await reference
-        .put(blob)
-        .then(() => {
-          console.log('성공');
-        })
-        .catch(error => {
-          console.log(error);
-        });
-  
-      //이미지 다운로드 url
-      await reference
-        .getDownloadURL()
-        .then(url => {
-          console.log(url);
-          setdownUrl(url);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
-  
-    return (
-      <KeyboardAwareScrollView
+  };
+
+  return (
+    <KeyboardAwareScrollView
+      style={{
+        flexDirection: 'column',
+      }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <View/>
+      <View
         style={{
-          flexDirection: 'column',
+          backgroundColor: '#ffffff',
         }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <View/>
         <View
           style={{
-            backgroundColor: '#ffffff',
+            marginTop: 3,
+            marginHorizontal: 5,
           }}
         >
-          <View
+          <Picker
+            selectedValue={category}
+            onValueChange={(value, index) => setCategory(value)}
+            mode="dropdown" // Android only
+            style={{
+              width: 165,
+            }}
+          >
+            <Picker.Item label="카테고리 선택" value="" />
+            <Picker.Item label="학교 " value="NotiSchool" />
+            <Picker.Item label="시스템 " value="NotiSystem" />
+          </Picker>
+        </View>
+        <View/>
+        <TextInput
+          placeholder={'제목'}
+          style={{
+            padding: 10,
+            height: 50,
+            marginLeft: 5,
+            borderBottomColor: '#CBD0D8',
+            borderBottomWidth: StyleSheet.hairlineWidth,
+          }}
+          value={title}
+          onChangeText={text => setTitle(text)}
+        />
+
+        <TouchableOpacity
+          style={{
+            marginTop: 5,
+            padding: 5,
+            marginLeft: 5,
+            flexDirection: 'row',
+          }}
+          onPress={pickImage}
+        >
+          <AntDesign name="picture" size={30} color="green" />
+          <Text
             style={{
               marginTop: 3,
               marginHorizontal: 5,
             }}
           >
-            <Picker
-              selectedValue={category}
-              onValueChange={(value, index) => setCategory(value)}
-              mode="dropdown" // Android only
-              style={{
-                width: 165,
-              }}
-            >
-              <Picker.Item label="카테고리 선택" value="" />
-              <Picker.Item label="학교 " value="NotiSchool" />
-              <Picker.Item label="시스템 " value="NotiSystem" />
-            </Picker>
-          </View>
-          <View/>
+            {' '}
+            사진{' '}
+          </Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            borderBottomColor: '#CBD0D8',
+            borderBottomWidth: StyleSheet.hairlineWidth,
+          }}
+        />
+        <View
+          style={{
+            marginLeft: 10,
+          }}
+        >
           <TextInput
-            placeholder={'제목'}
+            placeholder={'내용을 입력해주세요.'}
             style={{
-              padding: 10,
+              backgroundColor: '#ffffff',
+              right: 5,
               height: 50,
-              marginLeft: 5,
-              borderBottomColor: '#CBD0D8',
-              borderBottomWidth: StyleSheet.hairlineWidth,
             }}
-            value={boardTitle}
-            onChangeText={text => setTitle(text)}
+            value={content}
+            multiline={true}
+            onChangeText={text => setContent(text)}
           />
-  
+          <Image
+            source={{ uri: imageUrl }}
+            style={{ width: 400, height: 400 }} // 이미지 크기
+          />
+        </View>
+        <View
+          style={{
+            flex: 1,
+            marginBottom: 10,
+            justifyContent: 'center',
+            backgroundColor: '#ffffff',
+          }}
+        >
           <TouchableOpacity
-            style={{
-              marginTop: 5,
-              padding: 5,
-              marginLeft: 5,
-              flexDirection: 'row',
+            onPress={() => {
+              addNotice({navigation,category,title,content,timestamp,date,photoUrl});
             }}
-            onPress={pickImage}
+            style={{
+              marginTop: 50,
+              borderRadius: 20,
+              backgroundColor: '#485460',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 50,
+              marginHorizontal: 60,
+            }}
           >
-            <AntDesign name="picture" size={30} color="green" />
             <Text
               style={{
-                marginTop: 3,
-                marginHorizontal: 5,
+                fontSize: 20,
+                fontWeight: 'bold',
+                color: 'white',
               }}
             >
-              {' '}
-              사진{' '}
+              등록
             </Text>
           </TouchableOpacity>
-          <View
-            style={{
-              borderBottomColor: '#CBD0D8',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-            }}
-          />
-          <View
-            style={{
-              marginLeft: 10,
-            }}
-          >
-            <TextInput
-              placeholder={'내용을 입력해주세요.'}
-              style={{
-                backgroundColor: '#ffffff',
-                right: 5,
-                height: 50,
-              }}
-              value={boardContent}
-              multiline={true}
-              onChangeText={text => setContent(text)}
-            />
-            <Image
-              source={{ uri: imageUrl }}
-              style={{ width: 400, height: 400 }} // 이미지 크기
-            />
-          </View>
-          <View
-            style={{
-              flex: 1,
-              marginBottom: 10,
-              justifyContent: 'center',
-              backgroundColor: '#ffffff',
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                addText();
-              }}
-              style={{
-                marginTop: 50,
-                borderRadius: 20,
-                backgroundColor: '#485460',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: 50,
-                marginHorizontal: 60,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 20,
-                  fontWeight: 'bold',
-                  color: 'white',
-                }}
-              >
-                등록
-              </Text>
-            </TouchableOpacity>
-          </View>
         </View>
-      </KeyboardAwareScrollView>
-    );
-  };
-  
-  export default NotiWrite;
+      </View>
+    </KeyboardAwareScrollView>
+  );
+};
+
+export default NotiWrite;

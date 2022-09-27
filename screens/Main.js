@@ -11,7 +11,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
 import { ScrollView } from 'react-native-gesture-handler';
-
+import {CallBoard} from '../utils/firebase';
 import { Linking } from 'react-native';
 // 학교, 종정, 셔틀 링크 사용 import
 
@@ -57,48 +57,10 @@ const Main = ({ navigation }) => {
   const [clubBoard, setClubBoard] = useState('');
   const [hobbyBoard, setHobbyBoard] = useState('');
 
-  const db = firebase.firestore();
-  db.collection('Free')
-    .orderBy('timestamp', 'desc')
-    .limit(1)
-    .get()
-    .then(result => {
-      //자유게시판에서 최신글 가져오기
-      result.forEach(doc => {
-        setFreeBoard(doc.data().title);
-      });
-    });
-  db.collection('Competition')
-    .orderBy('timestamp', 'desc')
-    .limit(1)
-    .get()
-    .then(result => {
-      //공모전게시판에서 최신글 가져오기
-      result.forEach(doc => {
-        setCompetitionBoard(doc.data().title);
-      });
-    });
-  db.collection('Club')
-    .orderBy('timestamp', 'desc')
-    .limit(1)
-    .get()
-    .then(result => {
-      //동아리게시판에서 최신글 가져오기
-      result.forEach(doc => {
-        setClubBoard(doc.data().title);
-      });
-    });
-  db.collection('Hobby')
-    .orderBy('timestamp', 'desc')
-    .limit(1)
-    .get()
-    .then(result => {
-      //취미게시판에서 최신글 가져오기
-      result.forEach(doc => {
-        setHobbyBoard(doc.data().title);
-      });
-    });
-
+  CallBoard("Free", setFreeBoard);
+  CallBoard("Competition", setCompetitionBoard);
+  CallBoard("Club", setClubBoard);
+  CallBoard("Hobby", setHobbyBoard);
   return (
     <ScrollView
       style={{

@@ -10,10 +10,10 @@ import React, { useState, useEffect } from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { MaterialIcons } from "@expo/vector-icons";
 import Icon from "@expo/vector-icons/Ionicons";
 import { KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import { FlatList } from "react-native-gesture-handler";
+import { boardDelete, getPosts, DB, commentsDelete, addComments} from '../../utils/firebase';
 
 // 글 조회
 const Board_postLookUp = ({ navigation, route }) => {
@@ -23,7 +23,6 @@ const Board_postLookUp = ({ navigation, route }) => {
   const writer = route.params.writer;
   const photoUrl = route.params.photoUrl;
   const userId = route.params.id; //게시글 ID
-  const [commentsId, setCommentsId] = useState(""); //댓글 ID
   const userEmail = firebase.auth().currentUser.email;
   const boardCategory = route.params.boardCategory;
   const [display, setDisplay] = useState(false);
@@ -91,7 +90,7 @@ const Board_postLookUp = ({ navigation, route }) => {
           >
 
             <TouchableOpacity
-              onPress={() => commentsDelete(item.id)}
+              onPress={() => commentsDelete({boardCategory,userId},item.id)}
               style={{
                 backgroundColor: "#D9D9D9",
                 padding: 5,
@@ -118,75 +117,6 @@ const Board_postLookUp = ({ navigation, route }) => {
       </View>
   );
 }
-
-  const boardDelete = () => { //글 삭제
-    firebase
-      .firestore()
-      .collection(boardCategory)
-      .doc(userId)
-      .delete()
-      .then(() => {
-        Alert.alert("삭제", "게시글을 삭제 완료했습니다.");
-        navigation.reset({
-          routes: [{
-            name: gsp,
-          }]
-        });
-      
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
-      });
-  };
-
-  const boardEdit = () => {  //글수정
-    navigation.navigate("글수정", {
-      title: title,
-      wirter: writer,
-      content: content,
-      photoUrl: photoUrl,
-      id: userId,
-      boardCategory: boardCategory,
-    });
-  };
-
-  function addComments() { //댓글작성
-    if (Comments == "") {
-      Alert.alert("댓글작성 실패", "댓글을 입력하세요.");
-    } else {
-      db.collection(boardCategory).doc(userId).collection("Comments").add({
-          Comments: Comments,
-          timestamp: timestamp,
-          date: date,
-          userEmail: userEmail,
-        })
-        .then(() => {
-          console.log("Create Complete!");
-          setComments("");
-          Alert.alert("성공", "글을 작성했습니다.");
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    }
-  }
-
-  const commentsDelete = (commentsId) => { //댓글 삭제
-    firebase
-      .firestore()
-      .collection(boardCategory)
-      .doc(userId)
-      .collection("Comments")
-      .doc(commentsId)
-      .delete()
-      .then(() => {
-        Alert.alert("삭제", "댓글 삭제를 완료했습니다.");
-      
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
-      });
-  };
 
 
   return (
@@ -229,7 +159,14 @@ const Board_postLookUp = ({ navigation, route }) => {
             marginTop:5,
           }}>
             <TouchableOpacity
-              onPress={() => boardEdit()}
+              onPress={() => navigation.navigate("글수정",{
+                title: title,
+                wirter: writer,
+                content: content,
+                photoUrl: photoUrl,
+                id: userId,
+                boardCategory: boardCategory,
+              })}
               style={{
                 backgroundColor: "#D9D9D9",
                 padding: 5,
@@ -256,12 +193,13 @@ const Board_postLookUp = ({ navigation, route }) => {
             marginTop:5,
           }}>
             <TouchableOpacity
-              onPress={() => boardDelete()}
-              style={{
-                backgroundColor: "#D9D9D9",
-                padding: 5,
-                borderRadius: 10,
-                alignItems: "center",
+              onPress={() => {
+                boardDelete({boardCategory,userId})
+                navigation.reset({
+                  routes: [{
+                    name: gsp,
+                  }]
+                });
               }}
             >
               <Text
@@ -345,7 +283,11 @@ const Board_postLookUp = ({ navigation, route }) => {
               onChangeText={(text) => setComments(text)}
               
             />
-            <Icon name="chevron-forward-outline" size={30} onPress = {() => addComments()}></Icon>
+            <Icon name="chevron-forward-outline" size={30}
+            onPress = {() => {
+              addComments({Comments,boardCategory,userId,timestamp,date,userEmail})
+              setComments("")
+              }}></Icon>
           </View>
       </View>
      

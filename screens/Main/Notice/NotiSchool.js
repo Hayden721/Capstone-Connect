@@ -24,7 +24,7 @@ const NotiSchool = ({ navigation }) => {
   const currentUser = firebase.auth().currentUser.email;
   const [admin, setAdmin] = useState('');
 
-  db.collection('users')
+  db.collection('users') //admin 유저찾기
     .where('email', '==', currentUser)
     .get()
     .then(result => {
@@ -69,7 +69,7 @@ const NotiSchool = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <Pressable
       onPress={() =>
-        navigation.navigate('글조회', {
+        navigation.navigate('글조회', { //미구현
           title: item.title,
           date: item.date,
           writer: item.writer,

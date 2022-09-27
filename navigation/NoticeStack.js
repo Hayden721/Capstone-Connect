@@ -14,9 +14,10 @@ const noticeTab = createMaterialTopTabNavigator();
 function Notice() {
   return (
     <noticeTab.Navigator>
-      <noticeTab.Screen name="NotiSchool" component={NotiSchool} />
-      <noticeTab.Screen name="NotiSystem" component={NotiSystem} />
+      <noticeTab.Screen name='학교공지게시판' component={NotiSchool} />
+      <noticeTab.Screen name='시스템공지게시판' component={NotiSystem} />
     </noticeTab.Navigator>
   );
 }
 export default Notice;
+
