@@ -17,15 +17,16 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import { Picker } from '@react-native-picker/picker'; //선택박스 만들기
+import { addText} from '../../utils/firebase';
 
 const Board_write = ({ navigation }) => {
-  const db = firebase.firestore();
+  
   const [category, setCategory] = useState(''); //카테고리
   const [imageUrl, setImageUrl] = useState(null); // 이미지 주소
-  const [downUrl, setdownUrl] = useState(null);
+  const [photoUrl, setPhotoUrl] = useState(null);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
-  const [boardTitle, setTitle] = useState('');
-  const [boardContent, setContent] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const currentUser = firebase.auth().currentUser; //현재 사용자
   const timestamp = firebase.firestore.FieldValue.serverTimestamp();
   const nowTime = () => {
@@ -37,6 +38,7 @@ const Board_write = ({ navigation }) => {
     return year + '-' + month + '-' + day;
   };
   const date = nowTime();
+
   let gsp = '';
   if (category == 'Free') {
     gsp = '자유게시판';
@@ -46,40 +48,6 @@ const Board_write = ({ navigation }) => {
     gsp = '동아리게시판';
   } else if (category == 'Hobby') {
     gsp = '취미게시판';
-  }
-  //보드 db에 저장
-  function addText() {
-    if (category == '') {
-      Alert.alert('글작성 실패', '카테고리를 선택하세요.');
-    } else if (boardTitle == '') {
-      Alert.alert('글작성 실패', '제목을 입력하세요.');
-    } else if (boardContent == '') {
-      Alert.alert('글작성 실패', '내용을 입력하세요.');
-    } else {
-      db.collection(category)
-        .add({
-          title: boardTitle,
-          content: boardContent,
-          timestamp: timestamp,
-          date: date,
-          writer: currentUser.email,
-          photoUrl: downUrl,
-        })
-        .then(() => {
-          console.log('Create Complete!');
-          Alert.alert('성공', '글을 작성했습니다.');
-          navigation.reset({
-            routes: [
-              {
-                name: gsp,
-              },
-            ],
-          });
-        })
-        .catch(error => {
-          console.log(error.message);
-        });
-    }
   }
 
   const pickImage = async () => {
@@ -141,7 +109,7 @@ const Board_write = ({ navigation }) => {
       .getDownloadURL()
       .then(url => {
         console.log(url);
-        setdownUrl(url);
+        setPhotoUrl(url);
       })
       .catch(error => {
         console.log(error);
@@ -192,7 +160,7 @@ const Board_write = ({ navigation }) => {
             borderBottomColor: '#CBD0D8',
             borderBottomWidth: StyleSheet.hairlineWidth,
           }}
-          value={boardTitle}
+          value={title}
           onChangeText={text => setTitle(text)}
         />
 
@@ -234,7 +202,7 @@ const Board_write = ({ navigation }) => {
               right: 5,
               height: 50,
             }}
-            value={boardContent}
+            value={content}
             multiline={true}
             onChangeText={text => setContent(text)}
           />
@@ -253,7 +221,7 @@ const Board_write = ({ navigation }) => {
         >
           <TouchableOpacity
             onPress={() => {
-              addText();
+              addText({navigation,category,title,content,timestamp,date,photoUrl,gsp});
             }}
             style={{
               marginTop: 50,

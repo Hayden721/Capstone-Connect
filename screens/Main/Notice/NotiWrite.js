@@ -16,16 +16,16 @@ import {
   import 'firebase/firestore';
   import 'firebase/storage';
   import { Picker } from '@react-native-picker/picker'; //선택박스 만들기
+  import { addNotice} from '../../../utils/firebase';
   
   const NotiWrite = ({ navigation }) => {
     const db = firebase.firestore();
     const [category, setCategory] = useState(''); //카테고리
     const [imageUrl, setImageUrl] = useState(null); // 이미지 주소
-    const [downUrl, setdownUrl] = useState(null);
+    const [photoUrl, setPhotoUrl] = useState(null);
     const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
-    const [boardTitle, setTitle] = useState('');
-    const [boardContent, setContent] = useState('');
-    const currentUser = firebase.auth().currentUser; //현재 사용자
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
     const timestamp = firebase.firestore.FieldValue.serverTimestamp();
     const nowTime = () => {
       let time = new Date();
@@ -36,40 +36,7 @@ import {
       return year + '-' + month + '-' + day;
     };
     const date = nowTime();
-    let gsp = '';
-    if (category == 'NotiSchool') {
-      gsp = 'NotiSchool';
-    } else if (category == 'NotiSystem') {
-      gsp = 'NotiSystem';
-    }
     //보드 db에 저장
-    function addText() {
-      if (category == '') {
-        Alert.alert('글작성 실패', '카테고리를 선택하세요.');
-      } else if (boardTitle == '') {
-        Alert.alert('글작성 실패', '제목을 입력하세요.');
-      } else if (boardContent == '') {
-        Alert.alert('글작성 실패', '내용을 입력하세요.');
-      } else {
-        db.collection(category)
-          .add({
-            title: boardTitle,
-            content: boardContent,
-            timestamp: timestamp,
-            date: date,
-            writer: currentUser.email,
-            photoUrl: downUrl,
-          })
-          .then(() => {
-            console.log('Create Complete!');
-            Alert.alert('성공', '글을 작성했습니다.');
-            navigation.goBack();
-          })
-          .catch(error => {
-            console.log(error.message);
-          });
-      }
-    }
   
     const pickImage = async () => {
       // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
@@ -130,7 +97,7 @@ import {
         .getDownloadURL()
         .then(url => {
           console.log(url);
-          setdownUrl(url);
+          setPhotoUrl(url);
         })
         .catch(error => {
           console.log(error);
@@ -179,7 +146,7 @@ import {
               borderBottomColor: '#CBD0D8',
               borderBottomWidth: StyleSheet.hairlineWidth,
             }}
-            value={boardTitle}
+            value={title}
             onChangeText={text => setTitle(text)}
           />
   
@@ -221,7 +188,7 @@ import {
                 right: 5,
                 height: 50,
               }}
-              value={boardContent}
+              value={content}
               multiline={true}
               onChangeText={text => setContent(text)}
             />
@@ -240,7 +207,7 @@ import {
           >
             <TouchableOpacity
               onPress={() => {
-                addText();
+                addNotice({navigation,category,title,content,timestamp,date,photoUrl});
               }}
               style={{
                 marginTop: 50,

@@ -18,6 +18,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Icon from "@expo/vector-icons/Ionicons";
 import { KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import { FlatList } from "react-native-gesture-handler";
+import { boardDelete, getPosts, DB, commentsDelete, addComments} from '../../utils/firebase';
 
 // 글 조회
 const Board_postLookUp = ({ navigation, route }) => {
@@ -27,12 +28,10 @@ const Board_postLookUp = ({ navigation, route }) => {
   const writer = route.params.writer;
   const photoUrl = route.params.photoUrl;
   const userId = route.params.id; //게시글 ID
-  const [commentsId, setCommentsId] = useState(""); //댓글 ID
   const userEmail = firebase.auth().currentUser.email;
   const boardCategory = route.params.boardCategory;
   const [display, setDisplay] = useState(false);
   const [Comments, setComments] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
   const timestamp = firebase.firestore.FieldValue.serverTimestamp();
   const myBoard = writer === userEmail; //햄버거 버튼 자신이 쓴 글 확인
   const db = firebase.firestore();
@@ -68,22 +67,48 @@ const Board_postLookUp = ({ navigation, route }) => {
   }
   const renderItem = ({ item }) =>{ 
     return(  
-      <View style={[styles.box]}>
-        <View style={styles.commentsDelete}>
-          <View style={{flex:5}}>
+      <View style={{
+        height: 75,
+        borderTopWidth: 0.5,
+        borderBottomWidth: 0.5,
+      }}
+      >
+
+        <View style={{
+              flexDirection:"row"
+        }}
+        >
+
+          <View style={{
+            flex:5
+          }}
+          >
+
             <Text>{item.userEmail}</Text>
           </View>
           {item.userEmail == userEmail && (
-          <View style={styles.editDelete}>
+          <View style={{
+            flex: 1,
+            marginHorizontal: 5,
+            marginTop:5,
+          }}
+          >
+
             <TouchableOpacity
-              onPress={() => commentsDelete(item.id)}
-              style={styles.customBtn}
+              onPress={() => commentsDelete({boardCategory,userId},item.id)}
+              style={{
+                backgroundColor: "#D9D9D9",
+                padding: 5,
+                borderRadius: 10,
+                alignItems: "center",
+              }}
             >
               <Text
                 style={{
-                  color: "#000000",
-                  fontSize: 10,
+                  color: "red",
+                  fontSize: 10,           
                   fontFamily: "NanumGothicBold",
+                  
                 }}
               >
                 삭제
@@ -98,92 +123,61 @@ const Board_postLookUp = ({ navigation, route }) => {
   );
 }
 
-  const boardDelete = () => { //글 삭제
-    firebase
-      .firestore()
-      .collection(boardCategory)
-      .doc(userId)
-      .delete()
-      .then(() => {
-        Alert.alert("삭제", "게시글을 삭제 완료했습니다.");
-        navigation.reset({
-          routes: [{
-            name: gsp,
-          }]
-        });
-      
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
-      });
-  };
-
-  const boardEdit = () => {  //글수정
-    navigation.navigate("글수정", {
-      title: title,
-      wirter: writer,
-      content: content,
-      photoUrl: photoUrl,
-      id: userId,
-      boardCategory: boardCategory,
-    });
-  };
-
-  function addComments() { //댓글작성
-    if (Comments == "") {
-      Alert.alert("댓글작성 실패", "댓글을 입력하세요.");
-    } else {
-      db.collection(boardCategory).doc(userId).collection("Comments").add({
-          Comments: Comments,
-          timestamp: timestamp,
-          date: date,
-          userEmail: userEmail,
-        })
-        .then(() => {
-          console.log("Create Complete!");
-          setComments("");
-          Alert.alert("성공", "글을 작성했습니다.");
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    }
-  }
-
-  const commentsDelete = (commentsId) => { //댓글 삭제
-    firebase
-      .firestore()
-      .collection(boardCategory)
-      .doc(userId)
-      .collection("Comments")
-      .doc(commentsId)
-      .delete()
-      .then(() => {
-        Alert.alert("삭제", "댓글 삭제를 완료했습니다.");
-      
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
-      });
-  };
-
 
   return (
-    <View style={styles.background}>
+    <View style={{
+      backgroundColor:"#ffffff",
+    }}
+    >
+
     <KeyboardAwareScrollView
-      style={[styles.container]}>
+      style={{
+        marginHorizontal: 20,
+        marginTop: 30,
+      }}>
     
  
-      <View style={styles.titleContainer}>
-        <View style={styles.titlevar}>
-          <Text style={styles.title}>{title}</Text>
+      <View style={{
+            flexDirection: "row",
+            marginBottom: 10,
+            alignItems: "center",
+            justifyContent: "center",
+            height: 30,
+      }}
+      >
+
+        <View style={{
+              flex: 5,
+        }}
+        >
+          <Text style={{
+                fontFamily: "NanumGothicBold",
+                fontSize: 25,
+                marginLeft:10,
+          }}>{title}</Text>
           
         </View>
         {myBoard && (
-          <View style={styles.editDelete}>
+          <View style={{
+            flex: 1,
+            marginHorizontal: 5,
+            marginTop:5,
+          }}>
             <TouchableOpacity
-              onPress={() => boardEdit()}
-              style={styles.customBtn}
+              onPress={() => navigation.navigate("글수정",{
+                title: title,
+                wirter: writer,
+                content: content,
+                photoUrl: photoUrl,
+                id: userId,
+                boardCategory: boardCategory,
+              })}
+              style={{
+                backgroundColor: "#D9D9D9",
+                padding: 5,
+                borderRadius: 10,
+                alignItems: "center",
+              }}
             >
               <Text
                 style={{
@@ -198,10 +192,26 @@ const Board_postLookUp = ({ navigation, route }) => {
           </View>
         )}
         {myBoard && (
-          <View style={styles.editDelete}>
+          <View style={{
+            flex: 1,
+            marginHorizontal: 5,
+            marginTop:5,
+          }}>
             <TouchableOpacity
-              onPress={() => boardDelete()}
-              style={styles.customBtn}
+              onPress={() => {
+                boardDelete({boardCategory,userId})
+                navigation.reset({
+                  routes: [{
+                    name: gsp,
+                  }]
+                });
+              }}
+              style={{
+                backgroundColor: "#D9D9D9",
+                padding: 5,
+                borderRadius: 10,
+                alignItems: "center",
+              }}
             >
               <Text
                 style={{
@@ -217,37 +227,42 @@ const Board_postLookUp = ({ navigation, route }) => {
         )}
       </View>
       <View>
-        <View style={styles.writerContainer}>
-          <Text style={styles.profile}>{writer}</Text>
+        <View style={{
+              padding: 10,
+              borderBottomWidth: 1,
+        }}>
+          <Text style={{
+                fontFamily: "NanumGothic",
+                fontSize: 15,
+          }}>{writer}</Text>
         </View>
-        <View style={styles.dateContainer}>
-          <Text style={styles.profile}>{date}</Text>
+        <View style={{
+              padding: 10,
+        }}>
+          <Text style={{
+                fontFamily: "NanumGothic",
+                fontSize: 15,
+          }}>{date}</Text>
         </View>
       </View>
       {display && (
-        <View style={styles.photoUrl}>
-          <TouchableOpacity onPress = {()=>setModalVisible(true)}>
-            <Image
-              source={{ uri: photoUrl }}
-              style={{ width: 400, height: 200 }}
-              resizeMethod="resize"
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
-          <Modal visible={modalVisible}  animationType={"fade"} onBackdropPress={() =>setModalVisible(false)} onRequestClose={()=>setModalVisible(false)} > 
-            <TouchableOpacity onPress = {()=>setModalVisible(false)}>
-              <View style={{justifyContent:"center", alignItems:"center"}}>
-                <Image
-                source={{ uri: photoUrl }}
-                style={{ width: "80%", height: "95%" }}
-                resizeMethod="resize"
-                resizeMode="cover"/>
-              </View>
-            </TouchableOpacity>
-          </Modal>
+        <View style={{
+          marginTop: 30,
+          alignItems: "center",
+        }}>
+          <Image
+            source={{ uri: photoUrl }}
+            style={{ width: 400, height: 350 }}
+            resizeMethod="resize"
+            resizeMode="cover"
+          />
         </View>
       )}
-      <View style={styles.contentContainer}>
+      <View style={{
+            marginTop: 30,
+            marginBottom: 30,
+            fontFamily: "NanumGothic",
+      }}>
         <Text>{content}</Text>
       </View>
       <View>
@@ -261,7 +276,14 @@ const Board_postLookUp = ({ navigation, route }) => {
             scrollEnabled={false}
           />
         </View>
-        <View style={styles.comments}>
+
+          <View style={{
+                flexDirection: "row",
+                justifyContent:"space-between",
+                alignItems:"center",
+                flex:1,
+                marginTop:20,
+          }}>
             <TextInput
               placeholder ={'댓글을 입력하세요.'}
               value={Comments}
@@ -272,8 +294,12 @@ const Board_postLookUp = ({ navigation, route }) => {
               onChangeText={(text) => setComments(text)}
               
             />
-            <Icon name="chevron-forward-outline" size={50} onPress = {() => addComments()}></Icon>
-        </View>
+            <Icon name="chevron-forward-outline" size={30}
+            onPress = {() => {
+              addComments({Comments,boardCategory,userId,timestamp,date,userEmail})
+              setComments("")
+              }}></Icon>
+          </View>
       </View>
      
 
@@ -284,104 +310,18 @@ const Board_postLookUp = ({ navigation, route }) => {
 
 export default Board_postLookUp;
 
-const styles = StyleSheet.create({
-  background: {
-    backgroundColor:"#ffffff",
-  },
-  
-  container: {
-    marginHorizontal: 20,
-    marginTop: 30,
-  },
+const styles = StyleSheet.create({});
 
-  titleContainer: {
-    flexDirection: "row",
-    marginBottom: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    height: 30,
-  },
 
-  title: {
-    fontFamily: "NanumGothicBold",
-    fontSize: 20,
-  },
 
-  profile: {
-    fontFamily: "NanumGothic",
-    fontSize: 15,
-  },
 
-  writerContainer: {
-    padding: 10,
-    borderBottomWidth: 1,
-  },
 
-  dateContainer: {
-    padding: 10,
-  },
 
-  photoUrl: {
-    marginTop: 30,
-    alignItems: "center",
-  },
 
-  contentContainer: {
-    marginTop: 30,
-    marginBottom: 30,
-    fontFamily: "NanumGothic",
-  },
 
-  var: {
-    flex: 1,
-  },
 
-  titlevar: {
-    flex: 5,
-  },
 
-  customBtn: {
-    backgroundColor: "#D9D9D9",
-    padding: 5,
-    borderRadius: 10,
-    alignItems: "center",
-  },
 
-  editDelete: {
-    flex: 1,
-    marginHorizontal: 5,
-  },
 
-  editDelete2: {
-    flex: 1,
-    marginHorizontal: 5,
-    marginTop:5,
-  },
 
-  comments:{
-    flexDirection: "row",
-    justifyContent:"space-between",
-    alignItems:"center",
-    //marginTop:10,
-    flex:1
-  },
-  box: {
-    height: 75,
-    borderTopWidth: 0.5,
-    borderBottomWidth: 0.5,
-  },
-  flex:{
-    flex:1
-  },
-  commentsDelete:{
-    flexDirection:"row"
-  },
 
-  separator: {
-    marginVertical: 5,
-    marginHorizontal: 10,
-    borderBottomColor: '#CBD0D8',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  
-});

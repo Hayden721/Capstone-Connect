@@ -2,19 +2,20 @@ import {
   View,
   Text,
   TouchableOpacity,
+  StyleSheet,
   TextInput,
   Image,
   Alert,
-} from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+} from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import React, { useState, useEffect } from 'react';
-import * as ImagePicker from 'expo-image-picker';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/storage';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import React, { useState, useEffect } from "react";
+import * as ImagePicker from "expo-image-picker";
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import "firebase/storage";
 
 const Board_edit = ({ navigation, route }) => {
   const db = firebase.firestore();
@@ -28,15 +29,15 @@ const Board_edit = ({ navigation, route }) => {
   const userId = route.params.id;
   const boardCategory = route.params.boardCategory;
 
-  let gsp = '';
-  if (boardCategory == 'Free') {
-    gsp = '자유게시판';
-  } else if (boardCategory == 'Competition') {
-    gsp = '공모전게시판';
-  } else if (boardCategory == 'Club') {
-    gsp = '동아리게시판';
-  } else if (boardCategory == 'Hobby') {
-    gsp = '취미게시판';
+  let gsp = "";
+  if(boardCategory == "Free"){
+    gsp ="자유게시판"
+  } else if(boardCategory == "Competition"){
+    gsp ="공모전게시판"
+  } else if(boardCategory == "Club"){
+    gsp ="동아리게시판"
+  } else if(boardCategory == "Hobby"){
+    gsp ="취미게시판"
   }
 
   const nowTime = () => {
@@ -45,16 +46,16 @@ const Board_edit = ({ navigation, route }) => {
     let month = time.getMonth() + 1;
     let day = time.getDate();
 
-    return year + '-' + month + '-' + day;
+    return year + "-" + month + "-" + day;
   };
   const date = nowTime();
 
   //보드 db에 저장
   function Update() {
-    if (boardTitle == '') {
-      Alert.alert('글작성 실패', '제목을 입력하세요.');
-    } else if (boardContent == '') {
-      Alert.alert('글작성 실패', '내용을 입력하세요.');
+    if (boardTitle == "") {
+      Alert.alert("글작성 실패", "제목을 입력하세요.");
+    } else if (boardContent == "") {
+      Alert.alert("글작성 실패", "내용을 입력하세요.");
     } else {
       firebase
         .firestore()
@@ -69,17 +70,15 @@ const Board_edit = ({ navigation, route }) => {
           photoUrl: downUrl,
         })
         .then(() => {
-          console.log('게시글 수정 완료.');
-          Alert.alert('수정 완료', '게시글 수정을 완료했습니다.');
-          navigation.reset({
-            routes: [
-              {
-                name: gsp,
-              },
-            ],
+          console.log("게시글 수정 완료.");
+          Alert.alert("수정 완료", "게시글 수정을 완료했습니다.");
+         navigation.reset({
+            routes: [{
+              name: gsp,
+            }]
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error.message);
         });
     }
@@ -109,7 +108,7 @@ const Board_edit = ({ navigation, route }) => {
 
     //파이어베이스 스토리지 업로드
     let uri = imageData.uri;
-    const filename = imageData.uri.split('/').pop();
+    const filename = imageData.uri.split("/").pop();
     // const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
 
     const blob = await new Promise((resolve, reject) => {
@@ -119,64 +118,42 @@ const Board_edit = ({ navigation, route }) => {
       };
       xhr.onerror = function (e) {
         console.log(e);
-        reject(new TypeError('Network request failed'));
+        reject(new TypeError("Network request failed"));
       };
-      xhr.responseType = 'blob';
-      xhr.open('GET', uri, true);
+      xhr.responseType = "blob";
+      xhr.open("GET", uri, true);
       xhr.send(null);
     });
 
     const reference = firebase
       .storage()
       .ref()
-      .child('images/' + filename);
+      .child("images/" + filename);
     await reference
       .put(blob)
       .then(() => {
-        console.log('성공');
+        console.log("성공");
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
     //이미지 다운로드 url
     await reference
       .getDownloadURL()
-      .then(url => {
+      .then((url) => {
         console.log(url);
         setdownUrl(url);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
 
-  //작성 확인 작업
-  /*
-  const checkWrite = () => {
-    Alert.alert(
-      '작성',
-      '작성하시겠습니까?',
-      [
-        {text: '취소', onPress: () => {}, style: 'cancel'},
-        {
-          text: '확인',
-          onPress: () => {
-          writeText
-          },
-        },
-      ],
-      {
-        cancelable: true,
-        onDismiss: () => {},
-      },
-    );
-  };
-  */
   return (
     <KeyboardAwareScrollView
       style={styles.Container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <TouchableOpacity style={styles.icon} onPress={pickImage}>
         <AntDesign name="picture" size={30} color="black" />
@@ -191,24 +168,23 @@ const Board_edit = ({ navigation, route }) => {
           />
         </View>
         <TextInput
-          placeholder={'제목'}
+          placeholder={"제목"}
           style={styles.input}
           value={boardTitle}
-          onChangeText={text => setTitle(text)}
+          onChangeText={(text) => setTitle(text)}
         />
         <TextInput
-          placeholder={'내용을 입력해주세요.'}
+          placeholder={"내용을 입력해주세요."}
           style={styles.input2}
           value={boardContent}
-          multiline={true}
-          onChangeText={text => setContent(text)}
+          onChangeText={(text) => setContent(text)}
         />
         <TouchableOpacity onPress={() => Update()} style={styles.customBtn}>
           <Text
             style={{
-              color: '#000000',
+              color: "#000000",
               fontSize: 24,
-              fontFamily: 'NanumGothicBold',
+              fontFamily: "NanumGothicBold",
             }}
           >
             작성
@@ -220,3 +196,73 @@ const Board_edit = ({ navigation, route }) => {
 };
 
 export default Board_edit;
+
+const styles = StyleSheet.create({
+  Container: {
+    flexDirection: "column",
+  },
+
+  Container2: {
+    flexDirection: "column",
+  },
+  Container3: {
+    alignItems: "center",
+  },
+
+  icon: {
+    marginTop: 20,
+    marginLeft: 20,
+    flexDirection: "row",
+  },
+
+  Category: {
+    flexDirection: "row",
+    marginHorizontal: 20,
+  },
+
+  Picture: {
+    marginLeft: 5,
+    marginTop: 3,
+    flexDirection: "row",
+  },
+
+  Picture2: {
+    marginLeft: 10,
+  },
+
+  customBtn: {
+    backgroundColor: "#D9D9D9",
+    padding: 15,
+    margin: 80,
+    marginTop: 350,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+
+  input: {
+    backgroundColor: "#ffffff",
+    height: 40,
+    margin: 5,
+    marginTop: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    borderBottomWidth: 1.5,
+  },
+
+  input2: {
+    backgroundColor: "#ffffff",
+    height: 40,
+    margin: 5,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+
+  icon2: {
+    marginTop: 20,
+    marginLeft: 10,
+  },
+  picker: {
+    marginTop: 30,
+    width: 250,
+  },
+});

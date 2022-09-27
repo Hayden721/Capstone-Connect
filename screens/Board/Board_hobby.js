@@ -120,7 +120,7 @@ const Board_hobby = ({ navigation }) => {
           >
             <Image
               source={{ uri: item.photoUrl }}
-              style={{ width: 70, height: 70 }}
+              style={{ width: 80, height: 80 }}
               resizeMethod="resize"
               resizeMode="cover"
             />

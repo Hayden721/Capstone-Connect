@@ -24,6 +24,7 @@ const NotiSchool = ({navigation}) => {
  const currentUser = firebase.auth().currentUser.email;
  const [admin, setAdmin] = useState("");
 
+ //admin유저 찾기
  db.collection("users").where('email', '==' , currentUser).get().then((result)=> {
    result.forEach((doc)=> {
      setAdmin(doc.data().admin);
@@ -43,7 +44,6 @@ const NotiSchool = ({navigation}) => {
    return posts;
  }
    
- 
  const boardCategory = "NotiSchool";
  const [data, setData] = useState(posts);
  const [term, setTerm] = useState(""); 
@@ -78,14 +78,33 @@ const NotiSchool = ({navigation}) => {
        })
      }
    >
-     <View style={[styles.container, styles.box]}>
-       <View style={[styles.container2, styles.title]}>
-         <Text style={styles.font}>{item.title}</Text>
-         <View style={[styles.container, { marginTop: 5 }]}>
+     <View style={{
+      flexDirection: "row",
+      alignItems: "center",
+      height: 90,
+      marginHorizontal: 20,
+      borderTopWidth: 0.5,
+      borderBottomWidth: 0.5,
+      }}>
+       <View style={{ 
+        flexDirection: "column",
+        flex: 4,
+        }}>
+
+         <Text style={{ 
+          fontFamily: "NanumGothicBold",
+          fontSize: 20,
+          }}>{item.title}</Text>
+         <View style={ { 
+          flexDirection: "row",
+          alignItems: "center",
+          marginTop: 5 }}>
            <Text style={{ fontSize: 11 }}>{item.date}</Text>
          </View>
        </View>
-       <View style={styles.pickture}>
+       <View style={{
+        flex: 2,
+        alignItems: "center",}}>
          <Image
            source={{ uri: item.photoUrl }}
            style={{ width: 70, height: 70 }}
@@ -98,7 +117,9 @@ const NotiSchool = ({navigation}) => {
  );
 
  return (
-   <View style={styles.container2}>
+   <View style={{
+    flexDirection: "column",
+    flex: 1,}}>
      <View
         style={{
           marginLeft: 10,
@@ -114,7 +135,8 @@ const NotiSchool = ({navigation}) => {
           }}
         />
       </View>
-     <View style={styles.flatlist}>
+     <View style={{
+      flex: 11,}}>
        <FlatList
          data={posts}
          renderItem={renderItem}
@@ -152,39 +174,4 @@ const NotiSchool = ({navigation}) => {
 
 export default NotiSchool
 
-const styles = StyleSheet.create({
- icon: {},
- container: {
-   flexDirection: "row",
-   alignItems: "center",
- },
- searchbar: {
-   marginTop: 30,
-   padding: 2,
- },
- box: {
-   height: 90,
-   marginHorizontal: 20,
-   borderTopWidth: 0.5,
-   borderBottomWidth: 0.5,
- },
- container2: {
-   flexDirection: "column",
-   flex: 1,
- },
- title: {
-   flex: 4,
- },
- pickture: {
-   flex: 2,
-   alignItems: "center",
- },
- font: {
-   fontFamily: "NanumGothicBold",
-   fontSize: 20,
- },
- flatlist: {
-   flex: 11,
- },
-
-});
+const styles = StyleSheet.create({});

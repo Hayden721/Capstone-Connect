@@ -34,7 +34,7 @@ const Board_club = ({ navigation }) => {
     setData(posts);
     return posts;
   }
-
+  
   const [data, setData] = useState(posts);
   const [term, setTerm] = useState('');
   const searchName = text => {
