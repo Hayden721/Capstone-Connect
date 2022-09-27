@@ -111,29 +111,9 @@ const Board_free = ({ navigation }) => {
                 marginTop: 5,
               }}
             >
-              <Text
-                style={{
-                  fontSize: 11,
-                }}
-              >
-                {item.date}
-              </Text>
-
-              <Text
-                style={{
-                  fontSize: 11,
-                }}
-              >
-                ||
-              </Text>
-
-              <Text
-                style={{
-                  fontSize: 11,
-                }}
-              >
-                {item.writer}
-              </Text>
+              <Text style={{ fontSize: 11 }}>{item.date}</Text>
+              <Text style={{ fontSize: 11 }}> || </Text>
+              <Text style={{ fontSize: 11 }}>{item.writer}</Text>
             </View>
           </View>
           <View

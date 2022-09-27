@@ -1,44 +1,39 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
-  StyleSheet,
-  Dimensions,
   Modal,
-  TextInput
-} from "react-native";
-import firebase from "firebase/app";
-import "firebase/auth";
-import { createStackNavigator } from "@react-navigation/stack";
-import "react-native-gesture-handler";
-
-import BoardStacks from "../navigation/BoardStacks";
+  TextInput,
+} from 'react-native';
+import 'firebase/auth';
+import { createStackNavigator } from '@react-navigation/stack';
+import 'react-native-gesture-handler';
 
 const CategoryStacks = createStackNavigator();
 
 const Board = ({ navigation }) => {
   return (
-    <ScrollView style={{ backgroundColor: "white", flex:1}}>
+    <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>
       <View
         style={{
-          flexDirection: "row",
+          flexDirection: 'row',
           margin: 20,
-          justifyContent: "space-between",
+          justifyContent: 'space-between',
         }}
       >
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("BoardStacks", { screen: "자유게시판" })
+            navigation.navigate('BoardStacks', { screen: '자유게시판' })
           }
           style={{
             height: 100,
             width: 100,
-            backgroundColor: "#ef5777",
+            backgroundColor: '#ef5777',
             borderRadius: 25,
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <Text>자유</Text>
@@ -46,15 +41,15 @@ const Board = ({ navigation }) => {
 
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("BoardStacks", { screen: "공모전게시판" })
+            navigation.navigate('BoardStacks', { screen: '공모전게시판' })
           }
           style={{
             height: 100,
             width: 100,
-            backgroundColor: "#575fcf",
+            backgroundColor: '#575fcf',
             borderRadius: 25,
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <Text>공모전</Text>
@@ -62,15 +57,15 @@ const Board = ({ navigation }) => {
 
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("BoardStacks", { screen: "동아리게시판" })
+            navigation.navigate('BoardStacks', { screen: '동아리게시판' })
           }
           style={{
             height: 100,
             width: 100,
-            backgroundColor: "#4bcffa",
+            backgroundColor: '#4bcffa',
             borderRadius: 25,
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <Text>동아리</Text>
@@ -78,71 +73,78 @@ const Board = ({ navigation }) => {
       </View>
       <View
         style={{
-          flexDirection: "row",
+          flexDirection: 'row',
           margin: 20,
-          justifyContent: "space-between",
+          justifyContent: 'space-between',
         }}
       >
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("BoardStacks", { screen: "취미게시판" })
+            navigation.navigate('BoardStacks', { screen: '취미게시판' })
           }
           style={{
             height: 100,
             width: 100,
-            backgroundColor: "#0be881",
+            backgroundColor: '#0be881',
             borderRadius: 25,
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <Text>취미</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("BoardStacks", { screen: "" })}
+          onPress={() => navigation.navigate('BoardStacks', { screen: '' })}
           style={{
             height: 100,
             width: 100,
-            backgroundColor: "#808e9b",
+            backgroundColor: '#808e9b',
             borderRadius: 25,
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <Text>미개발</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("BoardStacks", { screen: "" })}
+          onPress={() => navigation.navigate('BoardStacks', { screen: '' })}
           style={{
             height: 100,
             width: 100,
-            backgroundColor: "#808e9b",
+            backgroundColor: '#808e9b',
             borderRadius: 25,
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <Text>미개발</Text>
         </TouchableOpacity>
       </View>
-        <Modal visible={false} transparent={true} >
-          <View style={{flex:1,justifyContent:"center",  alignItems:"center"}}>
-            <View style = {{width:"90%", height: "60%",justifyContent:"center",
-                      alignItems:"center",backgroundColor:"blue"}}>
-              <Text>신고</Text>
-              <Text>신고 할 대상</Text>
-              <TextInput placeholder="정보를 입력"/>
-              <Text>신고사유 입력하세요.</Text>
-              <TextInput placeholder="신고 사유를 입력하세요."/>
-            </View>
+      <Modal visible={false} transparent={true}>
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
+          <View
+            style={{
+              width: '90%',
+              height: '60%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'blue',
+            }}
+          >
+            <Text>신고</Text>
+            <Text>신고 할 대상</Text>
+            <TextInput placeholder="정보를 입력" />
+            <Text>신고사유 입력하세요.</Text>
+            <TextInput placeholder="신고 사유를 입력하세요." />
           </View>
-        </Modal> 
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
 
 export default Board;
-
-const styles = StyleSheet.create({});

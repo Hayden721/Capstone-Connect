@@ -73,22 +73,20 @@ const Board_competition = ({ navigation }) => {
         }}
       >
         <View
-          style={[
-            {
+          style={{
               flexDirection: 'row',
               alignItems: 'center',
-
               height: 90,
               marginHorizontal: 10,
               borderBottomWidth: 1,
-            },
-          ]}
+            }}
         >
-          <View
+            <View
             style={[
               {
                 flexDirection: 'column',
                 flex: 2,
+                // 그림여백
               },
             ]}
           >

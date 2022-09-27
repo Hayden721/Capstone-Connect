@@ -1,14 +1,10 @@
 import {
   View,
   Text,
-  StyleSheet,
   Image,
-  Pressable,
-  Modal,
   TextInput,
   TouchableOpacity,
   Alert,
-  Platform
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import firebase from "firebase/app";
@@ -361,4 +357,4 @@ const Board_postLookUp = ({ navigation, route }) => {
 
 export default Board_postLookUp;
 
-const styles = StyleSheet.create({});
+
