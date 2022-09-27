@@ -30,29 +30,63 @@ const Main_profile = () => {
           <Text style={{ fontSize: 20, margin: 10 }}>{userName}</Text> 
           <Text style={{ fontSize: 20, margin: 10 }}>{userNumber}</Text>
         </View>
-        <View style={styles.separator} />
+        <View style={{
+              marginVertical: 9,
+              marginHorizontal: 10,
+              borderBottomColor: '#737373',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+        }} />
 
-        <View>
-          <Text style={{fontSize:25}}>계정</Text>
+        <View style={{
+          marginLeft:20,
+        }}>
+
+          <Text style={{
+            fontSize:25
+            }}>계정
+            </Text>
+
           <TouchableOpacity>
-            <Text style={{ fontSize: 20}}>프로필 설정</Text>
+            <Text style={{ 
+              fontSize: 20
+            }}>프로필 설정
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity>
-            <Text style={{ fontSize: 20}}>계정 설정</Text>
+            <Text style={{
+              fontSize: 20
+            }}>계정 설정
+            </Text>
           </TouchableOpacity>
           
-          <View style={styles.separator} />
+          {/* <View style={{
+                marginVertical: 10,
+                marginHorizontal: 0,
+                borderBottomColor: '#737373',
+                borderBottomWidth: StyleSheet.hairlineWidth,
+          }} 
+          /> */}
           <TouchableOpacity>
 
-            <Text style={{ fontSize: 20}}></Text>
+            <Text style={{
+              fontSize: 20
+            }}>
+            </Text>
           </TouchableOpacity>
           
         </View>
 
         {/* 로그아웃 */}
         <TouchableOpacity
-          style={styles.customBtn}
+          style={{
+            backgroundColor: "#D9D9D9",
+            padding: 15,
+            margin: 20,
+            marginTop: 550,
+            borderRadius: 10,
+            alignItems: "center",
+          }}
           onPress={() => firebase.auth().signOut()}
         >
           <Text
@@ -72,36 +106,4 @@ const Main_profile = () => {
 
 export default Main_profile;
 
-const styles = StyleSheet.create({
-  customBtn: {
-    backgroundColor: "#D9D9D9",
-    padding: 15,
-    margin: 20,
-    marginTop: 550,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-
-  Container: {
-    marginTop: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  Profile: {
-    justifyContent: "center",
-    fontFamily: "NanumGothicBold",
-    alignItems: "center",
-    marginLeft: 160,
-    marginTop: 30,
-    fontSize: 30,
-  },
-
-  separator: {
-    marginVertical: 9,
-    marginHorizontal: 10,
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-
-});
+const styles = StyleSheet.create({});

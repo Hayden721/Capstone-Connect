@@ -24,25 +24,38 @@ const Container = styled.View`
   padding: 15px;
   backgroundColor: #F4F3EA;
   borderColor: #E6E7E8;
+  marginLeft:30px;
+  marginTop:20px;
+
 `;
 
 const Top = styled.Text`
   fontSize: 20px;
-  marginLeft: 15px;
+  marginLeft: 25px;
   marginTop: 10px;
   fontFamily: 'NanumGothicBold';
 `;
 
-const TextContainer = styled.TouchableOpacity`
+const Top2 = styled.Text`
+  marginTop: 0px;
+`;
+
+const TextContainer = styled.View`
   width: 60px;
   height: 60px;
   borderWidth: 2px;
   borderRadius: 40px;
-  margin: 20px;
+  margin: 30px;
   padding: 15px;
   backgroundColor: #F4F3EA;
   borderColor: #E6E7E8;
 `;
+
+const boxTitle = styled.View`
+fontFamily: 'NanumGothicBold',
+fontSize:15px;
+`;
+
 
 const Main = ({ navigation }) => {
   const [freeBoard, setFreeBoard] = useState("");
@@ -86,6 +99,7 @@ const Main = ({ navigation }) => {
         공지사항
         <Entypo name="megaphone" size={24} color="red" />
       </Top>
+      
       <TouchableOpacity  onPress={() =>
         navigation.navigate('Notice', { screen: 'NotiSchool' })
       }>
@@ -102,6 +116,7 @@ const Main = ({ navigation }) => {
           </Text>
         </Container>
       </TouchableOpacity>
+      
       <TouchableOpacity onPress={() =>
         navigation.navigate('Notice', { screen: 'NotiSystem' })
       }>
@@ -119,7 +134,7 @@ const Main = ({ navigation }) => {
         </Container>
       </TouchableOpacity>
 
-      <View style={styles.separator} />
+      <Top2></Top2>
 
       <Top>
         바로가기
@@ -132,8 +147,11 @@ const Main = ({ navigation }) => {
             flexDirection: 'row',
         }} horizontal={true}
       >
+        <TouchableOpacity onPress={() =>
+              Linking.openURL('https://www.shinhan.ac.kr/sites/kr/index.do')
+            }>
         <TextContainer>
-        <TouchableOpacity>
+        
           <Ionicons name="home-outline" size={24} color="#E2495B" />
           <Text
             style={{
@@ -141,17 +159,18 @@ const Main = ({ navigation }) => {
               textAlign: 'center',
               fontSize: 8,
             }}
-            onPress={() =>
-              Linking.openURL('https://www.shinhan.ac.kr/sites/kr/index.do')
-            }
+            
           >
             학교
           </Text>
-        </TouchableOpacity>
+       
         </TextContainer>
+        </TouchableOpacity>
 
         <TextContainer>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() =>
+              Linking.openURL('https://stins.shinhan.ac.kr/irj/portal')
+            }>
           <AntDesign name="earth" size={24} color="#0C4A60" />
           <Text
             style={{
@@ -159,9 +178,7 @@ const Main = ({ navigation }) => {
             extAlign: 'center',
             fontSize: 8,
             }}
-            onPress={() =>
-              Linking.openURL('https://stins.shinhan.ac.kr/irj/portal')
-            }
+            
           >
             종정시
           </Text>
@@ -169,7 +186,9 @@ const Main = ({ navigation }) => {
         </TextContainer>
 
         <TextContainer>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() =>
+              Linking.openURL('https://www.shinhan.ac.kr/kr/125/subview.do')
+            }>
           <Ionicons name="bus" size={24} color="#D3AC2B" />
           <Text
             style={{
@@ -177,9 +196,7 @@ const Main = ({ navigation }) => {
               textAlign: 'center',
               fontSize: 8,
             }}
-            onPress={() =>
-              Linking.openURL('https://www.shinhan.ac.kr/kr/125/subview.do')
-            }
+            
           >
             셔틀
           </Text>
@@ -192,76 +209,111 @@ const Main = ({ navigation }) => {
          fontSize: 8,
       }} />
 
+
       <Top>
-      <Text>카테고리: 게시판</Text>
+      <Text>실시간 최신글</Text>
       </Top>
 
-      <View style={{
-        marginTop: 20,
-        justifyContent: 'center',
-      
-      }}>
+      <View
+        style={{
+          height: 160,
+          borderColor: '#E6E7E8',
+          backgroundColor: '#ffffff',
+          borderWidth: 1,
+          borderRadius: 10,
+          margin: 10,
+        }}
+      >
         <TouchableOpacity onPress = {() => navigation.navigate("BoardStacks", { screen: "자유게시판" })}>
-          <View style = {[styles.box, {marginTop: 20}]}>
-            <Text style = {styles.boxTitle}>자유 - {freeBoard}</Text>
+          <View style = {[{
+                height: 35,
+                marginHorizontal: 25,
+          }, {marginTop: 20}]}>
+            <Text style = {{
+                  fontFamily: "NanumGothicBold",
+                  fontSize:15
+            }}>자유 게시판 -  
+            <Text style={{
+                  fontFamily: "NanumGothic",
+                  fontSize:15,
+                  marginLeft:15,
+            }}>{freeBoard}</Text>
+            </Text>
           </View>
         </TouchableOpacity> 
 
         <TouchableOpacity onPress = {() => navigation.navigate("BoardStacks", { screen: "공모전게시판" })}>
-          <View style = {styles.box}>
-            <Text style = {styles.boxTitle}>공모전 - {competitionBoard}</Text>
+        <View style = {{
+              height: 35,
+              marginHorizontal: 25,
+        }}>
+            <Text style = {{
+                  fontFamily: "NanumGothicBold",
+                  fontSize:15
+            }}>공모전 게시판 -  
+            <Text style={{
+                  fontFamily: "NanumGothic",
+                  fontSize:15,
+                  marginLeft:15,
+            }}>{competitionBoard}</Text>
+            </Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity onPress = {() => navigation.navigate("BoardStacks", { screen: "동아리게시판" })}>
-          <View style = {styles.box}>
-            <Text style = {styles.boxTitle}>동아리 - {clubBoard}</Text>
+        <View style = {{
+              height: 35,
+              marginHorizontal: 25,
+        }}>
+            <Text style = {{
+                  fontFamily: "NanumGothicBold",
+                  fontSize:15
+            }}>동아리 게시판 -  
+            <Text style={{
+                  fontFamily: "NanumGothic",
+                  fontSize:15,
+                  marginLeft:15,
+            }}>{clubBoard}</Text>
+            </Text>
           </View>
         </TouchableOpacity>  
 
         <TouchableOpacity onPress = {() => navigation.navigate("BoardStacks", { screen: "취미게시판" })}>
-          <View style = {styles.box}>
-            <Text style = {styles.boxTitle}>취미 - {hobbyBoard}</Text>
+        <View style = {{
+              height: 35,
+              marginHorizontal: 25,
+        }}>
+            <Text style = {{
+                  fontFamily: "NanumGothicBold",
+                  fontSize:15
+            }}>자유 게시판 -  
+            <Text style={{
+                  fontFamily: "NanumGothic",
+                  fontSize:15,
+                  marginLeft:15,
+            }}>{hobbyBoard}</Text>
+            </Text>
           </View>
         </TouchableOpacity> 
-      </View>
-      
+
+      </View>   
       <Top>
       <Text>채팅방</Text>
       </Top>
-      
-      <View style={{
-        marginTop: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Tabs', { screen: 'Chat' })}
+      <View
         style={{
-          height: 50,
-          borderColor: '#ffffff',
-          backgroundColor: '#E5E5E5',
-          borderWidth: 2,
+          height: 160,
+          borderColor: '#E6E7E8',
+          backgroundColor: '#ffffff',
+          borderWidth: 1,
           borderRadius: 10,
           margin: 10,
         }}
-      ></TouchableOpacity>
+      >
+      </View>
     </ScrollView>
   );
 };
 
 export default Main;
-const styles = StyleSheet.create({
-  boxTitle:{
-    fontFamily: "NanumGothic",
-    fontSize:15
-  },
-  box: {
-    height: 40,
-    marginHorizontal: 15,
-    borderTopWidth: 0.5,
-    borderBottomWidth: 0.5,
-    justifyContent:"center"
-  },
-});
+const styles = StyleSheet.create({})
