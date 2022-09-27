@@ -3,8 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import "react-native-gesture-handler";
 import { View, Text, TouchableOpacity } from "react-native";
 //Accunt import
-import NotiSchool from "../screens/Main/Notice/NotiSchool";
-import NotiSystem from "../screens/Main/Notice/NotiSystem";
+import NotiWrite from "../screens/Main/Notice/NotiWrite.js";
 
 //Board import
 
@@ -19,10 +18,9 @@ const NoticeStack = createStackNavigator();
 const BoardStack = createStackNavigator();
 const Stack = () => {
   return (
-    <NoticeStacks.Navigator>
-      <NoticeStack.Screen name="NotiSchool" component={NotiSchool} />
-      <NoticeStack.Screen name="NotiSystem" component={NotiSystem} />
-    </NoticeStacks.Navigator>
+    <NoticeStack.Navigator>
+      <NoticeStack.Screen name="NotiWrite" component={NotiWrite} />
+    </NoticeStack.Navigator>
   );
 };
 

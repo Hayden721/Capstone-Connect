@@ -148,29 +148,6 @@ const Board_write = ({ navigation }) => {
       });
   };
 
-  //작성 확인 작업
-  /*
-const checkWrite = () => {
-  Alert.alert(
-    '작성',
-    '작성하시겠습니까?',
-    [
-      {text: '취소', onPress: () => {}, style: 'cancel'},
-      {
-        text: '확인',
-        onPress: () => {
-        writeText
-        },
-      },
-    ],
-    {
-      cancelable: true,
-      onDismiss: () => {},
-    },
-  );
-};
-*/
-
   return (
     <KeyboardAwareScrollView
       style={{
@@ -178,7 +155,7 @@ const checkWrite = () => {
       }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <View style={styles.separator} />
+      <View/>
       <View
         style={{
           backgroundColor: '#ffffff',
@@ -205,7 +182,7 @@ const checkWrite = () => {
             <Picker.Item label="취미" value="Hobby" />
           </Picker>
         </View>
-        <View style={styles.separator} />
+        <View/>
         <TextInput
           placeholder={'제목'}
           style={{

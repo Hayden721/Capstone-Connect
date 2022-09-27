@@ -6,18 +6,21 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Modal,
+  TextInput
 } from "react-native";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { createStackNavigator } from "@react-navigation/stack";
 import "react-native-gesture-handler";
-import styled from 'styled-components/native';
+
+import BoardStacks from "../navigation/BoardStacks";
 
 const CategoryStacks = createStackNavigator();
 
 const Board = ({ navigation }) => {
   return (
-    <ScrollView style={{ backgroundColor: "white"}}>
+    <ScrollView style={{ backgroundColor: "white", flex:1}}>
       <View
         style={{
           flexDirection: "row",
@@ -124,6 +127,18 @@ const Board = ({ navigation }) => {
           <Text>미개발</Text>
         </TouchableOpacity>
       </View>
+        <Modal visible={false} transparent={true} >
+          <View style={{flex:1,justifyContent:"center",  alignItems:"center"}}>
+            <View style = {{width:"90%", height: "60%",justifyContent:"center",
+                      alignItems:"center",backgroundColor:"blue"}}>
+              <Text>신고</Text>
+              <Text>신고 할 대상</Text>
+              <TextInput placeholder="정보를 입력"/>
+              <Text>신고사유 입력하세요.</Text>
+              <TextInput placeholder="신고 사유를 입력하세요."/>
+            </View>
+          </View>
+        </Modal> 
     </ScrollView>
   );
 };

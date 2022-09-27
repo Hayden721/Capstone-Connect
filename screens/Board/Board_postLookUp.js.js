@@ -3,14 +3,18 @@ import {
   Text,
   StyleSheet,
   Image,
+  Pressable,
+  Modal,
   TextInput,
   TouchableOpacity,
   Alert,
+  Platform
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import { MaterialIcons } from "@expo/vector-icons";
 import Icon from "@expo/vector-icons/Ionicons";
 import { KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import { FlatList } from "react-native-gesture-handler";
@@ -28,6 +32,7 @@ const Board_postLookUp = ({ navigation, route }) => {
   const boardCategory = route.params.boardCategory;
   const [display, setDisplay] = useState(false);
   const [Comments, setComments] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
   const timestamp = firebase.firestore.FieldValue.serverTimestamp();
   const myBoard = writer === userEmail; //햄버거 버튼 자신이 쓴 글 확인
   const db = firebase.firestore();
@@ -221,12 +226,25 @@ const Board_postLookUp = ({ navigation, route }) => {
       </View>
       {display && (
         <View style={styles.photoUrl}>
-          <Image
-            source={{ uri: photoUrl }}
-            style={{ width: 400, height: 200 }}
-            resizeMethod="resize"
-            resizeMode="cover"
-          />
+          <TouchableOpacity onPress = {()=>setModalVisible(true)}>
+            <Image
+              source={{ uri: photoUrl }}
+              style={{ width: 400, height: 200 }}
+              resizeMethod="resize"
+              resizeMode="cover"
+            />
+          </TouchableOpacity>
+          <Modal visible={modalVisible}  animationType={"fade"} onBackdropPress={() =>setModalVisible(false)} onRequestClose={()=>setModalVisible(false)} > 
+            <TouchableOpacity onPress = {()=>setModalVisible(false)}>
+              <View style={{justifyContent:"center", alignItems:"center"}}>
+                <Image
+                source={{ uri: photoUrl }}
+                style={{ width: "80%", height: "95%" }}
+                resizeMethod="resize"
+                resizeMode="cover"/>
+              </View>
+            </TouchableOpacity>
+          </Modal>
         </View>
       )}
       <View style={styles.contentContainer}>
@@ -243,7 +261,7 @@ const Board_postLookUp = ({ navigation, route }) => {
             scrollEnabled={false}
           />
         </View>
-          <View style={styles.comments}>
+        <View style={styles.comments}>
             <TextInput
               placeholder ={'댓글을 입력하세요.'}
               value={Comments}
@@ -255,7 +273,7 @@ const Board_postLookUp = ({ navigation, route }) => {
               
             />
             <Icon name="chevron-forward-outline" size={50} onPress = {() => addComments()}></Icon>
-          </View>
+        </View>
       </View>
      
 
