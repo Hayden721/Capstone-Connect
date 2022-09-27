@@ -77,7 +77,6 @@ const Board_hobby = ({ navigation }) => {
             {
               flexDirection: 'row',
               alignItems: 'center',
-
               height: 90,
               marginHorizontal: 10,
               borderBottomWidth: 1,

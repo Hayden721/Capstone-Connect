@@ -2,7 +2,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   Image,
   Pressable,
   TextInput,
@@ -88,10 +87,9 @@ const Board_club = ({ navigation }) => {
           <View
             style={[
               {
-                container2: {
-                  flexDirection: 'column',
-                  flex: 2,
-                },
+                flexDirection: 'column',
+                flex: 2,
+                // 그림여백
               },
             ]}
           >
@@ -117,7 +115,7 @@ const Board_club = ({ navigation }) => {
           </View>
           <View
             style={{
-              flex: 2,
+              flex: 1,
               alignItems: 'center',
             }}
           >
@@ -203,4 +201,4 @@ const Board_club = ({ navigation }) => {
 
 export default Board_club;
 
-const styles = StyleSheet.create({});
+
