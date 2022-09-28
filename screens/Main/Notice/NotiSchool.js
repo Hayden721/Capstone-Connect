@@ -2,7 +2,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   TextInput,
   Pressable,
   Image,
@@ -66,10 +65,11 @@ const NotiSchool = ({ navigation }) => {
     }
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }) => (   
     <Pressable
       onPress={() =>
-        navigation.navigate('글조회', { //미구현
+        navigation.navigate('Stack',{ screen: 'NotiLookUp' , //다른 네비게이터에 파라미터 보내고 싶을때
+          params:{
           title: item.title,
           date: item.date,
           writer: item.writer,
@@ -77,7 +77,7 @@ const NotiSchool = ({ navigation }) => {
           photoUrl: item.photoUrl,
           id: item.id,
           boardCategory: boardCategory,
-        })
+        }}, )
       }
     >
       <View

@@ -42,7 +42,7 @@ export const createMessage = async ({ channelId, message }) => {
     });
 };
 
-export const boardDelete = ({boardCategory,userId, gsp}) => { //글 삭제
+export const boardDelete = ({boardCategory,userId}) => { //글 삭제
   firebase
     .firestore()
     .collection(boardCategory)

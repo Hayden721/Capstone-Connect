@@ -2,7 +2,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   TextInput,
   Pressable,
   Image,
@@ -68,18 +67,19 @@ const NotiSystem = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     <Pressable
-      onPress={() =>
-        navigation.navigate('글조회', { //미구현
-          title: item.title,
-          date: item.date,
-          writer: item.writer,
-          content: item.content,
-          photoUrl: item.photoUrl,
-          id: item.id,
-          boardCategory: boardCategory,
-        })
-      }
-    >
+    onPress={() =>
+      navigation.navigate('Stack',{ screen: 'NotiLookUp' , //다른 네비게이터에 파라미터 보내고 싶을때
+        params:{
+        title: item.title,
+        date: item.date,
+        writer: item.writer,
+        content: item.content,
+        photoUrl: item.photoUrl,
+        id: item.id,
+        boardCategory: boardCategory,
+      }}, )
+    }
+  >
       <View
         style={{
           backgroundColor: '#ffffff',
