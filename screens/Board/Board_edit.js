@@ -19,11 +19,10 @@ import 'firebase/storage';
 const Board_edit = ({ navigation, route }) => {
   const db = firebase.firestore();
   const [imageUrl, setImageUrl] = useState(route.params.photoUrl); // 이미지 주소
-  const [downUrl, setdownUrl] = useState(route.params.photoUrl);
+  const [photoUrl, setPhotUrl] = useState(route.params.photoUrl);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
   const [boardTitle, setTitle] = useState(route.params.title);
   const [boardContent, setContent] = useState(route.params.content);
-  const writer = route.params.writer;
   const timestamp = firebase.firestore.FieldValue.serverTimestamp();
   const userId = route.params.id;
   const boardCategory = route.params.boardCategory;
@@ -64,9 +63,8 @@ const Board_edit = ({ navigation, route }) => {
           title: boardTitle,
           content: boardContent,
           timestamp: timestamp,
-          writer: writer,
           date: date,
-          photoUrl: downUrl,
+          photoUrl: photoUrl,
         })
         .then(() => {
           console.log('게시글 수정 완료.');
@@ -144,47 +142,25 @@ const Board_edit = ({ navigation, route }) => {
       .getDownloadURL()
       .then(url => {
         console.log(url);
-        setdownUrl(url);
+        setPhotUrl(url);
       })
       .catch(error => {
         console.log(error);
       });
   };
 
-  //작성 확인 작업
-  /*
-  const checkWrite = () => {
-    Alert.alert(
-      '작성',
-      '작성하시겠습니까?',
-      [
-        {text: '취소', onPress: () => {}, style: 'cancel'},
-        {
-          text: '확인',
-          onPress: () => {
-          writeText
-          },
-        },
-      ],
-      {
-        cancelable: true,
-        onDismiss: () => {},
-      },
-    );
-  };
-  */
   return (
     <KeyboardAwareScrollView
-      style={styles.Container}
+      
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <TouchableOpacity style={styles.icon} onPress={pickImage}>
+      <TouchableOpacity  onPress={pickImage}>
         <AntDesign name="picture" size={30} color="black" />
-        <Text style={styles.Category}> 사진 </Text>
+        <Text> 사진</Text>
       </TouchableOpacity>
 
-      <View style={styles.Container2}>
-        <View style={styles.Container3}>
+      <View>
+        <View >
           <Image
             source={{ uri: imageUrl }}
             style={{ width: 200, height: 200 }} // 이미지 크기
@@ -192,18 +168,18 @@ const Board_edit = ({ navigation, route }) => {
         </View>
         <TextInput
           placeholder={'제목'}
-          style={styles.input}
+          
           value={boardTitle}
           onChangeText={text => setTitle(text)}
         />
         <TextInput
           placeholder={'내용을 입력해주세요.'}
-          style={styles.input2}
+          
           value={boardContent}
           multiline={true}
           onChangeText={text => setContent(text)}
         />
-        <TouchableOpacity onPress={() => Update()} style={styles.customBtn}>
+        <TouchableOpacity onPress={() => Update()}>
           <Text
             style={{
               color: '#000000',

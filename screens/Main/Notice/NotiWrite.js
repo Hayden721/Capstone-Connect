@@ -98,6 +98,7 @@ const NotiWrite = ({ navigation }) => {
       .then(url => {
         console.log(url);
         setPhotoUrl(url);
+        Alert.alert("업로드 성공", "완료");
       })
       .catch(error => {
         console.log(error);

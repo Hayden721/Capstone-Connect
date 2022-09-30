@@ -174,3 +174,29 @@ DB.collection(category).orderBy("timestamp","desc").limit(1).get().then((result)
   });
 });
 }
+
+
+export const addReport = ({userName,content,photoUrl,setVisible}) => { //보드 db에 저장
+  if (userName == '') {
+    Alert.alert('신고 실패', '신고할 대상을 입력하세요.');
+  } else if (content == '') {
+    Alert.alert('신고 실패', '신고사유를 입력하세요.');
+  } else {
+    DB.collection("Report")
+      .add({
+        userName,
+        content,
+        timestamp: firebases.firestore.FieldValue.serverTimestamp(),
+        writer: firebases.auth().currentUser.email,
+        photoUrl
+      })
+      .then(() => {
+        console.log('Create Complete!');
+        Alert.alert('성공', '글을 작성했습니다.');
+        setVisible(false);
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
+  }
+};

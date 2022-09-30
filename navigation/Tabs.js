@@ -22,9 +22,13 @@ const tabBarIcon = ({ focused, name }) => {
     />
   )
 }
-
-const Tabs = ({ navigation, route}) => {
+/*<Ionicons name="ios-alert-outline" size={24} color="black" 
+style={{
+  marginRight: 10,
+}} /> */
+const Tabs = ({ navigation}) => {
   const theme = useContext(ThemeContext);
+
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -43,13 +47,7 @@ const Tabs = ({ navigation, route}) => {
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="clipboard-outline" size={24} color={color} />;
           },
-          headerRight: ({color}) => (
-            <Ionicons name="ios-alert-outline" size={24} color="black" 
-            onPress={() => alert('신고 버튼')}
-            style={{
-              marginRight: 10,
-            }} />
-          )
+         headerShown:false
         }}
       />
       <Tab.Screen

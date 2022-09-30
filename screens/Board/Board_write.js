@@ -20,14 +20,12 @@ import { Picker } from '@react-native-picker/picker'; //선택박스 만들기
 import { addText} from '../../utils/firebase';
 
 const Board_write = ({ navigation }) => {
-  const db = firebase.firestore();
   const [category, setCategory] = useState(''); //카테고리
   const [imageUrl, setImageUrl] = useState(null); // 이미지 주소
   const [photoUrl, setPhotoUrl] = useState(null);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const currentUser = firebase.auth().currentUser; //현재 사용자
   const timestamp = firebase.firestore.FieldValue.serverTimestamp();
   const nowTime = () => {
     let time = new Date();
@@ -109,7 +107,8 @@ const Board_write = ({ navigation }) => {
       .getDownloadURL()
       .then(url => {
         console.log(url);
-        setdownUrl(url);
+        setPhotoUrl(url);
+        Alert.alert("업로드 성공", "완료");
       })
       .catch(error => {
         console.log(error);
