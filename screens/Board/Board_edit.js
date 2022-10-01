@@ -5,6 +5,7 @@ import {
   TextInput,
   Image,
   Alert,
+  StyleSheet,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -19,10 +20,11 @@ import 'firebase/storage';
 const Board_edit = ({ navigation, route }) => {
   const db = firebase.firestore();
   const [imageUrl, setImageUrl] = useState(route.params.photoUrl); // 이미지 주소
-  const [photoUrl, setPhotUrl] = useState(route.params.photoUrl);
+  const [downUrl, setdownUrl] = useState(route.params.photoUrl);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
   const [boardTitle, setTitle] = useState(route.params.title);
   const [boardContent, setContent] = useState(route.params.content);
+  const writer = route.params.writer;
   const timestamp = firebase.firestore.FieldValue.serverTimestamp();
   const userId = route.params.id;
   const boardCategory = route.params.boardCategory;
@@ -64,7 +66,7 @@ const Board_edit = ({ navigation, route }) => {
           content: boardContent,
           timestamp: timestamp,
           date: date,
-          photoUrl: photoUrl,
+          photoUrl: downUrl,
         })
         .then(() => {
           console.log('게시글 수정 완료.');
@@ -142,54 +144,140 @@ const Board_edit = ({ navigation, route }) => {
       .getDownloadURL()
       .then(url => {
         console.log(url);
-        setPhotUrl(url);
+        setdownUrl(url);
       })
       .catch(error => {
         console.log(error);
       });
   };
 
+  //작성 확인 작업
+  /*
+  const checkWrite = () => {
+    Alert.alert(
+      '작성',
+      '작성하시겠습니까?',
+      [
+        {text: '취소', onPress: () => {}, style: 'cancel'},
+        {
+          text: '확인',
+          onPress: () => {
+          writeText
+          },
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () => {},
+      },
+    );
+  };
+  */
   return (
     <KeyboardAwareScrollView
-      
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <TouchableOpacity  onPress={pickImage}>
-        <AntDesign name="picture" size={30} color="black" />
-        <Text> 사진</Text>
-      </TouchableOpacity>
-
-      <View>
-        <View >
-          <Image
-            source={{ uri: imageUrl }}
-            style={{ width: 200, height: 200 }} // 이미지 크기
-          />
-        </View>
+      <View
+        style={{
+          backgroundColor: '#ffffff',
+        }}
+      >
         <TextInput
           placeholder={'제목'}
-          
+          style={{
+            padding: 10,
+            height: 50,
+            marginLeft: 5,
+            borderBottomColor: '#CBD0D8',
+            borderBottomWidth: StyleSheet.hairlineWidth,
+          }}
           value={boardTitle}
           onChangeText={text => setTitle(text)}
         />
-        <TextInput
-          placeholder={'내용을 입력해주세요.'}
-          
-          value={boardContent}
-          multiline={true}
-          onChangeText={text => setContent(text)}
-        />
-        <TouchableOpacity onPress={() => Update()}>
+
+        <TouchableOpacity
+          style={{
+            marginTop: 5,
+            padding: 5,
+            marginLeft: 5,
+            flexDirection: 'row',
+          }}
+          onPress={pickImage}
+        >
+          <AntDesign name="picture" size={30} color="green" />
           <Text
             style={{
-              color: '#000000',
-              fontSize: 24,
-              fontFamily: 'NanumGothicBold',
+              marginTop: 3,
+              marginHorizontal: 5,
             }}
           >
-            작성
+            {' '}
+            사진{' '}
           </Text>
         </TouchableOpacity>
+
+        <View
+          style={{
+            borderBottomColor: '#CBD0D8',
+            borderBottomWidth: StyleSheet.hairlineWidth,
+          }}
+        />
+        <View
+          style={{
+            marginLeft: 10,
+          }}
+        >
+          <TextInput
+            placeholder={'내용을 입력해주세요.'}
+            style={{
+              backgroundColor: '#ffffff',
+              right: 5,
+              marginLeft: 5,
+              height: 50,
+            }}
+            value={boardContent}
+            multiline={true}
+            onChangeText={text => setContent(text)}
+          />
+          <Image
+            source={{ uri: imageUrl }}
+            style={{ width: 400, height: 400 }} // 이미지 크기
+          />
+        </View>
+
+        <View
+          style={{
+            flex: 1,
+            marginBottom: 10,
+            justifyContent: 'center',
+            backgroundColor: '#ffffff',
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              Update();
+            }}
+            style={{
+              marginTop: 50,
+              borderRadius: 20,
+              backgroundColor: '#485460',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 50,
+              marginHorizontal: 60,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: 'bold',
+                color: 'white',
+              }}
+            >
+              수정
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </KeyboardAwareScrollView>
   );

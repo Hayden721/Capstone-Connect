@@ -112,7 +112,7 @@ const Board_competition = ({ navigation }) => {
           </View>
           <View
             style={{
-              flex: 2,
+              flex: 1,
               alignItems: 'center',
             }}
           >

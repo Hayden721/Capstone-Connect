@@ -15,7 +15,6 @@ import 'firebase/auth';
 import 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
-import { color, set } from 'react-native-reanimated';
 import { Ionicons } from "@expo/vector-icons";
 import { addReport} from '../utils/firebase';
 

@@ -70,9 +70,16 @@ const Tabs = ({ navigation}) => {
         name="Profile"
         component={Profile}
         options={{
-          tabBarIcon: ({ color, size }) => {
+          tabBarIcon: ({ color, size }) => {  
             return <Ionicons name="person-circle-outline" size={24} color={color} />;
           },
+          headerRight: ({color}) => (
+            <Ionicons name="settings-outline" size={24} color="black"
+            onPress={() => navigation.navigate("ProfileStack", {screen:""})}
+            style={{
+              marginRight: 10,
+            }} />
+          )
         }}
       />
     </Tab.Navigator>

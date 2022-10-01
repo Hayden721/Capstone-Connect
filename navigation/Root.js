@@ -7,6 +7,8 @@ import Notice from "./NoticeStack";
 import BoardStacks from "./BoardStacks";
 import ChatStack from "./ChatStack";
 import ChatChannel from "../screens/Chat/Chat_Channel"
+
+import ProfileStack from "./ProfileStack";
 const Nav = createStackNavigator();
 
 const Root = () => {
@@ -18,6 +20,8 @@ const Root = () => {
     <Nav.Screen name="BoardStacks" component={BoardStacks}/>
     <Nav.Screen name="ChatStack" component={ChatStack}/>
     <Nav.Screen name="ChatChannel" component={ChatChannel} options={{headerShown: true}}/>
+
+    <Nav.Screen name="ProfileStack" component={ProfileStack}/>
   </Nav.Navigator>
   );
 };

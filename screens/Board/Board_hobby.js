@@ -113,7 +113,7 @@ const Board_hobby = ({ navigation }) => {
           </View>
           <View
             style={{
-              flex: 2,
+              flex: 1,
               alignItems: 'center',
             }}
           >
