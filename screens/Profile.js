@@ -203,31 +203,122 @@ const Main_profile = () => {
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => userDelete()}
-          style={{
-            marginTop: 20,
-            borderRadius: 20,
-            backgroundColor: '#ef5777',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: 50,
-            marginHorizontal: 60,
-          }}
+        <Modal visible={visible} transparent={false}>
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
         >
-          <Text
+          <View
             style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: 'white',
-            }}
-          >
-            회원탈퇴
-          </Text>
-        </TouchableOpacity>
+              width: '100%',
+              height: '100%',
+              backgroundColor: '#EDEAE3',
+            }}>
+            <View
+              style={{
+                alignItems:"center",
+                justifyContent:"center",
+                marginVertical:20,
+                backgroundColor:"#ef5777",
+                height:50
+              }}>
+                <Text
+                  style={{
+                    fontFamily:"NanumGothicBold",
+                    fontSize:30,
+                    color:"white"
+                  }}>프로필 수정</Text>
+            </View> 
+            
+            <View
+              style={{
+                marginHorizontal:20,
+              }}/>
+            <TouchableOpacity onPress={pickImage}>
+              <View 
+                style={{
+                  marginHorizontal:20,
+                  alignItems:"center",
+                }}>
+                <AntDesign name="picture" size={40} color="green" />
+                <Text 
+                  style={{
+                    fontFamily:"NanumGothicBold",
+                    fontSize:20,
+                    color:"#636e72"
+                }}>사진</Text>
+            <View 
+            style={{ 
+              width:120,
+              height:120,
+             }}>
+                <Image 
+                  source={{ uri: imageUrl }}
+                  style={{
+                    borderRadius: 100,
+                    height:120,
+                    width:120
+                  }} />
+          </View>
+              </View>
+            </TouchableOpacity> 
+            <View 
+              style={{
+                flexDirection:"row",
+                alignItems:"center",
+                justifyContent:"space-evenly",
+                flex:1
+            }}>
+              <TouchableOpacity
+                onPress={() => {
+                  Profile_Edit({imageUrl,setVisible})
+                }}
+                style={{
+                  borderRadius: 20,
+                  backgroundColor: '#ef5777',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 50,
+                  width:100
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: 'bold',
+                    color: 'white',
+                  }}
+                >
+                  수정
+                </Text>
+              </TouchableOpacity>
 
-
-      
+              <TouchableOpacity
+                onPress={() => 
+                  setVisible(false)
+                }
+                style={{
+                  borderRadius: 20,
+                  backgroundColor: '#485460',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 50,
+                  width:100
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: 'bold',
+                    color: 'white',
+                  }}
+                >
+                  취소
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
       </SafeAreaView>
     </ScrollView>
   );
