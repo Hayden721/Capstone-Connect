@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,54 +8,80 @@ import {
   Platform,
   Alert,
   Modal,
-} from "react-native";
+} from 'react-native';
+import { images } from '../../utils/images';
+import CheckBox from 'expo-checkbox';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Image } from '../../components';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
 
-import CheckBox from "expo-checkbox";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
 
 const resultMessages = {
-  "auth/email-already-in-use": "이미 가입된 이메일입니다.",
-  "auth/wrong-password": "잘못된 비밀번호입니다.",
-  "auth/user-not-found": "존재하지 않는 계정입니다.",
-  "auth/invalid-email": "유효하지 않은 이메일 주소입니다.",
-  "auth/weak-password": "비밀번호를 6자리 이상 입력해 주세요.",
+  'auth/email-already-in-use': '이미 가입된 이메일입니다.',
+  'auth/wrong-password': '잘못된 비밀번호입니다.',
+  'auth/user-not-found': '존재하지 않는 계정입니다.',
+  'auth/invalid-email': '유효하지 않은 이메일 주소입니다.',
+  'auth/weak-password': '비밀번호를 6자리 이상 입력해 주세요.',
 };
 
-function Register({navigation}) {
-  const [admin] = useState("0");
+function Register({ navigation }) {
+  const [admin] = useState('0');
   const [agree, setAgree] = useState(false);
-  const [addName, setAddName] = useState("");
-  const [addNumber, setAddNumber] = useState("");
-  const [email, setAddEmail] = useState("");
-  const [pwd, setAddPwd] = useState("");
-  const [pwd2, setAddPwd2] = useState("");
+  const [addName, setAddName] = useState('');
+  const [addNumber, setAddNumber] = useState('');
+  const [email, setAddEmail] = useState('');
+  const [pwd, setAddPwd] = useState('');
+  const [pwd2, setAddPwd2] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [photoURL, setPhotoURL] = useState(images.profile);
   const db = firebase.firestore();
   const docEmail = email;
+
   function addText() {
-    db.collection("users")
+    db.collection('users')
       .doc(docEmail)
       .set({
         name: addName,
         number: addNumber,
         email: email,
         admin: admin,
+        photoURL: photoURL,
       })
       .then(() => {
-        console.log("Create Complete!");
+        console.log('Create Complete!');
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error.message);
       });
   }
+  const uploadImage = async uri => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      xhr.send(null);
+    });
+  
+    const user = Auth.currentUser;
+    const ref = app.storage().ref(`/profile/${user.uid}/photo.png`);
+    const snapshot = await ref.put(blob, { contentType: 'image/png' });
+  
+    blob.close();
+    return await snapshot.ref.getDownloadURL();
+  };
 
-  function SignUp() {
-    if ( addNumber && addName && email && pwd == pwd2 && agree){
+  
+  const SignUp = () => {
+    if (addNumber && addName && email && pwd == pwd2 && agree) {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, pwd)
@@ -96,28 +122,34 @@ function Register({navigation}) {
       Alert.alert("회원가입 실패", "필수 약관을 동의해주세요.");
     }
   }
+
   function touch() {
     console.log(addNumber);
-    db.collection("HakbunName").get().then((result)=> {
-      result.forEach((doc)=> {
-        if(addNumber == doc.data().number && addName == doc.data().name){
-          console.log("확인되었습니다");
-          throw setModalVisible(true);
-        }else if(addNumber == "" || addName == ""){
-          Alert.alert("인증 실패", "학번 또는 이름을 입력해주세요.");
-          setModalVisible(false);
-        }else if (addNumber != doc.data().number || addName != doc.data().name){
-          Alert.alert("인증 실패", "학번 또는 이름이 다릅니다.")
-          setModalVisible(false);
-        }
+    db.collection('HakbunName')
+      .get()
+      .then(result => {
+        result.forEach(doc => {
+          if (addNumber == doc.data().number && addName == doc.data().name) {
+            console.log('확인되었습니다');
+            throw setModalVisible(true);
+          } else if (addNumber == '' || addName == '') {
+            Alert.alert('인증 실패', '학번 또는 이름을 입력해주세요.');
+            setModalVisible(false);
+          } else if (
+            addNumber != doc.data().number ||
+            addName != doc.data().name
+          ) {
+            Alert.alert('인증 실패', '학번 또는 이름이 다릅니다.');
+            setModalVisible(false);
+          }
+        });
       });
-    });
-    }
+  }
 
   return (
     <KeyboardAwareScrollView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.check}>
         <Text style={styles.NanumRG}>학번</Text>
@@ -125,131 +157,131 @@ function Register({navigation}) {
       <View style={styles.check}>
         <View style={styles.item1}>
           <TextInput
-            placeholder={"ex) 20171111"}
+            placeholder={'ex) 20171111'}
             style={styles.input}
             value={addNumber}
-            onChangeText={(text) => setAddNumber(text)}
+            onChangeText={text => setAddNumber(text)}
           />
         </View>
       </View>
 
       <Text style={styles.NanumRG}>이름</Text>
       <TextInput
-        placeholder={"ex) 홍길동"}
+        placeholder={'ex) 홍길동'}
         style={styles.input}
         value={addName}
-        onChangeText={(text) => setAddName(text)}
+        onChangeText={text => setAddName(text)}
       />
-       <TouchableOpacity
+      <TouchableOpacity
         style={{
-          backgroundColor: "#1e272e",
+          backgroundColor: '#1e272e',
           padding: 15,
           margin: 20,
           marginTop: 50,
           borderRadius: 10,
-          alignItems: "center",
+          alignItems: 'center',
         }}
-        onPress = {() => touch()}
+        onPress={() => touch()}
       >
         <Text
           style={{
-            color: "white",
+            color: 'white',
             fontSize: 24,
-            fontFamily: "NanumGothicBold",
+            fontFamily: 'NanumGothicBold',
           }}
         >
           인증
         </Text>
       </TouchableOpacity>
-      <Modal presentationStyle={"formSheet"} visible ={modalVisible}>
-      
-      <Text style={styles.NanumRG}>학교 이메일</Text>
-      <View style={styles.check}>
-        <View style={styles.item1}>
-          <TextInput
-            placeholder={"ex) 20001234@shinhan.ac.kr"}
-            style={styles.input}
-            value={email}
-            onChangeText={(text) => setAddEmail(text)}
-          />
+      <Modal presentationStyle={'formSheet'} visible={modalVisible}>
+      <Image rounded url={photoURL} showButton onChangeImage={url => setPhotoURL(url)}/>
+        <Text style={styles.NanumRG}>학교 이메일</Text>
+        <View style={styles.check}>
+          <View style={styles.item1}>
+            <TextInput
+              placeholder={'ex) 20001234@shinhan.ac.kr'}
+              style={styles.input}
+              value={email}
+              onChangeText={text => setAddEmail(text)}
+            />
+          </View>
         </View>
-      </View>
-      <Text style={styles.NanumRG}>비밀번호</Text>
-      <TextInput
-        secureTextEntry={true}
-        style={styles.input}
-        value={pwd}
-        onChangeText={(text) => setAddPwd(text)}
-      />
-      <Text style={styles.NanumRG}>비밀번호 확인</Text>
-      <TextInput
-        secureTextEntry={true}
-        style={styles.input}
-        value={pwd2}
-        onChangeText={(text) => setAddPwd2(text)}
-      />
-      <View style={styles.box}>
-        <View style={styles.box1}>
-          <CheckBox
-            value={agree}
-            onValueChange={() => setAgree(!agree)}
-            color={agree ? "#4630EB" : undefined}
-            margin={20}
-            marginRight={-10}
-            marginTop={31}
-          />
+        <Text style={styles.NanumRG}>비밀번호</Text>
+        <TextInput
+          secureTextEntry={true}
+          style={styles.input}
+          value={pwd}
+          onChangeText={text => setAddPwd(text)}
+        />
+        <Text style={styles.NanumRG}>비밀번호 확인</Text>
+        <TextInput
+          secureTextEntry={true}
+          style={styles.input}
+          value={pwd2}
+          onChangeText={text => setAddPwd2(text)}
+        />
+        <View style={styles.box}>
+          <View style={styles.box1}>
+            <CheckBox
+              value={agree}
+              onValueChange={() => setAgree(!agree)}
+              color={agree ? '#4630EB' : undefined}
+              margin={20}
+              marginRight={-10}
+              marginTop={31}
+            />
+          </View>
+          <View style={styles.box2}>
+            <Text style={styles.NanumRG}>[필수]동의합니다.</Text>
+          </View>
+          <View style={styles.box3}>
+            <TouchableOpacity>
+              <MaterialCommunityIcons name="plus" size={50} color="black" />
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.box2}>
-          <Text style={styles.NanumRG}>[필수]동의합니다.</Text>
-        </View>
-        <View style={styles.box3}>
-          <TouchableOpacity>
-            <MaterialCommunityIcons name="plus" size={50} color="black" />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <TouchableOpacity
-        style={{
-          backgroundColor: "#D9D9D9",
-          padding: 15,
-          margin: 20,
-          marginTop: 50,
-          borderRadius: 10,
-          alignItems: "center",
-        }}
-        onPress={() => SignUp()}
-      >
-        <Text
+        <TouchableOpacity
           style={{
-            color: "#000000",
-            fontSize: 24,
-            fontFamily: "NanumGothicBold",
+            backgroundColor: '#D9D9D9',
+            padding: 15,
+            margin: 20,
+            marginTop: 50,
+            borderRadius: 10,
+            alignItems: 'center',
           }}
+          onPress={() => SignUp()}
         >
-          회원가입
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          backgroundColor: "#D9D9D9",
-          padding: 15,
-          margin: 20,
-          marginTop: 20,
-          borderRadius: 10,
-          alignItems: "center",
-        }}
-        onPress={() =>setModalVisible(false)}
-      >
-        <Text
+          <Text
+            style={{
+              color: '#000000',
+              fontSize: 24,
+              fontFamily: 'NanumGothicBold',
+            }}
+          >
+            회원가입
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           style={{
-            color: "#000000",
-            fontSize: 24,
-            fontFamily: "NanumGothicBold",
+            backgroundColor: '#D9D9D9',
+            padding: 15,
+            margin: 20,
+            marginTop: 20,
+            borderRadius: 10,
+            alignItems: 'center',
           }}
+          onPress={() => setModalVisible(false)}
         >
-          뒤로가기
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={{
+              color: '#000000',
+              fontSize: 24,
+              fontFamily: 'NanumGothicBold',
+            }}
+          >
+            뒤로가기
+          </Text>
+        </TouchableOpacity>
       </Modal>
     </KeyboardAwareScrollView>
   );
@@ -258,17 +290,17 @@ function Register({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     paddingTop: 30,
   },
   NanumRG: {
     fontSize: 20,
-    fontFamily: "NanumGothic",
+    fontFamily: 'NanumGothic',
     marginLeft: 20,
     marginTop: 30,
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     height: 40,
     margin: 5,
     marginLeft: 20,
@@ -276,13 +308,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.5,
   },
   check: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   checkBtn: {
-    backgroundColor: "#D9D9D9",
+    backgroundColor: '#D9D9D9',
     borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 60,
     height: 50,
   },
@@ -293,7 +325,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   box: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   box1: {
     flex: 1,
@@ -303,8 +335,8 @@ const styles = StyleSheet.create({
   },
   box3: {
     flex: 3,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

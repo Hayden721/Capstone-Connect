@@ -1,4 +1,3 @@
-import { color } from "react-native-reanimated";
 
 const colors = {
   white: '#ffffff',
@@ -6,6 +5,9 @@ const colors = {
   grey_0: '#d5d5d5',
   grey_1: '#a6a6a6',
   blackPearl: '#1e272e',
+  londonSquare: '#808e9b',
+  goodNight: '#485460',
+  hintOfElusiveBlue: '#d2dae2',
   red: '#e84118',
   blue: '#3679fe',
 };
@@ -15,6 +17,8 @@ export const theme = {
   text: colors.black,
   //imageColor
   imageBackground: colors.grey_0,
+  imageButtonBackground: colors.hintOfElusiveBlue,
+  imageButtonIcon: colors.londonSquare,
   logoColor: colors.white,
   //loginTextInput
   label: colors.grey_1,

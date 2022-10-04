@@ -11,12 +11,16 @@ import 'react-native-gesture-handler';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { FontAwesome } from '@expo/vector-icons';
+import {Image} from '../components';
+import { images } from '../utils/images';
 
 const Main_profile = () => {
   const db = firebase.firestore();
   const cu = firebase.auth().currentUser.email;
   const [userName, setUserName] = useState('');
   const [userNumber, setUserNumber] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [photoURL, setPhotoURL] = useState(images.profile);
   db.collection('users')
     .where('email', '==', cu)
     .get()
@@ -25,6 +29,7 @@ const Main_profile = () => {
       result.forEach(doc => {
         setUserName(doc.data().name);
         setUserNumber(doc.data().number);
+        setUserEmail(doc.data().email);
       });
     });
   return (
@@ -38,7 +43,7 @@ const Main_profile = () => {
             fontFamily: 'NanumGothicBold',
           }}
         >
-          <FontAwesome name="user-circle-o" size={70} color="black" />
+          <Image rounded url={photoURL} showButton onChangeImage={url => setPhotoURL(url)}/>
           <View
             style={{
               justifyContent: 'center',
@@ -48,6 +53,7 @@ const Main_profile = () => {
           >
             <Text> 학번 : {userName} </Text>
             <Text> 이름 : {userNumber} </Text>
+            <Text> Email: {userEmail} </Text>
           </View>
         </View>
   
