@@ -203,6 +203,29 @@ const Main_profile = () => {
           </Text>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          onPress={() => userDelete()}
+          style={{
+            marginTop: 20,
+            borderRadius: 20,
+            backgroundColor: '#ef5777',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 50,
+            marginHorizontal: 60,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: 'white',
+            }}
+          >
+            회원탈퇴
+          </Text>
+        </TouchableOpacity>
+
         <Modal visible={visible} transparent={false}>
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
