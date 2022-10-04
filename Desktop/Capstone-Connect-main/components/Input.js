@@ -1,0 +1,95 @@
+import React, { useState, forwardRef } from 'react';
+import styled from 'styled-components/native';
+import propTypes from 'prop-types';
+
+const Container = styled.View`
+  flex-direction: column;
+  width: 100%;
+  margin: 10px 0;
+`;
+
+const Label = styled.Text`
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: ${({ theme, isFocused }) => (isFocused ? theme.text : theme.label)};
+`;
+const StyledTextInput = styled.TextInput.attrs(({ theme }) => ({
+  placeholderTextColor: theme.inputPlaceholder,
+}))`
+  background-color: ${({ theme, editable }) =>
+    editable ? theme.background : theme.inputDisabledBackground};
+  color: ${({ theme }) => theme.text};
+  padding: 20px 10px;
+  font-size: 16px;
+  border: 1px solid
+    ${({ theme, isFocused }) => (isFocused ? theme.text : theme.inputBorder)};
+  border-radius: 4px;
+`;
+//React 컴포넌트에 ref prop을 넘겨서 그 내부에 있는 HTML 엘리먼트에 접근을 하게 해주는 forwardRef() 함수
+const Input = forwardRef(
+  (
+    {
+      label,
+      value,
+      onChangeText,
+      onSubmitEditing,
+      onBlur,
+      placeholder,
+      isPassword,
+      returnKeyType,
+      maxLength,
+      disabled,
+    },
+    ref
+  ) => {
+    const [isFocused, setIsFocused] = useState(false);
+    return (
+      <Container>
+        <Label isFocused={isFocused}>{label}</Label>
+        <StyledTextInput
+          ref={ref}
+          isFocused={isFocused}
+          value={value}
+          onChangeText={onChangeText}
+          onSubmitEditing={onSubmitEditing}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => {
+            setIsFocused(false);
+            onBlur();
+          }}
+          placeholder={placeholder}
+          secureTextEntry={isPassword}
+          returnKeyType={returnKeyType}
+          maxLength={maxLength}
+          autoCapitalize="none"
+          autoCorrect={false}
+          textContentType="none" // iOS only
+          underlineColorAndroid="transparent" // Android only
+          editable={!disabled}
+        />
+      </Container>
+    );
+  }
+);
+
+Input.defaultProps = {
+  onBlur: () => {},
+  onChangeText: () => {},
+  onSubmitEditing: () => {},
+};
+
+Input.propTypes = {
+  label: propTypes.string.isRequired,
+  value: propTypes.string.isRequired,
+  onChangeText: propTypes.func,
+  onSubmitEditing: propTypes.func,
+  onBlur: propTypes.func,
+  placeholder: propTypes.string,
+  isPassword: propTypes.bool,
+  returnKeyType: propTypes.oneOf(['done', 'next']),
+  maxLength: propTypes.number,
+  disabled: propTypes.bool,
+};
+
+export default Input;
