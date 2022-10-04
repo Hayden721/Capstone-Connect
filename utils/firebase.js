@@ -267,3 +267,19 @@ export const addReport = ({ userName, content, photoUrl, setVisible }) => {
       });
   }
 };
+
+
+export const Profile_Edit = ({imageUrl,setVisible})=>{
+  DB.collection("users").doc(firebases.auth().currentUser.email)
+  .update({
+    photoUrl: imageUrl,
+  })
+  .then(() => {
+    console.log('Create Complete!');
+    Alert.alert('성공', '프로필을 수정했습니다.');
+    setVisible(false);
+  })
+  .catch(error => {
+    console.log(error.message);
+  });
+};

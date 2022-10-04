@@ -74,7 +74,8 @@ const Profile_setting = () => {
             marginLeft: 30,
             fontFamily: 'NanumGothicBold',
           }}
-        >
+        > 
+          
           <TouchableOpacity>
           <Text>회원 탈퇴</Text>
           </TouchableOpacity>
