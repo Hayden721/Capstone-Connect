@@ -179,38 +179,11 @@ const Main_profile = () => {
           }}
         ></View>
 
-        <View
-          style={{
-            marginLeft: 20,
-            marginTop: 40,
-          }}
-        >
-            <Text
-              style={{
-                margintop: 30,
-                fontFamily: 'NanumGothicBold',
-                fontSize: 20,
-              }}
-            >
-              작성한 댓글
-            </Text>
-        </View>
-
-        <View
-          style={{
-            height: 160,
-            borderColor: '#E6E7E8',
-            backgroundColor: '#ffffff',
-            borderWidth: 1,
-            borderRadius: 10,
-            margin: 10,
-          }}
-        ></View>
-
         <TouchableOpacity
           onPress={() => firebase.auth().signOut()}
+          
           style={{
-            marginTop: 40,
+            marginTop: 120,
             borderRadius: 20,
             backgroundColor: '#485460',
             alignItems: 'center',
@@ -230,124 +203,31 @@ const Main_profile = () => {
           </Text>
         </TouchableOpacity>
 
-
-        
-     <Modal visible={visible} transparent={false}>
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        <TouchableOpacity
+          onPress={() => userDelete()}
+          style={{
+            marginTop: 20,
+            borderRadius: 20,
+            backgroundColor: '#ef5777',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 50,
+            marginHorizontal: 60,
+          }}
         >
-          <View
+          <Text
             style={{
-              width: '100%',
-              height: '100%',
-              backgroundColor: '#EDEAE3',
-            }}>
-            <View
-              style={{
-                alignItems:"center",
-                justifyContent:"center",
-                marginVertical:20,
-                backgroundColor:"#ef5777",
-                height:50
-              }}>
-                <Text
-                  style={{
-                    fontFamily:"NanumGothicBold",
-                    fontSize:30,
-                    color:"white"
-                  }}>프로필 수정</Text>
-            </View> 
-            
-            <View
-              style={{
-                marginHorizontal:20,
-              }}/>
-            <TouchableOpacity onPress={pickImage}>
-              <View 
-                style={{
-                  marginHorizontal:20,
-                  alignItems:"center",
-                }}>
-                <AntDesign name="picture" size={40} color="green" />
-                <Text 
-                  style={{
-                    fontFamily:"NanumGothicBold",
-                    fontSize:20,
-                    color:"#636e72"
-                }}>사진</Text>
-            <View 
-            style={{ 
-              width:120,
-              height:120,
-             }}>
-                <Image 
-                  source={{ uri: imageUrl }}
-                  style={{
-                    borderRadius: 100,
-                    height:120,
-                    width:120
-                  }} />
-          </View>
-              </View>
-            </TouchableOpacity> 
-            <View 
-              style={{
-                flexDirection:"row",
-                alignItems:"center",
-                justifyContent:"space-evenly",
-                flex:1
-            }}>
-              <TouchableOpacity
-                onPress={() => {
-                  Profile_Edit({imageUrl,setVisible})
-                }}
-                style={{
-                  borderRadius: 20,
-                  backgroundColor: '#ef5777',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: 50,
-                  width:100
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                    color: 'white',
-                  }}
-                >
-                  수정
-                </Text>
-              </TouchableOpacity>
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: 'white',
+            }}
+          >
+            회원탈퇴
+          </Text>
+        </TouchableOpacity>
 
-              <TouchableOpacity
-                onPress={() => 
-                  setVisible(false)
-                }
-                style={{
-                  borderRadius: 20,
-                  backgroundColor: '#485460',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: 50,
-                  width:100
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                    color: 'white',
-                  }}
-                >
-                  취소
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
+
+      
       </SafeAreaView>
     </ScrollView>
   );
