@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,30 +8,30 @@ import {
   TextInput,
   Image,
   Button,
-  Alert
+  Alert,
 } from 'react-native';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
-import { Ionicons } from "@expo/vector-icons";
-import { addReport} from '../utils/firebase';
+import { Ionicons } from '@expo/vector-icons';
+import { addReport } from '../utils/firebase';
 
-const Board = ({ navigation}) => {
+const Board = ({ navigation }) => {
   const [visible, setVisible] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [content, setContent] = useState("");
+  const [userName, setUserName] = useState('');
+  const [content, setContent] = useState('');
   const [imageUrl, setImageUrl] = useState(null); // 이미지 주소
   const [photoUrl, setPhotoUrl] = useState(null);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
 
   useEffect(() => {
-    setUserName("");
-    setContent("");
+    setUserName('');
+    setContent('');
     setImageUrl(null);
     setPhotoUrl(null);
-  },[visible]);
+  }, [visible]);
 
   const pickImage = async () => {
     // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
@@ -93,7 +93,7 @@ const Board = ({ navigation}) => {
       .then(url => {
         console.log(url);
         setPhotoUrl(url);
-        Alert.alert("업로드 성공", "완료");
+        Alert.alert('업로드 성공', '완료');
       })
       .catch(error => {
         console.log(error);
@@ -101,41 +101,47 @@ const Board = ({ navigation}) => {
   };
 
   return (
+
+
     <ScrollView style={{ backgroundColor: 'white', flex: 1 }}>
-      <View 
+      <View
         style={{
           marginTop: 50,
-          flexDirection:"row",
-          alignItems:"center"
-          
-        }}>
-        <View 
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+            <View
           style={{
-            flex:6,
-            alignItems:"flex-end"
-          }}>
-          <Text 
+            flex: 6,
+            alignItems: 'flex-end',
+          }}
+        >
+          <Text
             style={{
-              fontFamily:"NanumGothicBold",
-              fontSize:20,
-            }}>
+              fontFamily: 'NanumGothicBold',
+              fontSize: 20,
+            }}
+          >
             게시판
           </Text>
         </View>
         <TouchableOpacity
-          onPress={()=>setVisible(true)}
+          onPress={() => setVisible(true)}
+          style={{
+            flex: 3.8,
+            alignItems: 'flex-end',
+            marginRight: 20,
+          }}
+        >
+          <Ionicons
+            name="ios-alert-outline"
+            size={24}
+            color="black"
             style={{
-              flex:3.8,
-              alignItems:"flex-end",
-              marginRight:20
-            }}>
-            <Ionicons 
-              name="ios-alert-outline" 
-              size={24} 
-              color="black" 
-              style={{
-                marginRight: 10,
-              }}/> 
+              marginRight: 10,
+            }}
+          />
         </TouchableOpacity>
       </View>
       <View
@@ -253,103 +259,125 @@ const Board = ({ navigation}) => {
               width: '100%',
               height: '100%',
               backgroundColor: '#EDEAE3',
-            }}>
+            }}
+          >
             <View
               style={{
-                alignItems:"center",
-                justifyContent:"center",
-                marginVertical:20,
-                backgroundColor:"#ef5777",
-                height:50
-              }}>
-                <Text
-                  style={{
-                    fontFamily:"NanumGothicBold",
-                    fontSize:30,
-                    color:"white"
-                  }}>신고하기</Text>
-            </View> 
-            <View
-              style={{
-                marginHorizontal:20,
-              }}>
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginVertical: 20,
+                backgroundColor: '#ef5777',
+                height: 50,
+              }}
+            >
               <Text
                 style={{
-                  fontFamily:"NanumGothicBold",
-                  fontSize:20,
-                  color:"#636e72"
-                }}>신고 할 대상</Text>
-              <View 
+                  fontFamily: 'NanumGothicBold',
+                  fontSize: 30,
+                  color: 'white',
+                }}
+              >
+                신고하기
+              </Text>
+            </View>
+            <View
+              style={{
+                marginHorizontal: 20,
+              }}
+            >
+              <Text
                 style={{
-                  marginVertical:10,
-                  borderWidth:0.7,
-                }}>
-                <TextInput 
-                  placeholder="정보를 입력" 
+                  fontFamily: 'NanumGothicBold',
+                  fontSize: 20,
+                  color: '#636e72',
+                }}
+              >
+                신고 할 대상
+              </Text>
+              <View
+                style={{
+                  marginVertical: 10,
+                  borderWidth: 0.7,
+                }}
+              >
+                <TextInput
+                  placeholder="정보를 입력"
                   value={userName}
                   onChangeText={text => setUserName(text)}
                 />
               </View>
             </View>
-            
+
             <View
               style={{
-                marginHorizontal:20,
-              }}>
+                marginHorizontal: 20,
+              }}
+            >
               <Text
                 style={{
-                  fontFamily:"NanumGothicBold",
-                  fontSize:20,
-                  color:"#636e72"
-                }}>신고사유</Text>
-              <View 
+                  fontFamily: 'NanumGothicBold',
+                  fontSize: 20,
+                  color: '#636e72',
+                }}
+              >
+                신고사유
+              </Text>
+              <View
                 style={{
-                  marginVertical:10,
-                  borderWidth:0.7,
-                  height:200,
-                }}>
-                <TextInput  
-                  multiline={true} 
+                  marginVertical: 10,
+                  borderWidth: 0.7,
+                  height: 200,
+                }}
+              >
+                <TextInput
+                  multiline={true}
                   placeholder="신고사유를 입력하세요."
                   value={content}
                   onChangeText={text => setContent(text)}
-                 />
+                />
               </View>
             </View>
             <TouchableOpacity onPress={pickImage}>
-              <View 
+              <View
                 style={{
-                  flexDirection:'row',
-                  marginHorizontal:20,
-                  alignItems:"center",
-                }}>
+                  flexDirection: 'row',
+                  marginHorizontal: 20,
+                  alignItems: 'center',
+                }}
+              >
                 <AntDesign name="picture" size={40} color="green" />
-                <Text 
+                <Text
                   style={{
-                    fontFamily:"NanumGothicBold",
-                    fontSize:20,
-                    color:"#636e72"
-                }}>사진</Text>
-                <View style={{
-                  marginLeft:10
-                }}>
+                    fontFamily: 'NanumGothicBold',
+                    fontSize: 20,
+                    color: '#636e72',
+                  }}
+                >
+                  사진
+                </Text>
+                <View
+                  style={{
+                    marginLeft: 10,
+                  }}
+                >
                   <Image
                     source={{ uri: imageUrl }}
                     style={{ width: 40, height: 40 }} // 이미지 크기
                   />
                 </View>
               </View>
-            </TouchableOpacity> 
-            <View 
+            </TouchableOpacity>
+            <View
               style={{
-                flexDirection:"row",
-                alignItems:"center",
-                justifyContent:"space-evenly",
-                flex:1
-            }}>
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+                flex: 1,
+              }}
+            >
               <TouchableOpacity
                 onPress={() => {
-                  addReport({userName,content,photoUrl,setVisible})
+                  addReport({ userName, content, photoUrl, setVisible });
                 }}
                 style={{
                   borderRadius: 20,
@@ -357,7 +385,7 @@ const Board = ({ navigation}) => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: 50,
-                  width:100
+                  width: 100,
                 }}
               >
                 <Text
@@ -372,16 +400,14 @@ const Board = ({ navigation}) => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => 
-                  setVisible(false)
-                }
+                onPress={() => setVisible(false)}
                 style={{
                   borderRadius: 20,
                   backgroundColor: '#485460',
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: 50,
-                  width:100
+                  width: 100,
                 }}
               >
                 <Text

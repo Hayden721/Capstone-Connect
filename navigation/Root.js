@@ -9,9 +9,10 @@ import ChatStack from './ChatStack';
 import ChatChannel from '../screens/Chat/Chat_Channel';
 import { Ionicons } from '@expo/vector-icons';
 import ProfileStack from './ProfileStack';
+
 const Nav = createStackNavigator();
 
-const Root = ({navigation}) => {
+const Root = ({ navigation }) => {
   return (
     <Nav.Navigator screenOptions={{ headerShown: false }}>
       <Nav.Screen name="Tabs" component={Tabs} />
@@ -28,13 +29,12 @@ const Root = ({navigation}) => {
         component={ChatChannel}
         options={{
           headerShown: true,
-          headerRight: ({ color, size }) => (
+          headerRight: () => (
             <Ionicons
               name="ios-alert-outline"
               size={24}
               color="black"
-              onPress={() => navigation.navigate('ChatStack', { screen: 'Chat_Menu' })
-              }
+              onPress={() => {}}
               style={{
                 marginRight: 10,
               }}

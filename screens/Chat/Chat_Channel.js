@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useLayoutEffect, useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { Text, FlatList } from 'react-native';
-import { DB, createMessage, getCurrentUser } from '../../utils/firebase';
 import { Input } from '../../components';
 import { Alert } from 'react-native';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import { MaterialIcons } from '@expo/vector-icons';
 import { theme } from '../../styles/theme';
-
+import { DB, createMessage, getCurrentUser } from '../../utils/firebase';
 const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
@@ -38,9 +37,11 @@ const SendButton = props => {
   );
 };
 
+
+//-------------
 const Channel = ({ navigation, route: { params } }) => {
   const [messages, setMessages] = useState([]);
-const {uid, name,} = getCurrentUser();
+  const {uid, name, photoUrl} = getCurrentUser();
   const theme = useContext(ThemeContext);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ const {uid, name,} = getCurrentUser();
         }}
         placeholderf = "Enter a message..."
         messages={messages}
-        user={{ _id: uid, name }}
+        user={{ _id: uid, name, avatar:photoUrl }}
         onSend={_handleMessageSend}
         alwaysShowSend={true}
         textInputProps={{

@@ -11,29 +11,28 @@ import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
 import { ScrollView } from 'react-native-gesture-handler';
-import {CallBoard} from '../utils/firebase';
+import { CallBoard } from '../utils/firebase';
 import { Linking } from 'react-native';
 // 학교, 종정, 셔틀 링크 사용 import
 
 const Container = styled.View`
-  width: 60px
+  width: 60px;
   height: 60px;
   border-width: 2px;
   border-radius: 15px;
-  margin:10px;
+  margin: 10px;
   padding: 15px;
-  background-color: #F4F3EA;
-  border-color: #E6E7E8;
-  margin-left:30px;
-  margin-top:20px;
-
+  background-color: #f4f3ea;
+  border-color: #e6e7e8;
+  margin-left: 30px;
+  margin-top: 20px;
 `;
 
 const Top = styled.Text`
   font-size: 20px;
   margin-left: 25px;
   margin-top: 10px;
-  fontfamily: 'NanumGothicBold';
+  font-family: 'NanumGothicBold';
 `;
 
 const Top2 = styled.Text`
@@ -57,10 +56,10 @@ const Main = ({ navigation }) => {
   const [clubBoard, setClubBoard] = useState('');
   const [hobbyBoard, setHobbyBoard] = useState('');
 
-  CallBoard("Free", setFreeBoard);
-  CallBoard("Competition", setCompetitionBoard);
-  CallBoard("Club", setClubBoard);
-  CallBoard("Hobby", setHobbyBoard);
+  CallBoard('Free', setFreeBoard);
+  CallBoard('Competition', setCompetitionBoard);
+  CallBoard('Club', setClubBoard);
+  CallBoard('Hobby', setHobbyBoard);
   return (
     <ScrollView
       style={{
@@ -198,7 +197,7 @@ const Main = ({ navigation }) => {
           fontSize: 8,
         }}
       />
-        <Top2></Top2>
+      <Top2></Top2>
 
       <Text
         style={{

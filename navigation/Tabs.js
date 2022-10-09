@@ -1,34 +1,30 @@
-import React, { useContext } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React, { useContext, useEffect } from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import 'react-native-gesture-handler';
-import { Text, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import Stacks from "./Stack";
+import { Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Stacks from './Stack';
 //stack screens import
-import Main from "../screens/Main";
-import Board from "../screens/Board";
-import Chat from "../screens/Chat";
-import Profile from "../screens/Profile";
+import Main from '../screens/Main';
+import Board from '../screens/Board';
+import Chat from '../screens/Chat';
+import Profile from '../screens/Profile';
 
-import { ThemeConsumer, ThemeContext } from "styled-components/native";
+import { ThemeConsumer, ThemeContext } from 'styled-components/native';
 
 const Tab = createBottomTabNavigator();
 const tabBarIcon = ({ focused, name }) => {
   const theme = useContext(ThemeConsumer);
-  return (
-    <Ionicons
-      name="name"
-      size={24}
-    />
-  )
-}
+  return <Ionicons name="name" size={24} />;
+};
 /*<Ionicons name="ios-alert-outline" size={24} color="black" 
 style={{
   marginRight: 10,
 }} /> */
-const Tabs = ({ navigation}) => {
+const Tabs = ({ navigation, route }) => {
   const theme = useContext(ThemeContext);
 
+  
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -45,9 +41,11 @@ const Tabs = ({ navigation}) => {
         component={Board}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Ionicons name="clipboard-outline" size={24} color={color} />;
+            return (
+              <Ionicons name="clipboard-outline" size={24} color={color} />
+            );
           },
-         headerShown:false
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -55,31 +53,51 @@ const Tabs = ({ navigation}) => {
         component={Chat}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Ionicons name="chatbubble-ellipses-outline" size={24} color={color} />;
+            return (
+              <Ionicons
+                name="chatbubble-ellipses-outline"
+                size={24}
+                color={color}
+              />
+            );
           },
-          headerRight: ({color, size}) => (
-            <Ionicons name="ios-alert-outline" size={24} color="black" 
-            onPress={() => navigation.navigate("ChatStack", {screen:"ChannelCreation"})}
-            style={{
-              marginRight: 10,
-            }} />
-          )
+          headerRight: ({ color, size }) => (
+            <Ionicons
+              name="ios-alert-outline"
+              size={24}
+              color="black"
+              onPress={() =>
+                navigation.navigate('ChatStack', { screen: 'ChannelCreation' })
+              }
+              style={{
+                marginRight: 10,
+              }}
+            />
+          ),
         }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
-          tabBarIcon: ({ color, size }) => {  
-            return <Ionicons name="person-circle-outline" size={24} color={color} />;
+          tabBarIcon: ({ color, size }) => {
+            return (
+              <Ionicons name="person-circle-outline" size={24} color={color} />
+            );
           },
-          headerRight: ({color}) => (
-            <Ionicons name="settings-outline" size={24} color="black"
-            onPress={() => navigation.navigate("ProfileStack", {screen:""})}
-            style={{
-              marginRight: 10,
-            }} />
-          )
+          headerRight: ({ color }) => (
+            <Ionicons
+              name="settings-outline"
+              size={24}
+              color="black"
+              onPress={() =>
+                navigation.navigate('ProfileStack', { screen: '' })
+              }
+              style={{
+                marginRight: 10,
+              }}
+            />
+          ),
         }}
       />
     </Tab.Navigator>

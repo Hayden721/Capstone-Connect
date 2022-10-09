@@ -7,10 +7,11 @@ import {
   Text,
   Alert,
   Modal,
+  LogBox,
 } from 'react-native';
 import styled from 'styled-components/native';
-import firebase from 'firebase/app';
 import 'firebase/auth';
+import { login } from '../../utils/firebase';
 import { Image, Input, Button } from '../../components';
 import { images } from '../../utils/images';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -30,17 +31,9 @@ const ErrorText = styled.Text`
   line-height: 20px;
   color: ${({ theme }) => theme.errorText};
 `;
-const resultMessages = {
-  //메시지
-  'auth/email-already-in-use': '이미 가입된 이메일입니다.',
-  'auth/wrong-password': '잘못된 비밀번호입니다.',
-  'auth/user-not-found': '존재하지 않는 계정입니다.',
-  'auth/invalid-email': '유효하지 않은 이메일 주소입니다.',
-  'auth/weak-password': '비밀번호를 입력해 주세요.',
-};
 
 function LoginScreen({ navigation }) {
-  console.disableYellowBox = false;
+  LogBox.ignoreLogs(['Warning: ...']);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const passwordRef = useRef();
@@ -64,24 +57,12 @@ function LoginScreen({ navigation }) {
   };
 
   //로그인
-  const _handleLoginButtonPress = () => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(value => {
-        if (value.user.emailVerified == false) {
-          firebase.auth().signOut(); //이메일 인증 안하면 로그아웃
-          Alert('로그인 실패', '이메일 인증 하세요.'); // 이게 안나오고 밑에 알수없는 이유로가 나옴;;
-        }
-      })
-      .catch(error => {
-        console.log(error.code);
-        // ..
-        const alertMessage = resultMessages[error.code]
-          ? resultMessages[error.code]
-          : '알 수 없는 이유로 로그인에 실패하였습니다.';
-        Alert.alert('로그인 실패', alertMessage);
-      });
+  const _handleLoginButtonPress = async () => {
+    try {
+      const user = await login({ email, password });
+    } catch (e) {
+      Alert.alert('Login Error', e.message);
+    }
   };
 
   return (
@@ -120,9 +101,11 @@ function LoginScreen({ navigation }) {
           onPress={() => navigation.navigate('Register')}
           isFilled={false}
         />
-        <Text onPress={() => setModalVisible(!modalVisible)}>
-          비밀번호 찾기
-        </Text>
+        <Button
+          title="비밀번호 찾기"
+          onPress={() => setModalVisible(true)}
+          isFilled={false}
+        />
         <Modal visible={modalVisible}>
           <Text
             style={{
@@ -136,7 +119,7 @@ function LoginScreen({ navigation }) {
           </Text>
           <View
             style={{
-              justifyContent: 'center',
+              justifyContent: "center",
               marginTop: '50%',
             }}
           >
@@ -152,7 +135,7 @@ function LoginScreen({ navigation }) {
             </Text>
             <TextInput
               placeholder={'이메일을 입력 하세요.'}
-              onChangeText={text => setEmailAddress(text)}
+              onChangeText={text => setEmail(text)}
             />
             <View
               style={{
@@ -170,7 +153,7 @@ function LoginScreen({ navigation }) {
                   borderRadius: 10,
                   alignItems: 'center',
                 }}
-                onPress={() => findPwd()}
+                onPress={() => PwFind()}
               >
                 <Text
                   style={{
@@ -211,4 +194,3 @@ function LoginScreen({ navigation }) {
   );
 }
 export default LoginScreen;
-

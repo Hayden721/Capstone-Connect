@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
 import propTypes from 'prop-types';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { Platform, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -27,25 +27,7 @@ const ButtonContainer = styled.TouchableOpacity`
   align-items: center;
 `;
 const Image = ({ url, imageStyle, rounded, showButton, onChangeImage }) => {
-  useEffect(() => {
-    (async () => {
-      try {
-        if (Platform.OS === 'ios') {
-          const { status } = await Permissions.askAsync(
-            Permissions.CAMERA_ROLL
-          );
-          if (status !== 'granted') {
-            Alert.alert(
-              'Photo Permission',
-              'Please turn on the camera roll Permissions.'
-            );
-          }
-        }
-      } catch (e) {
-        Alert.alert('Photo Permission Error', e.message);
-      }
-    })();
-  }, []);
+  
   const _handleEditButton = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -70,8 +52,8 @@ const Image = ({ url, imageStyle, rounded, showButton, onChangeImage }) => {
     </Container>
   );
 };
-const ButtonIcon = styled(MaterialIcons).attrs({
-  name: 'photo-camera',
+const ButtonIcon = styled(Ionicons).attrs({
+  name: 'camera-outline',
   size: 22,
 })`
   color: ${({ theme }) => theme.imageButtonIcon};

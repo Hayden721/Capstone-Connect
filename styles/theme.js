@@ -19,7 +19,7 @@ export const theme = {
   imageBackground: colors.grey_0,
   imageButtonBackground: colors.hintOfElusiveBlue,
   imageButtonIcon: colors.londonSquare,
-  logoColor: colors.white,
+  logoColor: colors.goodNight,
   //loginTextInput
   label: colors.grey_1,
   inputPlaceholder:colors.grey_1,

@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
-  StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
   Platform,
   Alert,
@@ -11,333 +9,239 @@ import {
 } from 'react-native';
 import { images } from '../../utils/images';
 import CheckBox from 'expo-checkbox';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Image } from '../../components';
+import { Image, Input, Button } from '../../components';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
+import { Ionicons } from '@expo/vector-icons';
+import styled from 'styled-components/native';
+import { validateEmail } from '../../utils/common';
+import { signup } from '../../utils/firebase';
 
-const resultMessages = {
-  'auth/email-already-in-use': '이미 가입된 이메일입니다.',
-  'auth/wrong-password': '잘못된 비밀번호입니다.',
-  'auth/user-not-found': '존재하지 않는 계정입니다.',
-  'auth/invalid-email': '유효하지 않은 이메일 주소입니다.',
-  'auth/weak-password': '비밀번호를 6자리 이상 입력해 주세요.',
-};
+const db = firebase.firestore();
+
+const Container = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.background};
+  padding: 20px;
+`;
+const ErrorText = styled.Text`
+  align-items: flex-start;
+  height: 20px;
+  margin-bottom: 10px;
+  line-height: 20px;
+  color: ${({ theme }) => theme.errorText};
+`;
 
 function Register({ navigation }) {
-  const [admin] = useState('0');
+  const [admin] = useState('0'); 
   const [agree, setAgree] = useState(false);
-  const [addName, setAddName] = useState('');
-  const [addNumber, setAddNumber] = useState('');
-  const [email, setAddEmail] = useState('');
-  const [pwd, setAddPwd] = useState('');
-  const [pwd2, setAddPwd2] = useState('');
+  const [name, setName] = useState('');
+  const [stuId, setStuId] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
+  const [photoUrl, setPhotoUrl] = useState(images.profile);
+  const [errorMessage1, setErrorMessage1] = useState('');
+  const [errorMessage2, setErrorMessage2] = useState('');
+  const [disabled1, setDisabled1] = useState(true);
+  const [disabled2, setDisabled2] = useState(true);
+  const uid = stuId;
   const [modalVisible, setModalVisible] = useState(false);
-  const [photoURL, setPhotoURL] = useState(images.profile);
-  const db = firebase.firestore();
-  const docEmail = email;
 
-  function addText() {
-    db.collection('users')
-      .doc(docEmail)
-      .set({
-        name: addName,
-        number: addNumber,
-        email: email,
-        admin: admin,
-        photoURL: photoURL,
-      })
-      .then(() => {
-        console.log('Create Complete!');
-      })
-      .catch(error => {
-        console.log(error.message);
-      });
-  }
-  const uploadImage = async uri => {
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = function () {
-        resolve(xhr.response);
-      };
-      xhr.onerror = function (e) {
-        reject(new TypeError('Network request failed'));
-      };
-      xhr.responseType = 'blob';
-      xhr.open('GET', uri, true);
-      xhr.send(null);
-    });
-  
-    const user = Auth.currentUser;
-    const ref = app.storage().ref(`/profile/${user.uid}/photo.png`);
-    const snapshot = await ref.put(blob, { contentType: 'image/png' });
-  
-    blob.close();
-    return await snapshot.ref.getDownloadURL();
-  };
-
-  
-  const SignUp = () => {
-    if (addNumber && addName && email && pwd == pwd2 && agree) {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, pwd)
-        .then(() => {
-          addText();
-          firebase
-            .auth()
-            .currentUser.sendEmailVerification()
-            .then(() => {
-              console.log("이메일 전송 완료");
-            })
-            .catch((error) => {
-              console.log(error.code);
-              Alert.alert("실패", "이메일 전송 실패");
-            });
-          Alert.alert("회원가입 성공", "회원가입을 축하드립니다.");
-          firebase.auth().signOut();
-        })
-        .catch((error) => {
-          console.log(error.code);
-          const alertMessage = resultMessages[error.code]
-            ? resultMessages[error.code]
-            : "알 수 없는 이유로 회원가입에 실패하였습니다.";
-          console.log(alertMessage);
-          Alert.alert("회원가입 실패", alertMessage);
-        });
-    } else if (!email) {
-      Alert.alert("회원가입 실패", "이메일을 입력해주세요.");
-    } else if (!addName) {
-      Alert.alert("회원가입 실패", "이름을 입력해주세요.");
-    } else if (!addNumber){
-      Alert.alert("회원가입 실패", "학번을 입력해주세요.");
-    } else if (!pwd) {
-      Alert.alert("회원가입 실패", "비밀번호를 입력해주세요.");
-    } else if (pwd != pwd2) {
-      Alert.alert("회원가입 실패", "비밀번호가 다릅니다.");
+  const nameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const passwordCheckRef = useRef();
+  //학번 인증
+  useEffect(()=> {
+    let _errorMessage1 = '';
+    if(!stuId) {
+      _errorMessage1 = '학번을 입력해주세요.';
+    } else if(!name) {
+      _errorMessage1 = '이름을 입력해주세요';
+    } else {
+      _errorMessage1 = '';
+    }
+    setErrorMessage1(_errorMessage1);
+  }, [stuId, name]);
+  //모달창 인증
+  useEffect(() => {
+    let _errorMessage2 = '';
+    if (!validateEmail(email)) {
+      _errorMessage2 = '이메일 형식을 확인해 주세요.';
+    } else if (password.length < 6) {
+      _errorMessage2 = '비밀번호를 6자리 이상 설정해주세요';
+    } else if (password !== passwordCheck) {
+      _errorMessage2 = '비밀번호가 일치하지 않습니다.';
     } else if (!agree) {
-      Alert.alert("회원가입 실패", "필수 약관을 동의해주세요.");
+      _errorMessage2 = '필수 동의를 확인해주세요.';
+    } else {
+      _errorMessage2 = '';
+    }
+    setErrorMessage2(_errorMessage2);
+  }, [email, password, passwordCheck, agree]);
+  //학번인증버튼활성화
+  useEffect(() => {
+    setDisabled1(!(stuId && name && !errorMessage1));
+  }, [stuId, name, errorMessage1]);
+  //모달인증버튼 활성화
+  useEffect(()=>{
+    setDisabled2(!(email && password && passwordCheck && agree && !errorMessage2));
+  }, [email, password, passwordCheck, agree, errorMessage2]);
+
+
+
+  const _handleRegisterButtonPress = async () =>{
+    try {
+      const user = await signup({ email, password, admin, stuId, name, photoUrl });
+      console.log(user);
+    } catch(e) {
+      Alert.alert('Signup Error', e.message)
     }
   }
 
-  function touch() {
-    console.log(addNumber);
+  function stuidCheck() {
     db.collection('HakbunName')
       .get()
       .then(result => {
         result.forEach(doc => {
-          if (addNumber == doc.data().number && addName == doc.data().name) {
+          if (stuId == doc.data().number && name == doc.data().name) {
             console.log('확인되었습니다');
             throw setModalVisible(true);
-          } else if (addNumber == '' || addName == '') {
-            Alert.alert('인증 실패', '학번 또는 이름을 입력해주세요.');
-            setModalVisible(false);
           } else if (
-            addNumber != doc.data().number ||
-            addName != doc.data().name
+            stuId != doc.data().number || name != doc.data().name
           ) {
-            Alert.alert('인증 실패', '학번 또는 이름이 다릅니다.');
             setModalVisible(false);
           }
         });
       });
+
+
   }
 
   return (
     <KeyboardAwareScrollView
-      style={styles.container}
+      style={{ flex: 1, backgroundColor: 'white', paddingTop: 30 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <View style={styles.check}>
-        <Text style={styles.NanumRG}>학번</Text>
-      </View>
-      <View style={styles.check}>
-        <View style={styles.item1}>
-          <TextInput
-            placeholder={'ex) 20171111'}
-            style={styles.input}
-            value={addNumber}
-            onChangeText={text => setAddNumber(text)}
-          />
-        </View>
-      </View>
+      <Container>
+        <Input
+          label="학번"
+          value={stuId}
+          onChangeText={text => setStuId(text)}
+          onSubmitEditing={() => nameRef.current.focus()}
+          placeholder="학번을 입력하세요"
+          returnKetType="next"
+        />
+        <Input
+          label="이름"
+          value={name}
+          onChangeText={text => setName(text)}
+          onSubmitEditing={() => stuidCheck()}
+          placeholder="이름을 입력하세요"
+          returnKetType="done"
+        />
+        <ErrorText>{errorMessage1}</ErrorText>
+        <Button title="인증" onPress={() => stuidCheck()} disabled={disabled1} />
 
-      <Text style={styles.NanumRG}>이름</Text>
-      <TextInput
-        placeholder={'ex) 홍길동'}
-        style={styles.input}
-        value={addName}
-        onChangeText={text => setAddName(text)}
-      />
-      <TouchableOpacity
-        style={{
-          backgroundColor: '#1e272e',
-          padding: 15,
-          margin: 20,
-          marginTop: 50,
-          borderRadius: 10,
-          alignItems: 'center',
-        }}
-        onPress={() => touch()}
-      >
-        <Text
-          style={{
-            color: 'white',
-            fontSize: 24,
-            fontFamily: 'NanumGothicBold',
-          }}
-        >
-          인증
-        </Text>
-      </TouchableOpacity>
-      <Modal presentationStyle={'formSheet'} visible={modalVisible}>
-      <Image rounded url={photoURL} showButton onChangeImage={url => setPhotoURL(url)}/>
-        <Text style={styles.NanumRG}>학교 이메일</Text>
-        <View style={styles.check}>
-          <View style={styles.item1}>
-            <TextInput
-              placeholder={'ex) 20001234@shinhan.ac.kr'}
-              style={styles.input}
-              value={email}
-              onChangeText={text => setAddEmail(text)}
-            />
-          </View>
-        </View>
-        <Text style={styles.NanumRG}>비밀번호</Text>
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          value={pwd}
-          onChangeText={text => setAddPwd(text)}
-        />
-        <Text style={styles.NanumRG}>비밀번호 확인</Text>
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          value={pwd2}
-          onChangeText={text => setAddPwd2(text)}
-        />
-        <View style={styles.box}>
-          <View style={styles.box1}>
-            <CheckBox
-              value={agree}
-              onValueChange={() => setAgree(!agree)}
-              color={agree ? '#4630EB' : undefined}
-              margin={20}
-              marginRight={-10}
-              marginTop={31}
-            />
-          </View>
-          <View style={styles.box2}>
-            <Text style={styles.NanumRG}>[필수]동의합니다.</Text>
-          </View>
-          <View style={styles.box3}>
+        <Modal presentationStyle={'formSheet'} visible={modalVisible}>
+        <KeyboardAwareScrollView
+      style={{ flex: 1, backgroundColor: 'white', paddingTop: 30 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >  
+          <View>
             <TouchableOpacity>
-              <MaterialCommunityIcons name="plus" size={50} color="black" />
+              <Ionicons
+                name="chevron-back-sharp"
+                size={50}
+                color="black"
+                onPress={() => setModalVisible(false)}
+              />
             </TouchableOpacity>
           </View>
-        </View>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#D9D9D9',
-            padding: 15,
-            margin: 20,
-            marginTop: 50,
-            borderRadius: 10,
-            alignItems: 'center',
-          }}
-          onPress={() => SignUp()}
-        >
-          <Text
-            style={{
-              color: '#000000',
-              fontSize: 24,
-              fontFamily: 'NanumGothicBold',
-            }}
-          >
-            회원가입
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#D9D9D9',
-            padding: 15,
-            margin: 20,
-            marginTop: 20,
-            borderRadius: 10,
-            alignItems: 'center',
-          }}
-          onPress={() => setModalVisible(false)}
-        >
-          <Text
-            style={{
-              color: '#000000',
-              fontSize: 24,
-              fontFamily: 'NanumGothicBold',
-            }}
-          >
-            뒤로가기
-          </Text>
-        </TouchableOpacity>
-      </Modal>
+          <Container>
+            <Image rounded url={photoUrl} showButton onChangeImage={url => setPhotoUrl(url)}/>
+            <Input
+              ref={emailRef}
+              label="학교 이메일"
+              value={email}
+              onChangeText={text => setEmail(text)}
+              onSubmitEditing={() => passwordRef.current.focus()}
+              placeholder="ex) 20001234@shinhan.ac.kr"
+              returnKetType="next"
+            />
+            <Input
+              label="비밀번호"
+              value={password}
+              onChangeText={text => setPassword(text)}
+              onSubmitEditing={() => passwordCheckRef.current.focus()}
+              placeholder="비밀번호를 입력하세요"
+              returnKetType="next"
+              isPassword
+            />
+            <Input
+              label="비밀번호 확인"
+              value={passwordCheck}
+              onChangeText={text => setPasswordCheck(text)}
+              placeholder="비밀번호를 입력하세요"
+              returnKetType="done"
+              isPassword
+            />
+
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flex: 1 }}>
+                <CheckBox
+                  value={agree}
+                  onValueChange={() => setAgree(!agree)}
+                  color={agree ? '#1e272e' : undefined}
+                  margin={20}
+                  marginRight={-10}
+                  marginTop={31}
+                />
+              </View>
+              <View style={{ flex: 7 }}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontFamily: 'NanumGothic',
+                    marginLeft: 20,
+                    marginTop: 30,
+                  }}
+                >
+                  [필수]동의합니다.
+                </Text>
+              </View>
+              <View
+                style={{
+                  flex: 3,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <TouchableOpacity>
+                  <Ionicons name="add" size={40} color="black" />
+                </TouchableOpacity>
+                
+              </View>
+              
+            </View>
+            <ErrorText>{errorMessage2}</ErrorText>
+
+            <Button title="회원가입" onPress={() => _handleRegisterButtonPress()} disabled={disabled2} />
+          </Container>
+          </KeyboardAwareScrollView>
+        </Modal>
+      </Container>
     </KeyboardAwareScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingTop: 30,
-  },
-  NanumRG: {
-    fontSize: 20,
-    fontFamily: 'NanumGothic',
-    marginLeft: 20,
-    marginTop: 30,
-  },
-  input: {
-    backgroundColor: 'white',
-    height: 40,
-    margin: 5,
-    marginLeft: 20,
-    marginRight: 20,
-    borderBottomWidth: 1.5,
-  },
-  check: {
-    flexDirection: 'row',
-  },
-  checkBtn: {
-    backgroundColor: '#D9D9D9',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 60,
-    height: 50,
-  },
-  item1: {
-    flex: 4,
-  },
-  item2: {
-    flex: 1,
-  },
-  box: {
-    flexDirection: 'row',
-  },
-  box1: {
-    flex: 1,
-  },
-  box2: {
-    flex: 7,
-  },
-  box3: {
-    flex: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+
 
 export default Register;
