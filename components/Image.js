@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Platform, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import { Profile_Edit } from '../utils/firebase';
 const Container = styled.View`
   align-self: center;
   margin-bottom: 30px;
@@ -40,6 +41,7 @@ const Image = ({ url, imageStyle, rounded, showButton, onChangeImage }) => {
       if (!result.cancelled) {
         onChangeImage(result.uri);
       }
+
     } catch (e) {
       Alert.alert('Photo Error', e.message);
     }

@@ -47,8 +47,8 @@ function Register({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
-  const [photoUrl, setPhotoUrl] = useState(images.profile);
-  const [imageUrl, setImageUrl] = useState(null); // 이미지 주소
+  const [photoUrl, setPhotoUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState(images.profile); // 이미지 주소
   const [errorMessage1, setErrorMessage1] = useState('');
   const [errorMessage2, setErrorMessage2] = useState('');
   const [disabled1, setDisabled1] = useState(true);
@@ -111,7 +111,7 @@ function saveUserInfo (){
       displayName: name,
       stuId: stuId,
       email: email,
-      photoUrl: photoUrl
+      photoURL: photoUrl
   })
   .then(() => {
     console.log('Create Complete!');

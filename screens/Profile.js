@@ -15,7 +15,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
-import { getCurrentUser, updateUserPhoto } from '../utils/firebase';
+import { getCurrentUser, updateUserPhoto, Profile_Edit } from '../utils/firebase';
 import { Image } from '../components';
 
 const userDelete = () => {
@@ -50,6 +50,7 @@ const Main_profile = () => {
   const user = getCurrentUser();
   const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
 
+
   const _handlePhotoChange = async url => {
     try {
       const updateUser = await updateUserPhoto(url);
@@ -65,9 +66,9 @@ const Main_profile = () => {
     .then(result => {
       //users 컬렉션 이메일과 현재 유저의 이메일을 비교하여 이름과 학번을 추출
       result.forEach(doc => {
-        setProfile(doc.data().photoUrl);
-        setUserName(doc.data().name);
-        setUserNumber(doc.data().number);
+        setPhotoUrl(doc.data().photoURL);
+        setUserName(doc.data().displayName);
+        setUserNumber(doc.data().stuId);
         setUserEmail(doc.data().email);
       });
     });
@@ -84,12 +85,14 @@ const Main_profile = () => {
             fontFamily: 'NanumGothicBold',
           }}
         >
-          <Image
-            url={photoUrl}
-            onChangeImage={_handlePhotoChange}
-            showButton
-            rounded
-          />
+          <TouchableOpacity onPress={() => Profile_Edit(photoUrl,userNumber)}>
+            <Image
+              url={photoUrl}
+              //onChangeImage={_handlePhotoChange}
+              showButton
+              rounded
+            />
+          </TouchableOpacity>
           <View
             style={{
               justifyContent: 'center',
@@ -97,8 +100,8 @@ const Main_profile = () => {
               fontFamily: 'NanumGothicBold',
             }}
           >
-            <Text> 학번 : {userName} </Text>
-            <Text> 이름 : {userNumber} </Text>
+            <Text> 학번 : {userNumber} </Text>
+            <Text> 이름 : {userName} </Text>
             <Text> Email: {userEmail} </Text>
           </View>
         </View>

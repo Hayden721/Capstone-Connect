@@ -57,7 +57,6 @@ const uploadImage = async uri => {
   return await snapshot.ref.getDownloadURL();
 };
 
-
 export const signup = async({email, password}) => {
     firebases
       .auth()
@@ -335,17 +334,16 @@ export const addReport = ({ userName, content, photoUrl, setVisible }) => {
   }
 };
 
-// export const Profile_Edit = ({imageUrl,setVisible})=>{
-//   DB.collection("users").doc(firebases.auth().currentUser.email)
-//   .update({
-//     photoUrl: imageUrl,
-//   })
-//   .then(() => {
-//     console.log('Create Complete!');
-//     Alert.alert('성공', '프로필을 수정했습니다.');
-//     setVisible(false);
-//   })
-//   .catch(error => {
-//     console.log(error.message);
-//   });
-// };
+ export const Profile_Edit = ({photoUrl, userNumber})=>{
+   DB.collection("users").doc(userNumber)
+   .update({
+     photoURL: photoUrl,
+   })
+   .then(() => {
+     console.log('Create Complete!');
+     Alert.alert('성공', '프로필을 수정했습니다.');
+   })
+   .catch(error => {
+     console.log(error.message);
+   });
+ };
