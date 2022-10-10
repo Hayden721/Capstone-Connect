@@ -57,34 +57,12 @@ const uploadImage = async uri => {
   return await snapshot.ref.getDownloadURL();
 };
 
-const saveUserInfo = async ({admin, stuId, email, name, photoUrl}) => {
-  const storageUrl = photoUrl.startsWith('http') ? photoUrl : await uploadImage(photoUrl);
-
-  await DB.collection('users')
-  .doc()
-  .set({
-    admin: admin,
-    displayName: name,
-    stuId: stuId,
-    email: email,
-    photoURL: storageUrl,
-  })
-  .then(() => {
-    console.log('Create Complete!');
-  })
-  .catch(error => {
-    console.log(error.message);
-  });
-}
-
-
 
 export const signup = async({email, password}) => {
     firebases
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        saveUserInfo();
         firebases
           .auth()
           .currentUser.sendEmailVerification()

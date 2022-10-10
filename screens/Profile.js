@@ -80,7 +80,7 @@ const Main_profile = () => {
         <View
           style={{
             marginTop: 20,
-            flexDirection: 'center',
+            flexDirection: 'column',
             fontFamily: 'NanumGothicBold',
           }}
         >
@@ -93,7 +93,7 @@ const Main_profile = () => {
           <View
             style={{
               justifyContent: 'center',
-              flexDirection: 'center',
+              flexDirection: 'column',
               fontFamily: 'NanumGothicBold',
             }}
           >

@@ -6,20 +6,21 @@ import {
   Platform,
   Alert,
   Modal,
+  Image
 } from 'react-native';
 import { images } from '../../utils/images';
 import CheckBox from 'expo-checkbox';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Image, Input, Button } from '../../components';
+import { Input, Button } from '../../components';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
-
+import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { validateEmail } from '../../utils/common';
-import { signup } from '../../utils/firebase';
+import { signup} from '../../utils/firebase';
 
 const db = firebase.firestore();
 
@@ -47,13 +48,14 @@ function Register({ navigation }) {
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [photoUrl, setPhotoUrl] = useState(images.profile);
+  const [imageUrl, setImageUrl] = useState(null); // 이미지 주소
   const [errorMessage1, setErrorMessage1] = useState('');
   const [errorMessage2, setErrorMessage2] = useState('');
   const [disabled1, setDisabled1] = useState(true);
   const [disabled2, setDisabled2] = useState(true);
   const uid = stuId;
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
   const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -97,9 +99,102 @@ function Register({ navigation }) {
 
 
 
+
+
+
+//const storageUrl = photoUrl.startsWith('http') ? photoUrl : uploadImage(photoUrl);
+function saveUserInfo (){
+   db.collection('users')
+    .doc(stuId)
+    .set({
+      admin: admin,
+      displayName: name,
+      stuId: stuId,
+      email: email,
+      photoUrl: photoUrl
+  })
+  .then(() => {
+    console.log('Create Complete!');
+  })
+  .catch(error => {
+    console.log(error.message);
+  });
+}
+
+
+const pickImage = async () => {
+    // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
+    if (!status?.granted) {
+      const permission = await requestPermission();
+      if (!permission.granted) {
+        return null;
+      }
+    }
+    // 이미지 업로드 기능
+    const imageData = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: false,
+      quality: 1,
+      aspect: [1, 1],
+    });
+    if (imageData.cancelled) {
+      return null; //이미지 업로드 취소
+    }
+
+    console.log(imageData);
+    setImageUrl(imageData.uri);
+
+    //파이어베이스 스토리지 업로드
+    let uri = imageData.uri;
+    const filename = imageData.uri.split('/').pop();
+    // const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      xhr.send(null);
+    });
+
+    const reference = firebase
+      .storage()
+      .ref()
+      .child('images/' + filename);
+    await reference
+      .put(blob)
+      .then(() => {
+        console.log('성공');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    //이미지 다운로드 url
+    await reference
+      .getDownloadURL()
+      .then(url => {
+        console.log(url);
+        setPhotoUrl(url);
+        Alert.alert("업로드 성공", "완료");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+
+
   const _handleRegisterButtonPress = async () =>{
     try {
-      const user = await signup({ email, password, admin, stuId, name, photoUrl });
+      const user = await signup({email, password});
+      saveUserInfo();
       console.log(user);
     } catch(e) {
       Alert.alert('Signup Error', e.message)
@@ -166,7 +261,21 @@ function Register({ navigation }) {
             </TouchableOpacity>
           </View>
           <Container>
-            <Image rounded url={photoUrl} showButton onChangeImage={url => setPhotoUrl(url)}/>
+          <TouchableOpacity onPress ={pickImage}>
+            <View 
+              style={{ 
+                width:120,
+                height:120,
+            }}>
+              <Image 
+                source={{ uri: imageUrl }}
+                style={{
+                  borderRadius: 100,
+                  height:120,
+                  width:120
+                }}/>
+              </View>
+            </TouchableOpacity>
             <Input
               ref={emailRef}
               label="학교 이메일"
