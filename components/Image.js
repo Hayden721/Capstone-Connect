@@ -93,7 +93,7 @@ const Image = ({ url, imageStyle, rounded, showButton, onChangeImage }) => {
       Alert.alert('Photo Error', e.message);
     }
   };
-
+  
   return (
     <Container>
       <StyledImage source={{ uri: url }} style={imageStyle} rounded={rounded} />

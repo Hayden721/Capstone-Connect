@@ -6,7 +6,8 @@ import { Alert } from 'react-native';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import { MaterialIcons } from '@expo/vector-icons';
 import { theme } from '../../styles/theme';
-import { DB, createMessage, getCurrentUser } from '../../utils/firebase';
+import { DB, createMessage, getCurrentUser, } from '../../utils/firebase';
+import firebases from 'firebase/app';
 const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
@@ -38,11 +39,15 @@ const SendButton = props => {
 };
 
 
+
+
 //-------------
 const Channel = ({ navigation, route: { params } }) => {
   const [messages, setMessages] = useState([]);
-  const {uid, name, photoUrl} = getCurrentUser();
+  const {uid} = getCurrentUser();
   const theme = useContext(ThemeContext);
+  const [pohtoUrl, setPhotoUrl] = useState("");
+  const [displayName, setDisplayName] = useState("");
 
   useEffect(() => {
     const unsubscribe = DB.collection('channels')
@@ -63,6 +68,27 @@ const Channel = ({ navigation, route: { params } }) => {
     navigation.setOptions({ headerTitle: params.title || 'ChatChannel' });
   }, []);
 
+
+  DB.collection('users')
+  .where('email', '==', firebases.auth().currentUser.email )
+  .get()
+  .then(result => {
+    //users 컬렉션 이메일과 현재 유저의 이메일을 비교하여 이름과 학번을 추출
+    result.forEach(doc => {
+      setPhotoUrl(doc.data().photoURL);
+      setDisplayName(doc.data().displayName);
+      
+    });
+  });
+
+
+
+
+
+
+
+
+
   const _handleMessageSend = async messageList => {
     const newMessage = messageList[0];
     try {
@@ -81,7 +107,7 @@ const Channel = ({ navigation, route: { params } }) => {
         }}
         placeholderf = "Enter a message..."
         messages={messages}
-        user={{ _id: uid, name, avatar:photoUrl }}
+        user={{ _id: uid, name: displayName, avatar:pohtoUrl }}
         onSend={_handleMessageSend}
         alwaysShowSend={true}
         textInputProps={{

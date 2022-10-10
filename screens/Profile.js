@@ -74,6 +74,9 @@ const Main_profile = ({navigation}) => {
     });
 
 
+    function touch(){
+      console.log(firebase.auth().currentUser.photoURL);
+    }
 
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
@@ -139,7 +142,7 @@ const Main_profile = ({navigation}) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => firebase.auth().signOut()}
+          onPress={() => touch()}
           style={{
             marginTop: 120,
             borderRadius: 20,
