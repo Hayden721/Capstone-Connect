@@ -334,8 +334,8 @@ export const addReport = ({ userName, content, photoUrl, setVisible }) => {
   }
 };
 
- export const Profile_Edit = ({photoUrl, userNumber})=>{
-   DB.collection("users").doc(userNumber)
+ export const Profile_Edit = (photoUrl)=>{
+   DB.collection("users").doc(firebases.auth().currentUser.email)
    .update({
      photoURL: photoUrl,
    })

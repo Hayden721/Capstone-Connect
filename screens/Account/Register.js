@@ -105,7 +105,7 @@ function Register({ navigation }) {
 //const storageUrl = photoUrl.startsWith('http') ? photoUrl : uploadImage(photoUrl);
 function saveUserInfo (){
    db.collection('users')
-    .doc(stuId)
+    .doc(email)
     .set({
       admin: admin,
       displayName: name,
@@ -166,7 +166,7 @@ const pickImage = async () => {
     const reference = firebase
       .storage()
       .ref()
-      .child('images/' + filename);
+      .child('profile/' + filename);
     await reference
       .put(blob)
       .then(() => {

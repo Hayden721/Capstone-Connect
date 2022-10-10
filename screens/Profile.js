@@ -38,7 +38,7 @@ const userDelete = () => {
     }
   );
 };
-const Main_profile = () => {
+const Main_profile = ({navigation}) => {
   const db = firebase.firestore();
   const cu = firebase.auth().currentUser.email;
   const [userName, setUserName] = useState('');
@@ -85,14 +85,13 @@ const Main_profile = () => {
             fontFamily: 'NanumGothicBold',
           }}
         >
-          <TouchableOpacity onPress={() => Profile_Edit(photoUrl,userNumber)}>
             <Image
               url={photoUrl}
-              //onChangeImage={_handlePhotoChange}
+              onChangeImage={_handlePhotoChange}
               showButton
               rounded
             />
-          </TouchableOpacity>
+    
           <View
             style={{
               justifyContent: 'center',
@@ -111,6 +110,7 @@ const Main_profile = () => {
             marginLeft: 20,
             marginTop: 40,
           }}
+          
         >
           <Text
             style={{
@@ -122,7 +122,9 @@ const Main_profile = () => {
             작성한 게시글
           </Text>
         </View>
-
+        <TouchableOpacity
+          onPress={()=> navigation.navigate("ProfileStack","MyPost")}
+        >
         <View
           style={{
             height: 160,
@@ -132,7 +134,9 @@ const Main_profile = () => {
             borderRadius: 10,
             margin: 10,
           }}
+          
         ></View>
+        </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => firebase.auth().signOut()}
@@ -156,7 +160,6 @@ const Main_profile = () => {
             로그아웃
           </Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           onPress={() => userDelete()}
           style={{
