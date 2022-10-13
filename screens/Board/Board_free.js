@@ -5,6 +5,7 @@ import {
   Image,
   Pressable,
   TextInput,
+  ScrollView
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
@@ -17,13 +18,13 @@ const Board_free = ({ navigation }) => {
   useEffect(() => {
     getPosts().then(setPosts);
     setTerm('');
-  }, [isFocused]);
+  }, [posts],[isFocused]);
 
   const boardCategory = 'Free';
   const db = firebase.firestore();
   async function getPosts() {
     const snapshot = await db
-      .collection(boardCategory)
+      .collection(dbCategories)
       .orderBy('timestamp', 'desc')
       .get();
     const posts = snapshot.docs.map(doc => ({
@@ -34,6 +35,25 @@ const Board_free = ({ navigation }) => {
     return posts;
   }
 
+  const categories = [
+    '자유',
+    '공모전',
+    '동아리',
+    '취미',
+  ];
+
+  const [categoryValue, setCategoryValue] = useState("");
+
+  let dbCategories ='Free'
+  if (categoryValue== '자유') {
+    dbCategories ='Free';
+  } else if (categoryValue == '공모전') {
+    dbCategories ='Competition';
+  } else if (categoryValue == '동아리') {
+    dbCategories ='Club';
+  } else if (categoryValue == '취미') {
+    dbCategories ='Hobby';
+  }
   const [data, setData] = useState(posts);
   const [term, setTerm] = useState('');
   const searchName = text => {
@@ -139,8 +159,32 @@ const Board_free = ({ navigation }) => {
       style={{
         flexDirection: 'column',
         flex: 2,
-      }}
-    >
+      }}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        {categories.map((category, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() =>{
+              setCategoryValue(categories[index])
+            }
+            
+            }>
+            <View>
+              <Text
+                style={{
+                  padding: 10,
+                  borderWidth: 1,
+                  borderColor: 'black',
+                  fontSize: 19,
+                  margin: 10,
+                  borderRadius: 10,
+                }}>
+                {category}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
       <View
         style={{
           marginLeft: 10,
