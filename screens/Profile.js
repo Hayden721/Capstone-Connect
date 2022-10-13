@@ -6,8 +6,10 @@ import {
   SafeAreaView,
   Alert,
   Modal,
-  TextInput,
-} from 'react-native';
+  
+} 
+
+from 'react-native';
 import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import 'react-native-gesture-handler';
@@ -15,6 +17,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { getCurrentUser, updateUserPhoto, Profile_Edit } from '../utils/firebase';
 import { Image } from '../components';
 
@@ -86,6 +89,7 @@ const Main_profile = ({navigation}) => {
             marginTop: 20,
             flexDirection: 'column',
             fontFamily: 'NanumGothicBold',
+
           }}
         >
             <Image
@@ -95,42 +99,37 @@ const Main_profile = ({navigation}) => {
               rounded
             />
     
-          <View
-            style={{
-              justifyContent: 'center',
-              flexDirection: 'column',
-              fontFamily: 'NanumGothicBold',
-            }}
-          >
-            <Text> 학번 : {userNumber} </Text>
-            <Text> 이름 : {userName} </Text>
-            <Text> Email: {userEmail} </Text>
-          </View>
+
+            <Text style={{marginLeft:20, fontSize:17, fontFamily: 'NanumGothicBold', margin:10}}> 학번 : {userNumber} </Text>
+            <Text style={{marginLeft:20, fontSize:17, fontFamily: 'NanumGothicBold', margin:10}}> 이름 : {userName} </Text>
+            <Text style={{marginLeft:20, fontSize:17, fontFamily: 'NanumGothicBold', margin:10}}> Email: {userEmail} </Text>
+        
         </View>
 
         <View
           style={{
-            marginLeft: 20,
+            marginLeft: 25,
             marginTop: 40,
-          }}
-          
+            margin:5,
+          }}   
         >
           <Text
             style={{
               margintop: 30,
               fontFamily: 'NanumGothicBold',
               fontSize: 20,
+              
             }}
           >
+          
+            <FontAwesome5 name="book-open" size={22} color="green"/>
             작성한 게시글
           </Text>
         </View>
-        <TouchableOpacity
-          onPress={()=> navigation.navigate("ProfileStack","MyPost")}
-        >
-        <View
+        
+        {/* <View
           style={{
-            height: 160,
+            height: 150,
             borderColor: '#E6E7E8',
             backgroundColor: '#ffffff',
             borderWidth: 1,
@@ -138,53 +137,114 @@ const Main_profile = ({navigation}) => {
             margin: 10,
           }}
           
-        ></View>
-        </TouchableOpacity>
+        >
+          
+        <TouchableOpacity
+          onPress={()=> navigation.navigate("ProfileStack", { screen: 'MyPost' })}
+        >
+          <View
+            style={[
+              {
+                height: 35,
+                marginLeft:10,
+ 
+              }
+            ]}
+          >
+            <Text
+              style={{
+                fontFamily: 'NanumGothicBold',
+                fontSize: 18,
+                margin:7,
+              }}
+            >
+              자유 게시판 
+              </Text>
+              </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+          onPress={()=> navigation.navigate("ProfileStack", { screen: 'MyPost' })}
+        >
+          <View
+            style={[
+              {
+                height: 35,
+                marginLeft:10,
+ 
+              }
+            ]}
+          >
+            <Text
+              style={{
+                fontFamily: 'NanumGothicBold',
+                fontSize: 18,
+                margin:7,
+              }}
+            >
+              공모전 게시판 
+              </Text>
+              </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+          onPress={()=> navigation.navigate("ProfileStack", { screen: 'MyPost' })}
+        >
+          <View
+            style={[
+              {
+                height: 35,
+                marginLeft:10,
+ 
+              }
+            ]}
+          >
+            <Text
+              style={{
+                fontFamily: 'NanumGothicBold',
+                fontSize: 18,
+                margin:7,
+              }}
+            >
+              동아리 게시판 
+              </Text>
+              </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+          onPress={()=> navigation.navigate("ProfileStack", { screen: 'MyPost' })}
+        >
+          <View
+            style={[
+              {
+                height: 35,
+                marginLeft:10,
+ 
+              }
+            ]}
+          >
+            <Text
+              style={{
+                fontFamily: 'NanumGothicBold',
+                fontSize: 18,
+                margin:7,
+              }}
+            >
+              자유 게시판 
+              </Text>
+              </View>
+              </TouchableOpacity> */}
+            
+        {/* </View>
+
+        
 
         <TouchableOpacity
-          onPress={() => touch()}
-          style={{
-            marginTop: 120,
-            borderRadius: 20,
-            backgroundColor: '#485460',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: 50,
-            marginHorizontal: 60,
-          }}
+          onPress={()=> navigation.navigate("ProfileStack", { screen: 'MyPost' })}
         >
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: 'white',
-            }}
-          >
-            로그아웃
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => userDelete()}
-          style={{
-            marginTop: 20,
-            borderRadius: 20,
-            backgroundColor: '#ef5777',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: 50,
-            marginHorizontal: 60,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: 'white',
-            }}
-          >
-            회원탈퇴
-          </Text>
-        </TouchableOpacity>
+
+        </TouchableOpacity>  */}
+ 
       </SafeAreaView>
     </ScrollView>
   );

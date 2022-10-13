@@ -22,7 +22,7 @@ const BoardStack = createStackNavigator();
   const BoardStacks = () => {
     return (
     <BoardStack.Navigator>
-      <BoardStack.Screen name="자유게시판" component={Board_free}/>
+      <BoardStack.Screen options={{ headerShown: false,}}name="자유게시판" component={Board_free}/>
       <BoardStack.Screen name="공모전게시판" component={Board_competition}/>
       <BoardStack.Screen name="동아리게시판" component={Board_club}/>
       <BoardStack.Screen name="취미게시판" component={Board_hobby}/>

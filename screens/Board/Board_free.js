@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import { FlatList } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native'; //새로고침 랜더링
+import { Ionicons } from '@expo/vector-icons';
 
 const Board_free = ({ navigation }) => {
   const isFocused = useIsFocused(); // isFoucesd Define
@@ -42,7 +43,7 @@ const Board_free = ({ navigation }) => {
     '취미',
   ];
 
-  const [categoryValue, setCategoryValue] = useState("");
+  const [categoryValue, setCategoryValue] = useState("자유");
 
   let dbCategories ='Free'
   if (categoryValue== '자유') {
@@ -158,33 +159,79 @@ const Board_free = ({ navigation }) => {
     <View
       style={{
         flexDirection: 'column',
-        flex: 2,
+        flex: 1,
       }}>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <View
+        style={{
+          marginTop: 50,
+          flex:1,
+          flexDirection: 'row',
+          alignItems: 'center',
+          
+        }}
+      >
+            <View
+          style={{
+            flex: 1,
+            marginLeft:35,
+            alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'NanumGothicBold',
+              fontSize: 20,
+            }}
+          >
+            {categoryValue}게시판
+          </Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => setVisible(true)}
+          style={{
+            alignItems: 'flex-end',
+          }}
+        >
+          <Ionicons
+            name="ios-alert-outline"
+            size={24}
+            color="black"
+            style={{
+              marginRight: 10,
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          flexDirection:"row",
+          flex:1,
+          justifyContent:"space-evenly"
+        }}>
         {categories.map((category, index) => (
           <TouchableOpacity
             key={index}
             onPress={() =>{
               setCategoryValue(categories[index])
-            }
-            
-            }>
-            <View>
-              <Text
+            }}
+            style = {{
+             // backgroundColor:"blue",
+              
+            }}>
+              <Text 
                 style={{
                   padding: 10,
                   borderWidth: 1,
                   borderColor: 'black',
                   fontSize: 19,
-                  margin: 10,
+                  margin: 5,
                   borderRadius: 10,
                 }}>
                 {category}
               </Text>
-            </View>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </View>
       <View
         style={{
           marginLeft: 10,

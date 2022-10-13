@@ -9,6 +9,7 @@ import {
   Image,
   Button,
   Alert,
+  SafeAreaView
 } from 'react-native';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -251,7 +252,7 @@ const Board = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <Modal visible={visible} transparent={false}>
-        <View
+        <SafeAreaView
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
         >
           <View
@@ -422,7 +423,7 @@ const Board = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </SafeAreaView>
       </Modal>
     </ScrollView>
   );

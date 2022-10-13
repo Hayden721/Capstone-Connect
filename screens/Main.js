@@ -8,7 +8,7 @@ import styled from 'styled-components/native';
 // 아이콘 사용 import
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons'
 
 import { ScrollView } from 'react-native-gesture-handler';
 import { CallBoard } from '../utils/firebase';
@@ -44,7 +44,8 @@ const TextContainer = styled.View`
   height: 60px;
   border-width: 2px;
   border-radius: 40px;
-  margin: 30px;
+  margin: 20px;
+  margin-top: 10px
   padding: 15px;
   background-color: #f4f3ea;
   border-color: #e6e7e8;
@@ -64,76 +65,36 @@ const Main = ({ navigation }) => {
     <ScrollView
       style={{
         backgroundColor: '#ffffff',
+        
       }}
     >
-      <Text
-        style={{
-          fontSize: 20,
-          marginLeft: 25,
-          marginTop: 10,
-          fontFamily: 'NanumGothicBold',
-        }}
-      >
-        공지사항
-        <Entypo name="megaphone" size={24} color="red" />
-      </Text>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Notice', { screen: 'NotiSchool' })}
-      >
-        <Container>
-          <Ionicons name="home-outline" size={24} color="#E2495B" />
-          <Text
-            style={{
-              justifyContent: 'center',
-              textAlign: 'center',
-              fontSize: 8,
-            }}
-          >
-            학교
-          </Text>
-        </Container>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Notice', { screen: 'NotiSystem' })}
-      >
-        <Container>
-          <Entypo name="laptop" size={24} color="#0C4A60" />
-          <Text
-            style={{
-              justifyContent: 'center',
-              textAlign: 'center',
-              fontSize: 8,
-            }}
-          >
-            시스템
-          </Text>
-        </Container>
-      </TouchableOpacity>
-
-      <Top2></Top2>
-
-      <Text
-        style={{
-          fontSize: 20,
-          marginLeft: 25,
-          marginTop: 10,
-          fontFamily: 'NanumGothicBold',
-        }}
-      >
-        바로가기
-        <AntDesign name="swapright" size={24} color="black" />
-      </Text>
-      <View
+    <View
         style={{
           justifyContent: 'center',
           alignItems: 'center',
-          flexDirection: 'row',
+          flexDirection: 'row',  
+          marginTop:20,    
         }}
-        horizontal={true}
       >
-        <TouchableOpacity
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Notice', { screen: 'NotiSchool' })}
+      >
+        <TextContainer>
+        <Entypo name="megaphone" size={24} color="red" />
+          <Text
+            style={{
+              justifyContent: 'center',
+              textAlign: 'center',
+              fontSize: 8,
+             
+            }}
+          >
+            공지
+          </Text>
+        </TextContainer>
+      </TouchableOpacity> 
+
+      <TouchableOpacity
           onPress={() =>
             Linking.openURL('https://www.shinhan.ac.kr/sites/kr/index.do')
           }
@@ -152,12 +113,12 @@ const Main = ({ navigation }) => {
           </TextContainer>
         </TouchableOpacity>
 
-        <TextContainer>
-          <TouchableOpacity
+        <TouchableOpacity
             onPress={() =>
               Linking.openURL('https://stins.shinhan.ac.kr/irj/portal')
             }
           >
+            <TextContainer>
             <AntDesign name="earth" size={24} color="#0C4A60" />
             <Text
               style={{
@@ -168,15 +129,15 @@ const Main = ({ navigation }) => {
             >
               종정시
             </Text>
+            </TextContainer>
           </TouchableOpacity>
-        </TextContainer>
 
-        <TextContainer>
           <TouchableOpacity
             onPress={() =>
-              Linking.openURL('https://www.shinhan.ac.kr/kr/125/subview.do')
+              Linking.openURL('https://shinhanunivst.modoo.at/?link=6n7lulzb&messageNo=108&mode=view&query=&queryType=0&myList=0&page=2')
             }
           >
+            <TextContainer>
             <Ionicons name="bus" size={24} color="#D3AC2B" />
             <Text
               style={{
@@ -187,19 +148,13 @@ const Main = ({ navigation }) => {
             >
               셔틀
             </Text>
-          </TouchableOpacity>
-        </TextContainer>
-      </View>
-      <View
-        style={{
-          justifyContent: 'center',
-          textAlign: 'center',
-          fontSize: 8,
-        }}
-      />
-      <Top2></Top2>
-
-      <Text
+            </TextContainer>
+          </TouchableOpacity>    
+  </View>
+  
+      {/* 실시간 최신글 */}
+      <Top></Top>
+    <Text
         style={{
           fontSize: 20,
           marginLeft: 25,
@@ -207,7 +162,7 @@ const Main = ({ navigation }) => {
           fontFamily: 'NanumGothicBold',
         }}
       >
-        <Text>실시간 최신글</Text>
+        <Text> 최신글 </Text>
       </Text>
 
       <View
@@ -230,8 +185,8 @@ const Main = ({ navigation }) => {
               {
                 height: 35,
                 marginHorizontal: 25,
-              },
-              { marginTop: 20 },
+                marginTop:20,       
+              },   
             ]}
           >
             <Text
@@ -346,27 +301,38 @@ const Main = ({ navigation }) => {
             </Text>
           </View>
         </TouchableOpacity>
-      </View>
-      <Text
-        style={{
-          fontSize: 20,
-          marginLeft: 15,
-          marginTop: 10,
-          fontFamily: 'NanumGothicBold',
-        }}
+      </View> 
+    <Text
+    style={{
+      fontSize:20,
+      marginLeft:25,
+      marginTop:10,
+      fontFamily: 'NanumGothicBold'
+    }}
+    >
+      <Text> 채팅방 </Text>
+    </Text>
+    {/* 채팅방 */}
+      <View style={{
+         height: 160,
+         borderColor: '#E6E7E8',
+         backgroundColor: '#ffffff',
+         borderWidth: 1,
+         borderRadius: 10,
+         margin: 10,
+      }}
       >
-        <Text>채팅방</Text>
-      </Text>
+
+      </View>
       <View
         style={{
-          height: 160,
-          borderColor: '#E6E7E8',
-          backgroundColor: '#ffffff',
-          borderWidth: 1,
-          borderRadius: 10,
-          margin: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+          marginTop:10,
         }}
-      ></View>
+      >
+      </View>   
     </ScrollView>
   );
 };
