@@ -115,7 +115,7 @@ const Main_profile = ({navigation}) => {
         >
           <Text
             style={{
-              margintop: 30,
+              marginTop: 30,
               fontFamily: 'NanumGothicBold',
               fontSize: 20,
               

@@ -123,7 +123,7 @@ const Main = ({ navigation }) => {
             <Text
               style={{
                 justifyContent: 'center',
-                extAlign: 'center',
+                textAlign: 'center',
                 fontSize: 8,
               }}
             >
