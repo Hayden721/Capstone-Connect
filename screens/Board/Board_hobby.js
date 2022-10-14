@@ -11,6 +11,9 @@ import firebase from 'firebase/app';
 import { FlatList } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native';
 
+import ActionButton from 'react-native-action-button';
+
+
 const Board_hobby = ({ navigation }) => {
   const isFocused = useIsFocused(); // isFoucesd Define
   const [posts, setPosts] = useState(null);
@@ -163,36 +166,13 @@ const Board_hobby = ({ navigation }) => {
           maxToRenderPerBatch={10} //스크롤시 랜더링 갯수
         />
       </View>
-      <View
-        style={{
-          flex: 1,
-          marginBottom: 5,
-          backgroundColor: '#485460',
-          justifyContent: 'center',
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => navigation.navigate('글쓰기')}
-          style={{
-            borderRadius: 20,
-            backgroundColor: '#485460',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: 50,
-            marginHorizontal: 60,
+      <ActionButton
+          buttonColor="rgba(231,76,60,1)"
+          onPress={() => {
+            navigation.navigate('BoardStacks', { screen: '글쓰기' })
           }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: 'white',
-            }}
-          >
-            글작성
-          </Text>
-        </TouchableOpacity>
-      </View>
+        />
+
     </View>
   );
 };
