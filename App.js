@@ -30,6 +30,7 @@ const Stack = createStackNavigator();
 export default function App() {
   LogBox.ignoreLogs(['Warning: ...']);
   LogBox.ignoreLogs(['Require cycle:']);
+  LogBox.ignoreLogs(['*']);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 

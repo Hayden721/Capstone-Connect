@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext} from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import 'react-native-gesture-handler';
-import { Text, View } from 'react-native';
+
 import { Ionicons } from '@expo/vector-icons';
-import Stacks from './Stack';
+
 //stack screens import
 import Main from '../screens/Main';
 import Board from '../screens/Board';
@@ -24,7 +24,6 @@ style={{
 const Tabs = ({ navigation, route }) => {
   const theme = useContext(ThemeContext);
 
-  
   return (
     <Tab.Navigator>
       <Tab.Screen
