@@ -17,7 +17,8 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import { Picker } from '@react-native-picker/picker'; //선택박스 만들기
-import { addText} from '../../utils/firebase';
+import { addText } from '../../utils/firebase';
+import { NativeScreenNavigationContainer } from 'react-native-screens';
 
 const Board_write = ({ navigation }) => {
   const [category, setCategory] = useState(''); //카테고리
@@ -46,7 +47,6 @@ const Board_write = ({ navigation }) => {
   } else if (category == 'Hobby') {
     gsp = '취미게시판';
   }
-  
 
   const pickImage = async () => {
     // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
@@ -108,7 +108,7 @@ const Board_write = ({ navigation }) => {
       .then(url => {
         console.log(url);
         setPhotoUrl(url);
-        Alert.alert("업로드 성공", "완료");
+        Alert.alert('업로드 성공', '완료');
       })
       .catch(error => {
         console.log(error);
@@ -122,7 +122,7 @@ const Board_write = ({ navigation }) => {
       }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <View/>
+      <View />
       <View
         style={{
           backgroundColor: '#ffffff',
@@ -149,7 +149,7 @@ const Board_write = ({ navigation }) => {
             <Picker.Item label="취미" value="Hobby" />
           </Picker>
         </View>
-        <View/>
+        <View />
         <TextInput
           placeholder={'제목'}
           style={{
@@ -220,7 +220,22 @@ const Board_write = ({ navigation }) => {
         >
           <TouchableOpacity
             onPress={() => {
-              addText({navigation,category,title,content,timestamp,date,photoUrl,gsp});
+              if (
+                addText({
+                  navigation,
+                  category,
+                  title,
+                  content,
+                  timestamp,
+                  date,
+                  photoUrl,
+                  gsp,
+                })
+              ) {
+                navigation.pop();
+              } else {
+                Alert.alert('안돼');
+              }
             }}
             style={{
               marginTop: 50,

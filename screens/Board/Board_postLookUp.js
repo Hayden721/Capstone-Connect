@@ -10,9 +10,8 @@ import React, { useState, useEffect } from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { MaterialIcons } from "@expo/vector-icons";
+
 import Icon from "@expo/vector-icons/Ionicons";
-import { KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 
 // 글 조회

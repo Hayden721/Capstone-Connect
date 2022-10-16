@@ -12,9 +12,14 @@ import { FlatList } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native'; //새로고침 랜더링
 import { Ionicons } from '@expo/vector-icons';
 import ActionButton from 'react-native-action-button';
+import { SearchBar } from '@rneui/themed';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+
 const Board = ({ navigation }) => {
   const isFocused = useIsFocused(); // isFoucesd Define
   const [posts, setPosts] = useState(null);
+
   useEffect(
     () => {
       getPosts().then(setPosts);
@@ -73,6 +78,7 @@ const Board = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => (
+    //
     <Pressable
       onPress={() =>
         navigation.navigate(
@@ -135,7 +141,7 @@ const Board = ({ navigation }) => {
               }}
             >
               <Text style={{ fontSize: 11 }}>{item.date}</Text>
-              <Text style={{ fontSize: 11 }}> || </Text>
+              <Text style={{ fontSize: 11 }}> / </Text>
               <Text style={{ fontSize: 11 }}>{item.writer}</Text>
             </View>
           </View>
@@ -219,7 +225,8 @@ const Board = ({ navigation }) => {
             }}
             style={
               {
-                // backgroundColor:"blue",
+                backgroundColor: categoryValue  == categories[index] ? 'black' : 'transparent',
+                
               }
             }
           >
@@ -238,19 +245,19 @@ const Board = ({ navigation }) => {
           </TouchableOpacity>
         ))}
       </View>
+
       <View
         style={{
-          marginLeft: 10,
-          marginRight: 10,
-          padding: 8,
+
         }}
       >
-        <TextInput
-          placeholder="Sarch Name"
-          value={term}
+        <SearchBar
+          placeholder="알아검색해"
           onChangeText={text => {
             searchName(text);
           }}
+          value={term}
+          platform='ios'
         />
       </View>
 
@@ -268,11 +275,11 @@ const Board = ({ navigation }) => {
         />
       </View>
       <ActionButton
-          buttonColor="rgba(231,76,60,1)"
-          onPress={() => {
-            navigation.navigate('BoardStacks', { screen: '글작성' })
-          }}
-        />
+        buttonColor="rgba(231,76,60,1)"
+        onPress={() => {
+          navigation.navigate('BoardStacks', { screen: '글작성' });
+        }}
+      />
     </View>
   );
 };
