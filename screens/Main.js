@@ -45,7 +45,7 @@ const TextContainer = styled.View`
   border-width: 2px;
   border-radius: 40px;
   margin: 20px;
-  margin-top: 10px
+  margin-top: 10px;
   padding: 15px;
   background-color: #f4f3ea;
   border-color: #e6e7e8;
@@ -86,7 +86,7 @@ const Main = ({ navigation }) => {
               justifyContent: 'center',
               textAlign: 'center',
               fontSize: 8,
-             
+            
             }}
           >
             공지

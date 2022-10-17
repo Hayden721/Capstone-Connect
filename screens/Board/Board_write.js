@@ -233,8 +233,6 @@ const Board_write = ({ navigation }) => {
                 })
               ) {
                 navigation.pop();
-              } else {
-                Alert.alert('안돼');
               }
             }}
             style={{
