@@ -308,7 +308,7 @@ export const CallBoard = (category, boardCategory) => {
     });
 };
 
-export const addReport = ({ userName, content, photoUrl, setVisible }) => {
+export const addReport = ({ userName, content, photoUrl,navigation}) => {
   //보드 db에 저장
   if (userName == '') {
     Alert.alert('신고 실패', '신고할 대상을 입력하세요.');
@@ -326,7 +326,7 @@ export const addReport = ({ userName, content, photoUrl, setVisible }) => {
       .then(() => {
         console.log('Create Complete!');
         Alert.alert('성공', '글을 작성했습니다.');
-        setVisible(false);
+        navigation.navigate("Tabs",{ screen: 'Board' });
       })
       .catch(error => {
         console.log(error.message);

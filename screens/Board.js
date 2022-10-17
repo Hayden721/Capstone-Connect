@@ -23,9 +23,8 @@ const Board = ({ navigation }) => {
   useEffect(
     () => {
       getPosts().then(setPosts);
-      setTerm('');
+      
     },
-    [posts],
     [isFocused]
   );
 
@@ -195,7 +194,7 @@ const Board = ({ navigation }) => {
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => setVisible(true)}
+          onPress={() => navigation.navigate("BoardStacks", { screen: '신고' })}
           style={{
             alignItems: 'flex-end',
           }}
@@ -225,7 +224,10 @@ const Board = ({ navigation }) => {
             }}
             style={
               {
-                backgroundColor: categoryValue  == categories[index] ? 'black' : 'transparent',
+                borderWidth:1,
+                backgroundColor: categoryValue  == categories[index] ? 'red' : 'transparent',
+                borderRadius: 10,
+
                 
               }
             }
@@ -233,8 +235,7 @@ const Board = ({ navigation }) => {
             <Text
               style={{
                 padding: 10,
-                borderWidth: 1,
-                borderColor: 'black',
+                color:"blue",
                 fontSize: 19,
                 margin: 5,
                 borderRadius: 10,
