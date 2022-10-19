@@ -4,6 +4,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {NavigationContainer} from '@react-navigation/native';
 import "react-native-gesture-handler";
 import styled from 'styled-components/native';
+import Board from "../Board";
 
 const Container = styled.View`
   background-color: 'white';
@@ -17,27 +18,168 @@ const Container = styled.View`
 `;
 
 const BoardTouchable = styled.TouchableOpacity`
-
 `;
 const First = ({navigation}) => {
 
   return (
     <Container>
-      <BoardTouchable onPress= {() => navigation.navigate('BoardStacks', {screen: '자유게시판'})}>
-        <Text>자유게시판</Text>
-      </BoardTouchable>
+      <View
+        style={{
+          height: 250,
+          borderColor: '#111111',
+          backgroundColor: '#ffffff',
+          borderWidth: 1,
+          borderRadius: 10,
+          margin: 10,
+        }}
+      >  
+      </View>
 
-      <BoardTouchable onPress= {() => navigation.navigate('BoardStacks', {screen: '자유게시판'})}>
-        <Text>공모전게시판</Text>
-      </BoardTouchable>
+      <View
+        style={{
+          height: 250,
+          borderColor: '#111111',
+          backgroundColor: '#ffffff',
+          borderWidth: 1,
+          borderRadius: 10,
+          margin: 10,
+        }}
+      >  
+   
+   <BoardTouchable
+          onPress={() =>
+            navigation.navigate('BoardStacks', { screen: '자유게시판' })
+          }
+        >
+          <View
+            style={[
+              {
+                height: 35,
+                marginHorizontal: 25,
+                marginTop: 20,
+              },
+            ]}
+          >
+            <Text
+              style={{
+                fontFamily: 'NanumGothicBold',
+                fontSize: 15,
+              }}
+            >
+              자유 게시판
+              <Text
+                style={{
+                  fontFamily: 'NanumGothic',
+                  fontSize: 15,
+                  marginLeft: 15,
+                }}
+              >
+              </Text>
+            </Text>
+          </View>
+        </BoardTouchable>
+        
 
-      <BoardTouchable onPress= {() => navigation.navigate('BoardStacks', {screen: '자유게시판'})}>
-        <Text>동아리게시판</Text>
-      </BoardTouchable>
+        <BoardTouchable
+          onPress={() =>
+            navigation.navigate('BoardStacks', { screen: '공모전게시판' })
+          }
+        >
+          <View
+            style={[
+              {
+                height: 35,
+                marginHorizontal: 25,
+                marginTop: 20,
+              },
+            ]}
+          >
+            <Text
+              style={{
+                fontFamily: 'NanumGothicBold',
+                fontSize: 15,
+              }}
+            >
+              공모전 게시판
+              <Text
+                style={{
+                  fontFamily: 'NanumGothic',
+                  fontSize: 15,
+                  marginLeft: 15,
+                }}
+              >
+              </Text>
+            </Text>
+          </View>
+        </BoardTouchable>
 
-      <BoardTouchable onPress= {() => navigation.navigate('BoardStacks', {screen: '자유게시판'})}>
-        <Text>취미게시판</Text>
-      </BoardTouchable>
+
+         <BoardTouchable
+          onPress={() =>
+            navigation.navigate('BoardStacks', { screen: '동아리게시판' })
+          }
+        >
+          <View
+            style={[
+              {
+                height: 35,
+                marginHorizontal: 25,
+                marginTop: 20,
+              },
+            ]}
+          >
+            <Text
+              style={{
+                fontFamily: 'NanumGothicBold',
+                fontSize: 15,
+              }}
+            >
+              동아리 게시판
+              <Text
+                style={{
+                  fontFamily: 'NanumGothic',
+                  fontSize: 15,
+                  marginLeft: 15,
+                }}
+              >
+              </Text>
+            </Text>
+          </View>
+        </BoardTouchable>
+
+        <BoardTouchable
+          onPress={() =>
+            navigation.navigate('BoardStacks', { screen: '취미게시판' })
+          }
+        >
+          <View
+            style={[
+              {
+                height: 35,
+                marginHorizontal: 25,
+                marginTop: 20,
+              },
+            ]}
+          >
+            <Text
+              style={{
+                fontFamily: 'NanumGothicBold',
+                fontSize: 15,
+              }}
+            >
+              취미 게시판
+              <Text
+                style={{
+                  fontFamily: 'NanumGothic',
+                  fontSize: 15,
+                  marginLeft: 15,
+                }}
+              >
+              </Text>
+            </Text>
+          </View>
+        </BoardTouchable>
+      </View>
     </Container>
   )
 }

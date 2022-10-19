@@ -44,7 +44,7 @@ const Tabs = ({ navigation, route }) => {
               <Ionicons name="clipboard-outline" size={24} color={color} />
             );
           },
-          headerShown: false,
+          headerShown: true,
         }}
       />
       <Tab.Screen
