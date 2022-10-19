@@ -22,7 +22,7 @@ const Root = ({ navigation }) => {
         component={Notice}
         options={{ headerShown: true }}
       />
-      <Nav.Screen name="BoardStacks" component={BoardStacks} />
+      <Nav.Screen name="BoardStacks" component={BoardStacks}/>
       <Nav.Screen name="ChatStack" component={ChatStack} />
       <Nav.Screen
         name="ChatChannel"

@@ -2,16 +2,43 @@ import React, { useState, useEffect, useLayoutEffect, useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { Text, FlatList } from 'react-native';
 import { Input } from '../../components';
-import { Alert } from 'react-native';
-import { GiftedChat, Send } from 'react-native-gifted-chat';
+import { Alert, View } from 'react-native';
+import {
+  Bubble,
+  GiftedChat,
+  Send,
+  InputToolbar,
+  rendering,
+} from 'react-native-gifted-chat';
 import { MaterialIcons } from '@expo/vector-icons';
 import { theme } from '../../styles/theme';
-import { DB, createMessage, getCurrentUser, } from '../../utils/firebase';
+import { DB, createMessage, getCurrentUser } from '../../utils/firebase';
 import firebases from 'firebase/app';
+import { Ionicons } from '@expo/vector-icons';
 const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
 `;
+
+
+
+function renderBubble(props) {
+  return (
+    <Bubble
+      {...props}
+      wrapperStyle={{
+        right: {
+          backgroundColor: '#1e272e',
+        },
+      }}
+      textStyle={{
+        right: {
+          color: '#FFFFFF',
+        },
+      }}
+    />
+  );
+}
 const SendButton = props => {
   const theme = useContext(ThemeContext);
 
@@ -38,16 +65,12 @@ const SendButton = props => {
   );
 };
 
-
-
-
-//-------------
 const Channel = ({ navigation, route: { params } }) => {
   const [messages, setMessages] = useState([]);
-  const {uid} = getCurrentUser();
+  const { uid } = getCurrentUser();
   const theme = useContext(ThemeContext);
-  const [pohtoUrl, setPhotoUrl] = useState("");
-  const [displayName, setDisplayName] = useState("");
+  const [pohtoUrl, setPhotoUrl] = useState('');
+  const [displayName, setDisplayName] = useState('');
 
   useEffect(() => {
     const unsubscribe = DB.collection('channels')
@@ -68,31 +91,21 @@ const Channel = ({ navigation, route: { params } }) => {
     navigation.setOptions({ headerTitle: params.title || 'ChatChannel' });
   }, []);
 
-
   DB.collection('users')
-  .where('email', '==', firebases.auth().currentUser.email )
-  .get()
-  .then(result => {
-    //users 컬렉션 이메일과 현재 유저의 이메일을 비교하여 이름과 학번을 추출
-    result.forEach(doc => {
-      setPhotoUrl(doc.data().photoURL);
-      setDisplayName(doc.data().displayName);
-      
+    .where('email', '==', firebases.auth().currentUser.email)
+    .get()
+    .then(result => {
+      //users 컬렉션 이메일과 현재 유저의 이메일을 비교하여 이름과 학번을 추출
+      result.forEach(doc => {
+        setPhotoUrl(doc.data().photoURL);
+        setDisplayName(doc.data().displayName);
+      });
     });
-  });
-
-
-
-
-
-
-
-
 
   const _handleMessageSend = async messageList => {
     const newMessage = messageList[0];
     try {
-      await createMessage({ channelId: params.id, message: newMessage});
+      await createMessage({ channelId: params.id, message: newMessage });
     } catch (e) {
       Alert.alert('Send Message Error', e.message);
     }
@@ -103,11 +116,11 @@ const Channel = ({ navigation, route: { params } }) => {
     <Container>
       <GiftedChat
         listViewProps={{
-          style: {backgorundColor: theme.backgorundColor},
+          style: { backgorundColor: theme.backgorundColor },
         }}
-        placeholderf = "Enter a message..."
+        placeholderf="Enter a message..."
         messages={messages}
-        user={{ _id: uid, name: displayName, avatar:pohtoUrl }}
+        user={{ _id: uid, name: displayName, avatar: pohtoUrl }}
         onSend={_handleMessageSend}
         alwaysShowSend={true}
         textInputProps={{
@@ -116,12 +129,12 @@ const Channel = ({ navigation, route: { params } }) => {
           textContentType: 'none',
           underlioneColorAndroid: 'transparent',
         }}
-        multiline={false}
         renderUsernameOnMessage={true}
         scrollToBottom={true}
-        renderSend={props => <SendButton {...props}/>}
+        renderSend={props => <SendButton {...props} />}
+        renderBubble={renderBubble}
+        
       />
-
     </Container>
   );
 };

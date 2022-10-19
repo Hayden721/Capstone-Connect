@@ -4,7 +4,6 @@ import 'firebase/firestore';
 import config from '../firebase.json';
 import firebases from 'firebase/app';
 
-
 const app = !firebase.apps.length
   ? firebase.initializeApp(config)
   : firebase.app();
@@ -19,21 +18,20 @@ const resultMessages = {
   'auth/weak-password': '비밀번호를 6자리 이상 입력해 주세요.',
 };
 //User related
-export const login = async ({email, password}) => {
+export const login = async ({ email, password }) => {
   firebases
-  .auth()
-  .signInWithEmailAndPassword(email, password)
-  .then(value => {
-    if (value.user.emailVerified == false) {
-      firebase.auth().signOut(); //이메일 인증 안하면 로그아웃
-      Alert.alert('로그인 실패', '이메일 인증 하세요.'); // 이게 안나오고 밑에 알수없는 이유로가 나옴;;
-    }
-  })
-  .catch(error => {
-    console.log(error.code);
-
-  });
-}
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then(value => {
+      if (value.user.emailVerified == false) {
+        firebase.auth().signOut(); //이메일 인증 안하면 로그아웃
+        Alert.alert('로그인 실패', '이메일 인증 하세요.'); // 이게 안나오고 밑에 알수없는 이유로가 나옴;;
+      }
+    })
+    .catch(error => {
+      console.log(error.code);
+    });
+};
 
 const uploadImage = async uri => {
   const blob = await new Promise((resolve, reject) => {
@@ -57,44 +55,47 @@ const uploadImage = async uri => {
   return await snapshot.ref.getDownloadURL();
 };
 
-export const signup = async({email, password}) => {
-    firebases
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        firebases
-          .auth()
-          .currentUser.sendEmailVerification()
-          .then(() => {
-            console.log("이메일 전송 완료");
-          })
-          .catch((error) => {
-            console.log(error.code);
-            Alert.alert("실패", "이메일 전송 실패");
-          });
-        Alert.alert("회원가입 성공", "회원가입을 축하드립니다. 이메일 인증을 해주세요.");
-        firebases.auth().signOut();
-      })
-      .catch((error) => {
-        console.log(error.code);
-        const alertMessage = resultMessages[error.code];
-        Alert.alert("회원가입 실패", alertMessage);
-      });
-  } 
+export const signup = async ({ email, password }) => {
+  firebases
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      firebases
+        .auth()
+        .currentUser.sendEmailVerification()
+        .then(() => {
+          console.log('이메일 전송 완료');
+        })
+        .catch(error => {
+          console.log(error.code);
+          Alert.alert('실패', '이메일 전송 실패');
+        });
+      Alert.alert(
+        '회원가입 성공',
+        '회원가입을 축하드립니다. 이메일 인증을 해주세요.'
+      );
+      firebases.auth().signOut();
+    })
+    .catch(error => {
+      console.log(error.code);
+      const alertMessage = resultMessages[error.code];
+      Alert.alert('회원가입 실패', alertMessage);
+    });
+};
 
-export  const PwFind = () => {
-    firebase
-      .auth()
-      .sendPasswordResetEmail(email)
-      .then(() => {
-        Alert.alert('전송 완료', '이메일을 확인하세요.');
-        console.log('비밀번호 전송완료');
-      })
-      .catch(error => {
-        const alertMessage = resultMessages[error.code];
-        Alert.alert('비밀번호 찾기 실패', alertMessage);
-      });
-  };
+export const PwFind = () => {
+  firebase
+    .auth()
+    .sendPasswordResetEmail(email)
+    .then(() => {
+      Alert.alert('전송 완료', '이메일을 확인하세요.');
+      console.log('비밀번호 전송완료');
+    })
+    .catch(error => {
+      const alertMessage = resultMessages[error.code];
+      Alert.alert('비밀번호 찾기 실패', alertMessage);
+    });
+};
 
 export const logout = async () => {
   return await Auth.signOut();
@@ -116,17 +117,18 @@ export const createChannel = async ({ title, description }) => {
 };
 
 export const getCurrentUser = () => {
-  const {uid, displayName, email, photoURL} = Auth.currentUser;
-  return {uid, name:displayName, email, photoUrl:photoURL};
-}
+  const { uid, displayName, email, photoURL } = Auth.currentUser;
+  return { uid, name: displayName, email, photoUrl: photoURL };
+};
 
 export const updateUserPhoto = async photoUrl => {
   const user = Auth.currentUser;
-  const storageUrl = photoUrl.startsWith('http') ? photoUrl : await uploadImage(photoUrl);
-  await user.updateProfile({photoURL: storageUrl });
-  return {name: user.displayName, email: user.email, photoUrl:user.photoURL};
-}
-
+  const storageUrl = photoUrl.startsWith('http')
+    ? photoUrl
+    : await uploadImage(photoUrl);
+  await user.updateProfile({ photoURL: storageUrl });
+  return { name: user.displayName, email: user.email, photoUrl: user.photoURL };
+};
 
 export const createMessage = async ({ channelId, message }) => {
   return await DB.collection('channels')
@@ -308,7 +310,7 @@ export const CallBoard = (category, boardCategory) => {
     });
 };
 
-export const addReport = ({ userName, content, photoUrl,navigation}) => {
+export const addReport = ({ userName, content, photoUrl, navigation }) => {
   //보드 db에 저장
   if (userName == '') {
     Alert.alert('신고 실패', '신고할 대상을 입력하세요.');
@@ -326,7 +328,7 @@ export const addReport = ({ userName, content, photoUrl,navigation}) => {
       .then(() => {
         console.log('Create Complete!');
         Alert.alert('성공', '글을 작성했습니다.');
-        navigation.navigate("Tabs",{ screen: 'Board' });
+        navigation.navigate('Tabs', { screen: 'Board' });
       })
       .catch(error => {
         console.log(error.message);
@@ -334,16 +336,17 @@ export const addReport = ({ userName, content, photoUrl,navigation}) => {
   }
 };
 
- export const Profile_Edit = (photoUrl)=>{
-   DB.collection("users").doc(firebases.auth().currentUser.email)
-   .update({
-     photoURL: photoUrl,
-   })
-   .then(() => {
-     console.log('Create Complete!');
-     Alert.alert('성공', '프로필을 수정했습니다.');
-   })
-   .catch(error => {
-     console.log(error.message);
-   });
- };
+export const Profile_Edit = photoUrl => {
+  DB.collection('users')
+    .doc(firebases.auth().currentUser.email)
+    .update({
+      photoURL: photoUrl,
+    })
+    .then(() => {
+      console.log('Create Complete!');
+      Alert.alert('성공', '프로필을 수정했습니다.');
+    })
+    .catch(error => {
+      console.log(error.message);
+    });
+};

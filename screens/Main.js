@@ -8,8 +8,8 @@ import styled from 'styled-components/native';
 // 아이콘 사용 import
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons'
-
+import { Entypo } from '@expo/vector-icons';
+import { useIsFocused } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { CallBoard } from '../utils/firebase';
 import { Linking } from 'react-native';
@@ -56,6 +56,10 @@ const Main = ({ navigation }) => {
   const [competitionBoard, setCompetitionBoard] = useState('');
   const [clubBoard, setClubBoard] = useState('');
   const [hobbyBoard, setHobbyBoard] = useState('');
+  const [posts, setPosts] = useState(null);
+  const isFocused = useIsFocused(); // isFoucesd Define
+
+
 
   CallBoard('Free', setFreeBoard);
   CallBoard('Competition', setCompetitionBoard);
@@ -65,36 +69,36 @@ const Main = ({ navigation }) => {
     <ScrollView
       style={{
         backgroundColor: '#ffffff',
-        
       }}
     >
-    <View
+      <View
         style={{
           justifyContent: 'center',
           alignItems: 'center',
-          flexDirection: 'row',  
-          marginTop:20,    
+          flexDirection: 'row',
+          marginTop: 20,
         }}
       >
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Notice', { screen: 'NotiSchool' })}
-      >
-        <TextContainer>
-        <Entypo name="megaphone" size={24} color="red" />
-          <Text
-            style={{
-              justifyContent: 'center',
-              textAlign: 'center',
-              fontSize: 8,
-            
-            }}
-          >
-            공지
-          </Text>
-        </TextContainer>
-      </TouchableOpacity> 
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Notice', { screen: 'NotiSchool' })
+          }
+        >
+          <TextContainer>
+            <Entypo name="megaphone" size={24} color="red" />
+            <Text
+              style={{
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: 8,
+              }}
+            >
+              공지
+            </Text>
+          </TextContainer>
+        </TouchableOpacity>
 
-      <TouchableOpacity
+        <TouchableOpacity
           onPress={() =>
             Linking.openURL('https://www.shinhan.ac.kr/sites/kr/index.do')
           }
@@ -114,11 +118,11 @@ const Main = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-            onPress={() =>
-              Linking.openURL('https://stins.shinhan.ac.kr/irj/portal')
-            }
-          >
-            <TextContainer>
+          onPress={() =>
+            Linking.openURL('https://stins.shinhan.ac.kr/irj/portal')
+          }
+        >
+          <TextContainer>
             <AntDesign name="earth" size={24} color="#0C4A60" />
             <Text
               style={{
@@ -129,15 +133,17 @@ const Main = ({ navigation }) => {
             >
               종정시
             </Text>
-            </TextContainer>
-          </TouchableOpacity>
+          </TextContainer>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() =>
-              Linking.openURL('https://shinhanunivst.modoo.at/?link=6n7lulzb&messageNo=108&mode=view&query=&queryType=0&myList=0&page=2')
-            }
-          >
-            <TextContainer>
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL(
+              'https://shinhanunivst.modoo.at/?link=6n7lulzb&messageNo=108&mode=view&query=&queryType=0&myList=0&page=2'
+            )
+          }
+        >
+          <TextContainer>
             <Ionicons name="bus" size={24} color="#D3AC2B" />
             <Text
               style={{
@@ -148,13 +154,13 @@ const Main = ({ navigation }) => {
             >
               셔틀
             </Text>
-            </TextContainer>
-          </TouchableOpacity>    
-  </View>
-  
+          </TextContainer>
+        </TouchableOpacity>
+      </View>
+
       {/* 실시간 최신글 */}
       <Top></Top>
-    <Text
+      <Text
         style={{
           fontSize: 20,
           marginLeft: 25,
@@ -185,8 +191,8 @@ const Main = ({ navigation }) => {
               {
                 height: 35,
                 marginHorizontal: 25,
-                marginTop:20,       
-              },   
+                marginTop: 20,
+              },
             ]}
           >
             <Text
@@ -301,38 +307,36 @@ const Main = ({ navigation }) => {
             </Text>
           </View>
         </TouchableOpacity>
-      </View> 
-    <Text
-    style={{
-      fontSize:20,
-      marginLeft:25,
-      marginTop:10,
-      fontFamily: 'NanumGothicBold'
-    }}
-    >
-      <Text> 채팅방 </Text>
-    </Text>
-    {/* 채팅방 */}
-      <View style={{
-         height: 160,
-         borderColor: '#E6E7E8',
-         backgroundColor: '#ffffff',
-         borderWidth: 1,
-         borderRadius: 10,
-         margin: 10,
-      }}
-      >
-
       </View>
+      <Text
+        style={{
+          fontSize: 20,
+          marginLeft: 25,
+          marginTop: 10,
+          fontFamily: 'NanumGothicBold',
+        }}
+      >
+        <Text> 채팅방 </Text>
+      </Text>
+      {/* 채팅방 */}
+      <View
+        style={{
+          height: 160,
+          borderColor: '#E6E7E8',
+          backgroundColor: '#ffffff',
+          borderWidth: 1,
+          borderRadius: 10,
+          margin: 10,
+        }}
+      ></View>
       <View
         style={{
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'row',
-          marginTop:10,
+          marginTop: 10,
         }}
-      >
-      </View>   
+      ></View>
     </ScrollView>
   );
 };

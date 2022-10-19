@@ -10,7 +10,8 @@ import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import { FlatList } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native';
-
+import ActionButton from 'react-native-action-button';
+import { SearchBar } from '@rneui/themed';
 const Board_club = ({ navigation }) => {
   const isFocused = useIsFocused(); // isFoucesd Define
   const [posts, setPosts] = useState(null);
@@ -144,13 +145,7 @@ const Board_club = ({ navigation }) => {
           padding: 8,
         }}
       >
-        <TextInput
-          placeholder="Sarch Name"
-          value={term}
-          onChangeText={text => {
-            searchName(text);
-          }}
-        />
+
       </View>
       <View
         style={{

@@ -10,7 +10,8 @@ import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import { FlatList } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native';
-
+import ActionButton from 'react-native-action-button';
+import { SearchBar } from '@rneui/themed';
 const Board_competition = ({ navigation }) => {
   const isFocused = useIsFocused(); // isFoucesd Define
   const [posts, setPosts] = useState(null);
@@ -74,14 +75,14 @@ const Board_competition = ({ navigation }) => {
       >
         <View
           style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              height: 90,
-              marginHorizontal: 10,
-              borderBottomWidth: 1,
-            }}
+            flexDirection: 'row',
+            alignItems: 'center',
+            height: 90,
+            marginHorizontal: 10,
+            borderBottomWidth: 1,
+          }}
         >
-            <View
+          <View
             style={[
               {
                 flexDirection: 'column',
@@ -134,21 +135,14 @@ const Board_competition = ({ navigation }) => {
         flex: 2,
       }}
     >
-      <View
-        style={{
-          marginLeft: 10,
-          marginRight: 10,
-          padding: 8,
+      <SearchBar
+        placeholder="알아검색해"
+        onChangeText={text => {
+          searchName(text);
         }}
-      >
-        <TextInput
-          placeholder="Sarch Name"
-          value={term}
-          onChangeText={text => {
-            searchName(text);
-          }}
-        />
-      </View>
+        value={term}
+        platform="ios"
+      />
       <View
         style={{
           flex: 11,
@@ -160,36 +154,13 @@ const Board_competition = ({ navigation }) => {
           keyExtractor={item => item.id}
         />
       </View>
-      <View
-        style={{
-          flex: 1,
-          marginBottom: 5,
-          backgroundColor: '#485460',
-          justifyContent: 'center',
+
+      <ActionButton
+        buttonColor="rgba(231,76,60,1)"
+        onPress={() => {
+          navigation.navigate('BoardStacks', { screen: '글쓰기' });
         }}
-      >
-        <TouchableOpacity
-          onPress={() => navigation.navigate('글쓰기')}
-          style={{
-            borderRadius: 20,
-            backgroundColor: '#485460',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: 50,
-            marginHorizontal: 60,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: 'white',
-            }}
-          >
-            글작성
-          </Text>
-        </TouchableOpacity>
-      </View>
+      />
     </View>
   );
 };
