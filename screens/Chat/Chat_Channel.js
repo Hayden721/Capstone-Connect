@@ -133,6 +133,7 @@ const Channel = ({ navigation, route: { params } }) => {
         scrollToBottom={true}
         renderSend={props => <SendButton {...props} />}
         renderBubble={renderBubble}
+        isAnimated
         
       />
     </Container>

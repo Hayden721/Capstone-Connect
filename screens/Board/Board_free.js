@@ -142,14 +142,14 @@ const Board_free = ({ navigation }) => {
         flex: 2,
       }}
     >
-            <SearchBar
-          placeholder="알아검색해"
-          onChangeText={text => {
-            searchName(text);
-          }}
-          value={term}
-          platform='ios'
-        />
+      <SearchBar
+        placeholder="알아검색해"
+        onChangeText={text => {
+          searchName(text);
+        }}
+        value={term}
+        platform="ios"
+      />
       <View
         style={{
           flex: 11,
@@ -170,8 +170,6 @@ const Board_free = ({ navigation }) => {
           navigation.navigate('BoardStacks', { screen: '글쓰기' });
         }}
       />
-
-
     </View>
   );
 };
