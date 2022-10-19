@@ -14,6 +14,7 @@ import Board_hobby from "../screens/Board/Board_hobby";
 import Board_write from "../screens/Board/Board_write";
 import Board_edit from "../screens/Board/Board_edit";
 import Report from "../screens/Report";
+import MyPost from "../Profile/MyPost";
 
 // TabNavi를 호출하는 법 onPress={() =>navigation.navigate("Tabs", {screen:"Search"})}
 //BoardStack이 
@@ -30,6 +31,7 @@ const BoardStack = createStackNavigator();
       <BoardStack.Screen name="글쓰기" component={Board_write}/>
       <BoardStack.Screen name="글조회" component={Board_postLookUp}/>
       <BoardStack.Screen name="글수정" component={Board_edit}/>
+      <BoardStack.Screen name="내가쓴글" component={MyPost} />
 
     </BoardStack.Navigator>  
 

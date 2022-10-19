@@ -42,7 +42,7 @@ const Root = ({ navigation }) => {
           ),
         }}
       />
-      <Nav.Screen name="ProfileStack" component={ProfileStack} />
+      <Nav.Screen name="프로필 설정" component={ProfileStack} />
     </Nav.Navigator>
   );
 };

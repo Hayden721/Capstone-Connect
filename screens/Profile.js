@@ -105,7 +105,9 @@ const Main_profile = ({navigation}) => {
             <Text style={{marginLeft:20, fontSize:17, fontFamily: 'NanumGothicBold', margin:10}}> Email: {userEmail} </Text>
         
         </View>
-
+        
+       <TouchableOpacity
+        onPress={()=> navigation.navigate("BoardStacks",{screen:"내가쓴글"})}> 
         <View
           style={{
             marginLeft: 25,
@@ -126,6 +128,7 @@ const Main_profile = ({navigation}) => {
             작성한 게시글
           </Text>
         </View>
+        </TouchableOpacity>
         
         {/* <View
           style={{

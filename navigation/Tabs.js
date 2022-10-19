@@ -90,7 +90,7 @@ const Tabs = ({ navigation, route }) => {
               size={24}
               color="black"
               onPress={() =>
-                navigation.navigate('ProfileStack', { screen: '' })
+                navigation.navigate('ProfileStack', { screen: '프로필 설정' })
               }
               style={{
                 marginRight: 10,
