@@ -1,9 +1,7 @@
 import React, { useContext} from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import 'react-native-gesture-handler';
-
 import { Ionicons } from '@expo/vector-icons';
-
 //stack screens import
 import Main from '../screens/Main';
 import Board from '../screens/Board';
@@ -44,7 +42,7 @@ const Tabs = ({ navigation, route }) => {
               <Ionicons name="clipboard-outline" size={24} color={color} />
             );
           },
-          headerShown: true,
+          headerShown: false,
         }}
       />
       <Tab.Screen
