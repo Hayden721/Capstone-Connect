@@ -51,6 +51,13 @@ const TextContainer = styled.View`
   border-color: #e6e7e8;
 `;
 
+const TextContainer2 = styled.View`
+  width: 60px;
+  padding: 15px;
+  background-color: #ffffff;
+  border-color: #ffffff;
+`;
+
 const Main = ({ navigation }) => {
   const [freeBoard, setFreeBoard] = useState('');
   const [competitionBoard, setCompetitionBoard] = useState('');
@@ -65,12 +72,15 @@ const Main = ({ navigation }) => {
   CallBoard('Competition', setCompetitionBoard);
   CallBoard('Club', setClubBoard);
   CallBoard('Hobby', setHobbyBoard);
+
+
   return (
     <ScrollView
       style={{
         backgroundColor: '#ffffff',
       }}
     >
+      
       <View
         style={{
           justifyContent: 'center',
@@ -79,6 +89,7 @@ const Main = ({ navigation }) => {
           marginTop: 20,
         }}
       >
+        
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('Notice', { screen: 'NotiSchool' })
@@ -97,6 +108,7 @@ const Main = ({ navigation }) => {
             </Text>
           </TextContainer>
         </TouchableOpacity>
+        
 
         <TouchableOpacity
           onPress={() =>
@@ -162,9 +174,8 @@ const Main = ({ navigation }) => {
       <Top></Top>
       <Text
         style={{
-          fontSize: 20,
+          fontSize: 25,
           marginLeft: 25,
-          marginTop: 10,
           fontFamily: 'NanumGothicBold',
         }}
       >
@@ -173,144 +184,181 @@ const Main = ({ navigation }) => {
 
       <View
         style={{
-          height: 160,
+          height: 320,
           borderColor: '#E6E7E8',
           backgroundColor: '#ffffff',
           borderWidth: 1,
           borderRadius: 10,
           margin: 10,
+          
         }}
       >
+        <View
+        style={{
+
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >
+    
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('BoardStacks', { screen: '자유게시판' })
           }
         >
-          <View
-            style={[
-              {
-                height: 35,
-                marginHorizontal: 25,
-                marginTop: 20,
-              },
-            ]}
-          >
+          
+          <TextContainer2>
+          <AntDesign name="smile-circle" size={30} color="blue" />
             <Text
               style={{
-                fontFamily: 'NanumGothicBold',
-                fontSize: 15,
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: 10,
+                
               }}
             >
-              자유 게시판 -
-              <Text
-                style={{
-                  fontFamily: 'NanumGothic',
-                  fontSize: 15,
-                  marginLeft: 15,
-                }}
-              >
-                {freeBoard}
-              </Text>
+             자유
             </Text>
-          </View>
+          </TextContainer2>
         </TouchableOpacity>
+        
+        <Text
+         style={{
+          
+         fontFamily: 'NanumGothic',
+         fontSize: 15,
+         }}
+        >
+          -
+        {freeBoard}
+        </Text>
+      </View>
 
+      <View
+        style={{
+          
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >
+            <View
+        style={{
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >
+    
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('BoardStacks', { screen: '공모전게시판' })
           }
         >
-          <View
-            style={{
-              height: 35,
-              marginHorizontal: 25,
-            }}
-          >
+          
+          <TextContainer2>
+          <Ionicons name="brush" size={30} color="green" />
             <Text
               style={{
-                fontFamily: 'NanumGothicBold',
-                fontSize: 15,
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: 10
               }}
             >
-              공모전 게시판 -
-              <Text
-                style={{
-                  fontFamily: 'NanumGothic',
-                  fontSize: 15,
-                  marginLeft: 15,
-                }}
-              >
-                {competitionBoard}
-              </Text>
+             공모전
             </Text>
-          </View>
+          </TextContainer2>
         </TouchableOpacity>
-
+        
+        <Text
+         style={{
+         fontFamily: 'NanumGothic',
+         fontSize: 15,
+         }}
+        >
+          -
+        {competitionBoard}
+        </Text>
+      </View>
+      </View>
+      <View
+        style={{
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >
+    
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('BoardStacks', { screen: '동아리게시판' })
           }
         >
-          <View
-            style={{
-              height: 35,
-              marginHorizontal: 25,
-            }}
-          >
+          
+          <TextContainer2>
+          <Ionicons name="cafe" size={30} color="#D3AC2B" />
             <Text
               style={{
-                fontFamily: 'NanumGothicBold',
-                fontSize: 15,
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: 10
               }}
             >
-              동아리 게시판 -
-              <Text
-                style={{
-                  fontFamily: 'NanumGothic',
-                  fontSize: 15,
-                  marginLeft: 15,
-                }}
-              >
-                {clubBoard}
-              </Text>
+             동아리
             </Text>
-          </View>
+          </TextContainer2>
         </TouchableOpacity>
-
+        
+        <Text
+         style={{
+         fontFamily: 'NanumGothic',
+         fontSize: 15,
+         }}
+        >
+          -
+        {clubBoard}
+        </Text>
+      </View>
+        
+      <View
+        style={{
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >
+    
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('BoardStacks', { screen: '취미게시판' })
           }
         >
-          <View
-            style={{
-              height: 35,
-              marginHorizontal: 25,
-            }}
-          >
+          
+          <TextContainer2>
+          <Ionicons name="baseball-outline" size={30} color="red" />
             <Text
               style={{
-                fontFamily: 'NanumGothicBold',
-                fontSize: 15,
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: 10
               }}
             >
-              취미 게시판 -
-              <Text
-                style={{
-                  fontFamily: 'NanumGothic',
-                  fontSize: 15,
-                  marginLeft: 15,
-                }}
-              >
-                {hobbyBoard}
-              </Text>
+             취미
             </Text>
-          </View>
+          </TextContainer2>
         </TouchableOpacity>
+        
+        <Text
+         style={{
+         fontFamily: 'NanumGothic',
+         fontSize: 15,
+         }}
+        >
+          -
+        {hobbyBoard}
+        </Text>
+      </View>
+
       </View>
       <Text
         style={{
-          fontSize: 20,
+          fontSize: 25,
           marginLeft: 25,
           marginTop: 10,
           fontFamily: 'NanumGothicBold',
@@ -318,25 +366,18 @@ const Main = ({ navigation }) => {
       >
         <Text> 채팅방 </Text>
       </Text>
-      {/* 채팅방 */}
+
       <View
         style={{
-          height: 160,
+          height: 80,
           borderColor: '#E6E7E8',
           backgroundColor: '#ffffff',
           borderWidth: 1,
           borderRadius: 10,
           margin: 10,
         }}
-      ></View>
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'row',
-          marginTop: 10,
-        }}
-      ></View>
+      >
+      </View>
     </ScrollView>
   );
 };

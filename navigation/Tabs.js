@@ -1,12 +1,16 @@
 import React, { useContext} from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import 'react-native-gesture-handler';
+
 import { Ionicons } from '@expo/vector-icons';
+
 //stack screens import
 import Main from '../screens/Main';
 import Board from '../screens/Board';
 import Chat from '../screens/Chat';
 import Profile from '../screens/Profile';
+
+import Board_postLookUp from '../screens/Board/Board_postLookUp';
 
 import { ThemeConsumer, ThemeContext } from 'styled-components/native';
 
@@ -42,7 +46,7 @@ const Tabs = ({ navigation, route }) => {
               <Ionicons name="clipboard-outline" size={24} color={color} />
             );
           },
-          headerShown: false,
+          headerShown: true,
         }}
       />
       <Tab.Screen
@@ -98,6 +102,8 @@ const Tabs = ({ navigation, route }) => {
         }}
       />
     </Tab.Navigator>
+
+    
   );
 };
 

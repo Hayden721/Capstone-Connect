@@ -106,7 +106,7 @@ const Main_profile = ({navigation}) => {
         
         </View>
         
-       <TouchableOpacity
+       {/* <TouchableOpacity
         onPress={()=> navigation.navigate("BoardStacks",{screen:"내가쓴글"})}> 
         <View
           style={{
@@ -128,126 +128,7 @@ const Main_profile = ({navigation}) => {
             작성한 게시글
           </Text>
         </View>
-        </TouchableOpacity>
-        
-        {/* <View
-          style={{
-            height: 150,
-            borderColor: '#E6E7E8',
-            backgroundColor: '#ffffff',
-            borderWidth: 1,
-            borderRadius: 10,
-            margin: 10,
-          }}
-          
-        >
-          
-        <TouchableOpacity
-          onPress={()=> navigation.navigate("ProfileStack", { screen: 'MyPost' })}
-        >
-          <View
-            style={[
-              {
-                height: 35,
-                marginLeft:10,
- 
-              }
-            ]}
-          >
-            <Text
-              style={{
-                fontFamily: 'NanumGothicBold',
-                fontSize: 18,
-                margin:7,
-              }}
-            >
-              자유 게시판 
-              </Text>
-              </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-          onPress={()=> navigation.navigate("ProfileStack", { screen: 'MyPost' })}
-        >
-          <View
-            style={[
-              {
-                height: 35,
-                marginLeft:10,
- 
-              }
-            ]}
-          >
-            <Text
-              style={{
-                fontFamily: 'NanumGothicBold',
-                fontSize: 18,
-                margin:7,
-              }}
-            >
-              공모전 게시판 
-              </Text>
-              </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-          onPress={()=> navigation.navigate("ProfileStack", { screen: 'MyPost' })}
-        >
-          <View
-            style={[
-              {
-                height: 35,
-                marginLeft:10,
- 
-              }
-            ]}
-          >
-            <Text
-              style={{
-                fontFamily: 'NanumGothicBold',
-                fontSize: 18,
-                margin:7,
-              }}
-            >
-              동아리 게시판 
-              </Text>
-              </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-          onPress={()=> navigation.navigate("ProfileStack", { screen: 'MyPost' })}
-        >
-          <View
-            style={[
-              {
-                height: 35,
-                marginLeft:10,
- 
-              }
-            ]}
-          >
-            <Text
-              style={{
-                fontFamily: 'NanumGothicBold',
-                fontSize: 18,
-                margin:7,
-              }}
-            >
-              자유 게시판 
-              </Text>
-              </View>
-              </TouchableOpacity> */}
-            
-        {/* </View>
-
-        
-
-        <TouchableOpacity
-          onPress={()=> navigation.navigate("ProfileStack", { screen: 'MyPost' })}
-        >
-
-        </TouchableOpacity>  */}
- 
+        </TouchableOpacity> */}
       </SafeAreaView>
     </ScrollView>
   );

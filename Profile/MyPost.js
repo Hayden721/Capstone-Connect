@@ -95,12 +95,6 @@ const MyPost = ({ navigation }) => {
         })
       }
     >
-      <View
-        style={{
-          backgroundColor: '#ffffff',
-          //배경색
-        }}
-      >
         <View
           style={[
             {
@@ -158,7 +152,6 @@ const MyPost = ({ navigation }) => {
             />
           </View>
         </View>
-      </View>
     </Pressable>
   );
 
@@ -167,47 +160,16 @@ const MyPost = ({ navigation }) => {
       style={{
         flexDirection: 'column',
         flex: 1,
+        backgroundColor:"#ffffff",
       }}>
         <View
         style={{
-          marginTop: 50,
           flex:1,
           flexDirection: 'row',
           alignItems: 'center',
           
         }}
       >
-            <View
-          style={{
-            flex: 1,
-            marginLeft:35,
-            alignItems: 'center',
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: 'NanumGothicBold',
-              fontSize: 20,
-            }}
-          >
-            {categoryTitle}게시판
-          </Text>
-        </View>
-        <TouchableOpacity
-          onPress={() => setVisible(true)}
-          style={{
-            alignItems: 'flex-end',
-          }}
-        >
-          <Ionicons
-            name="ios-alert-outline"
-            size={24}
-            color="black"
-            style={{
-              marginRight: 10,
-            }}
-          />
-        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -226,7 +188,7 @@ const MyPost = ({ navigation }) => {
             }
             style = {{
               borderWidth:1,
-              backgroundColor: categoryTitle  == categories[index] ? 'red' : 'transparent',
+              backgroundColor: categoryTitle  == categories[index] ? 'green' : 'transparent',
               borderRadius: 10,
             }}>
               <Text 

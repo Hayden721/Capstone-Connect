@@ -1,15 +1,44 @@
 import {
-  StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
+  Text,
   ScrollView,
+  TouchableOpacity,
   SafeAreaView,
-  Linking 
+  Alert,
+  Modal,
+  TextInput,
 } from 'react-native';
-import React from 'react';
+import { Linking } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import firebase from 'firebase/app';
+import 'react-native-gesture-handler';
+import 'firebase/auth';
+import 'firebase/firestore';
+
 
 const Profile_setting = () => {
+  
+
+  const userDelete = () => {
+    Alert.alert(
+      '회원탈퇴 확인',
+      '회원탈퇴를 하시겠습니까?',
+      [
+        { text: '아니요', onPress: () => {}, style: 'cancel' },
+        {
+          text: '예',
+          onPress: () => {
+            firebase.auth().currentUser.delete();
+          },
+          style: 'destructive',
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () => {},
+      }
+    );
+  };
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <SafeAreaView>
@@ -78,7 +107,7 @@ const Profile_setting = () => {
         >
           <TouchableOpacity
           onPress={() =>
-            Linking.openURL('https://www.shinhan.ac.kr/sites/kr/index.do')
+            Linking.openURL('https://github.com/Hayden721/Capstone-Connect')
           }>
           <Text>https://github.com/Hayden721/Capstone-Connect</Text>
           </TouchableOpacity>
@@ -91,9 +120,56 @@ const Profile_setting = () => {
           }}
         >
         </View>
+
+        <View
+          style={{
+            marginLeft: 20,
+            marginTop: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: 'NanumGothicBold',
+              fontSize: 20,
+            }}
+          >
+            {' '}
+            기타
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => firebase.auth().signOut()}
+          style={{
+            justifyContent: 'center',
+            marginTop: 10,
+            marginLeft: 30,
+            fontFamily: 'NanumGothicBold',
+          }}
+        >
+          <Text>
+          로그아웃
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => userDelete()}
+          style={{
+            justifyContent: 'center',
+            marginTop: 10,
+            marginLeft: 30,
+            fontFamily: 'NanumGothicBold',
+          }}
+        >
+          <Text>
+            회원탈퇴
+          </Text>
+        </TouchableOpacity>
+        
       </SafeAreaView>
     </ScrollView>
   );
 };
 
 export default Profile_setting;
+
