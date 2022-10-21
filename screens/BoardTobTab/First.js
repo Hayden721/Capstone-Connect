@@ -25,6 +25,52 @@ const BoardTouchable = styled.TouchableOpacity`
 const First = ({navigation}) => {
   return (
     <Container>
+
+<View
+        style={{
+          height: 100,
+          borderColor: '#111111',
+          backgroundColor: '#ffffff',
+          borderWidth: 1,
+          borderRadius: 10,
+          margin:10,
+          marginTop:20,
+
+        }}
+      >  
+
+    <BoardTouchable
+        onPress={()=>
+         navigation.navigate("BoardStacks",{screen:"내가쓴글"})
+         }
+         > 
+         
+         <View
+            style={[
+              {
+                height: 35,
+                marginHorizontal: 25,
+                marginTop: 30,
+                justifyContent: 'center',
+                
+              },
+            ]}
+          >
+
+            <Text
+              style={{
+                fontFamily: 'NanumGothicBold', 
+                fontSize: 20,
+              }}
+            >
+              <Foundation name="clipboard-pencil" size={21} color="#9932CC" />
+               <Text> 내가 쓴 글</Text>
+            </Text>
+            
+          </View>
+        </BoardTouchable>
+      </View>
+
       <View
         style={{
           height: 250,
@@ -144,51 +190,6 @@ const First = ({navigation}) => {
               <Ionicons name="baseball-outline" size={21} color="red" />
                <Text> 취미 게시판</Text>
             </Text>
-          </View>
-        </BoardTouchable>
-      </View>
-
-      <View
-        style={{
-          height: 100,
-          borderColor: '#111111',
-          backgroundColor: '#ffffff',
-          borderWidth: 1,
-          borderRadius: 10,
-          margin:10,
-          marginTop:20,
-
-        }}
-      >  
-
-    <BoardTouchable
-        onPress={()=>
-         navigation.navigate("BoardStacks",{screen:"내가쓴글"})
-         }
-         > 
-         
-         <View
-            style={[
-              {
-                height: 35,
-                marginHorizontal: 25,
-                marginTop: 30,
-                justifyContent: 'center',
-                
-              },
-            ]}
-          >
-
-            <Text
-              style={{
-                fontFamily: 'NanumGothicBold', 
-                fontSize: 20,
-              }}
-            >
-              <Foundation name="clipboard-pencil" size={21} color="#9932CC" />
-               <Text> 내가 쓴 글</Text>
-            </Text>
-            
           </View>
         </BoardTouchable>
       </View>

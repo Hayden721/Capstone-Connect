@@ -4,8 +4,6 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {NavigationContainer} from '@react-navigation/native';
 import "react-native-gesture-handler";
 
-
-
 const First = () => {
 
   return (

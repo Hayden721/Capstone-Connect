@@ -354,30 +354,8 @@ const Main = ({ navigation }) => {
         {hobbyBoard}
         </Text>
       </View>
-
       </View>
-      <Text
-        style={{
-          fontSize: 25,
-          marginLeft: 25,
-          marginTop: 10,
-          fontFamily: 'NanumGothicBold',
-        }}
-      >
-        <Text> 채팅방 </Text>
-      </Text>
-
-      <View
-        style={{
-          height: 80,
-          borderColor: '#E6E7E8',
-          backgroundColor: '#ffffff',
-          borderWidth: 1,
-          borderRadius: 10,
-          margin: 10,
-        }}
-      >
-      </View>
+     
     </ScrollView>
   );
 };

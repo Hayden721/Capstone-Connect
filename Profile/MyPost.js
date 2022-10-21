@@ -164,7 +164,6 @@ const MyPost = ({ navigation }) => {
       }}>
         <View
         style={{
-          flex:1,
           flexDirection: 'row',
           alignItems: 'center',
           
@@ -193,9 +192,8 @@ const MyPost = ({ navigation }) => {
             }}>
               <Text 
                 style={{
-                  padding: 10,
+                  padding: 15,
                   fontSize: 19,
-                  margin: 5,
                 
                 }}>
                 {category}
@@ -222,7 +220,7 @@ const MyPost = ({ navigation }) => {
 
       <View
         style={{
-          flex: 11,
+          flex: 10
         }}
       >
         <FlatList
