@@ -26,7 +26,7 @@ const First = ({navigation}) => {
   return (
     <Container>
 
-<View
+    <View
         style={{
           height: 100,
           borderColor: '#111111',
