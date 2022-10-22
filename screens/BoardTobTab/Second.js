@@ -11,66 +11,49 @@ import { RNCarousel } from 'react-native-carousel-cards';
 
 export default class App extends React.Component {
   render() {
-    return (
-      
-      <View>
-        <TouchableOpacity
-          onPress={() =>
-            Linking.openURL('https://jobs.shinhan.ac.kr/')
-          }
-        >
-        <RNCarousel 
-          data={[
-            { url: "http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg" },
-            { url: "https://cdn.imweb.me/upload/S201910012ff964777e0e3/62f9a36ea3cea.jpg" },
-            { url: "https://images.mypetlife.co.kr/content/uploads/2019/09/09152937/blind-dog-2-1024x683.jpg" },
-          ]}/>
-        </TouchableOpacity>
-
-      </View>
-    )
-  }
-};
-
-    {/* <View
-        style={{
-          height: 100,
-          borderColor: '#111111',
-          backgroundColor: '#ffffff',
-          borderWidth: 1,
-          borderRadius: 10,
-          margin:10, marginTop:20
-        }}
-      >  
-
-        <TouchableOpacity
-          onPress={() =>
-            Linking.openURL('https://jobs.shinhan.ac.kr/')
-          }
-        >
-         
+    return (     
+      <View >
          <View
             style={[
               {
-                height: 35,
-                marginHorizontal: 25,
-                marginTop: 30,
-                
-                
+                height: 55,
+       
+
+                justifyContent: 'center',
               },
             ]}
           >
-
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL('https://jobs.shinhan.ac.kr/')
+          }
+        >
             <Text
               style={{
                 fontFamily: 'NanumGothicBold', 
-                fontSize: 25,
+                padding:10,
+                fontSize: 20,
+                
               }}
             >
               <AntDesign name="smile-circle" size={21} color="blue" />
                <Text> 신한대학교 취창업처 </Text>
             </Text>
-            
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-         </View> */}
+        <View style={{}}>
+        <RNCarousel 
+          data={[
+            { url: "https://cdn.pixabay.com/photo/2018/02/27/10/49/training-3185170_1280.jpg" },
+            { url: "https://cdn.pixabay.com/photo/2018/05/19/00/53/online-education-3412473_1280.jpg" },
+            { url: "https://cdn.pixabay.com/photo/2017/10/21/12/36/training-2874597_1280.jpg" },
+          ]}/>
+        </View>
+ 
+         </View>     
+   
+      
+  
+    )
+  }
+};

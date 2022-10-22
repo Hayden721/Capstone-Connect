@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import firebase from 'firebase/app';
 import { useIsFocused } from '@react-navigation/native';
+import { SearchBar } from '@rneui/themed';
 
 const NotiSchool = ({ navigation }) => {
   const isFocused = useIsFocused(); // isFoucesd Define
@@ -178,13 +179,14 @@ const NotiSchool = ({ navigation }) => {
           padding: 8,
         }}
       >
-        <TextInput
-          placeholder="Sarch Name"
-          value={term}
-          onChangeText={text => {
-            searchName(text);
-          }}
-        />
+      <SearchBar
+        placeholder="알아검색해"
+        onChangeText={text => {
+          searchName(text);
+        }}
+        value={term}
+        platform="ios"
+      />
       </View>
       </View>
       <View>

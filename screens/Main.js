@@ -193,20 +193,17 @@ const Main = ({ navigation }) => {
           
         }}
       >
-        <View
-        style={{
-
-          alignItems: 'center',
-          flexDirection: 'row',
-        }}
-      >
-    
-        <TouchableOpacity
+       <TouchableOpacity
           onPress={() =>
             navigation.navigate('BoardStacks', { screen: '자유게시판' })
           }
         >
-          
+        <View
+        style={{
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >        
           <TextContainer2>
           <AntDesign name="smile-circle" size={30} color="blue" />
             <Text
@@ -220,11 +217,10 @@ const Main = ({ navigation }) => {
              자유
             </Text>
           </TextContainer2>
-        </TouchableOpacity>
+
         
         <Text
          style={{
-          
          fontFamily: 'NanumGothic',
          fontSize: 15,
          }}
@@ -233,27 +229,19 @@ const Main = ({ navigation }) => {
         {freeBoard}
         </Text>
       </View>
-
-      <View
-        style={{
-          
-          alignItems: 'center',
-          flexDirection: 'row',
-        }}
-      >
-            <View
-        style={{
-          alignItems: 'center',
-          flexDirection: 'row',
-        }}
-      >
-    
-        <TouchableOpacity
+      </TouchableOpacity>
+      
+      <TouchableOpacity
           onPress={() =>
             navigation.navigate('BoardStacks', { screen: '공모전게시판' })
           }
         >
-          
+      <View
+        style={{
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >      
           <TextContainer2>
           <Ionicons name="brush" size={30} color="green" />
             <Text
@@ -265,9 +253,7 @@ const Main = ({ navigation }) => {
             >
              공모전
             </Text>
-          </TextContainer2>
-        </TouchableOpacity>
-        
+          </TextContainer2> 
         <Text
          style={{
          fontFamily: 'NanumGothic',
@@ -278,20 +264,18 @@ const Main = ({ navigation }) => {
         {competitionBoard}
         </Text>
       </View>
-      </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('BoardStacks', { screen: '동아리게시판' })
+          }
+        >
       <View
         style={{
           alignItems: 'center',
           flexDirection: 'row',
         }}
-      >
-    
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('BoardStacks', { screen: '동아리게시판' })
-          }
-        >
-          
+      >     
           <TextContainer2>
           <Ionicons name="cafe" size={30} color="#D3AC2B" />
             <Text
@@ -304,7 +288,7 @@ const Main = ({ navigation }) => {
              동아리
             </Text>
           </TextContainer2>
-        </TouchableOpacity>
+       
         
         <Text
          style={{
@@ -316,20 +300,18 @@ const Main = ({ navigation }) => {
         {clubBoard}
         </Text>
       </View>
-        
+      </TouchableOpacity>
+      <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('BoardStacks', { screen: '취미게시판' })
+          }
+        >
       <View
         style={{
           alignItems: 'center',
           flexDirection: 'row',
         }}
-      >
-    
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('BoardStacks', { screen: '취미게시판' })
-          }
-        >
-          
+      >       
           <TextContainer2>
           <Ionicons name="baseball-outline" size={30} color="red" />
             <Text
@@ -341,9 +323,7 @@ const Main = ({ navigation }) => {
             >
              취미
             </Text>
-          </TextContainer2>
-        </TouchableOpacity>
-        
+          </TextContainer2>      
         <Text
          style={{
          fontFamily: 'NanumGothic',
@@ -354,6 +334,7 @@ const Main = ({ navigation }) => {
         {hobbyBoard}
         </Text>
       </View>
+      </TouchableOpacity>
       </View>
      
     </ScrollView>
