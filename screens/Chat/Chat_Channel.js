@@ -9,12 +9,17 @@ import { theme } from '../../styles/theme';
 import { DB, createMessage, getCurrentUser } from '../../utils/firebase';
 import firebases from 'firebase/app';
 import { Ionicons } from '@expo/vector-icons';
-import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.background};
 `;
+
+const Channel = ({ navigation, route: { params } }) => {
+
+const [msgPhotoUrl, setMsgPhotoUrl] = useState(null);
+  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions(); //권한 요청을 위한 hooks
 function renderBubble(props) {
   return (
     <Bubble
@@ -33,44 +38,97 @@ function renderBubble(props) {
   );
 }
 
-const renderActions = props => {
+const renderActions = (props) => {
+  
   return (
     <Actions
-      {...props}
-              // containerStyle={{
-        //   width: 70,
-        // }}
-        icon={() => (
-          <Ionicons
-            name={"add"}
-            size={30}
-            color={"black"}
+    {...props}
+            // containerStyle={{
+      //   width: 70,
+      // }}
+      icon={() => (
+        <Ionicons
+          name={"add"}
+          size={30}
+          color={"black"}
 
-          />
-        )}
-      options={{
-        ['Document']: async props => {
-          try {
-            const result = await DocumentPicker.pick({
-              type: [DocumentPicker.types.pdf],
-            });
-            console.log('image file', result);
-          } catch (e) {
-            if (DocumentPicker.isCancel(e)) {
-              console.log('User cancelled!');
-            } else {
-              throw e;
-            }
-          }
-        },
+        />
+      )}
+    options={{
+      ['Image']: async props => {
+        // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
+    if (!status?.granted) {
+      const permission = await requestPermission();
+      if (!permission.granted) {
+        return null;
+      }
+    }
+    // 이미지 업로드 기능
+    const imageData = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: false,
+      quality: 1,
+      aspect: [1, 1],
+    });
+    if (imageData.cancelled) {
+      return null; //이미지 업로드 취소
+    }
 
-        Cancel: props => {
-          console.log('Cancel');
-        },
-      }}
-      onSend={args => console.log(args)}
-    />
-  );
+    console.log(imageData);
+
+    //파이어베이스 스토리지 업로드
+    let uri = imageData.uri;
+    const filename = imageData.uri.split('/').pop();
+    // const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      xhr.send(null);
+    });
+
+    const reference = firebases
+      .storage()
+      .ref()
+      .child('ChatImages/' + filename);
+    await reference
+      .put(blob)
+      .then(() => {
+        console.log('성공');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    //이미지 다운로드 url
+    await reference
+      .getDownloadURL()
+      .then(url => {
+        console.log(url);
+       setMsgPhotoUrl(url);
+        Alert.alert('업로드 성공', '완료');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+      },
+
+      Cancel: props => {
+        console.log('Cancel');
+        setMsgPhotoUrl(null);
+      },
+    }}
+    onSend={_handleMessageSend}
+  />
+);
 };
 
 const SendButton = props => {
@@ -100,7 +158,6 @@ const SendButton = props => {
 };
 
 //-------------
-const Channel = ({ navigation, route: { params } }) => {
   const [messages, setMessages] = useState([]);
   const { uid } = getCurrentUser();
   const theme = useContext(ThemeContext);
@@ -159,17 +216,16 @@ const Channel = ({ navigation, route: { params } }) => {
       });
   };
 
-  const ChatRoomExit = () => {
-    // DB.collection("channels").doc(params.id)
-  };
 
   const _handleMessageSend = async messageList => {
     const newMessage = messageList[0];
     try {
-      await createMessage({ channelId: params.id, message: newMessage });
+      await createMessage({ channelId: params.id, message: newMessage, image:msgPhotoUrl});
+      setMsgPhotoUrl(null);
     } catch (e) {
       Alert.alert('Send Message Error', e.message);
     }
+    
   };
 
   //navigation.navigate("ChatStack", {screen:"ChannelCreation"})
