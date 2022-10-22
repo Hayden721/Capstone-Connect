@@ -66,11 +66,13 @@ const Board_postLookUp = ({ navigation, route }) => {
         height: 75,
         borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
+        
       }}
       >
 
         <View style={{
-              flexDirection:"row"
+              flexDirection:"row",
+             
         }}
         >
 
@@ -94,6 +96,7 @@ const Board_postLookUp = ({ navigation, route }) => {
               style={{
                 backgroundColor: "#D9D9D9",
                 padding: 5,
+                
                 borderRadius: 10,
                 alignItems: "center",
               }}
@@ -102,6 +105,7 @@ const Board_postLookUp = ({ navigation, route }) => {
                 style={{
                   color: "red",
                   fontSize: 10,           
+                  
                   fontFamily: "NanumGothicBold",
                   
                 }}
@@ -192,6 +196,7 @@ const Board_postLookUp = ({ navigation, route }) => {
   return (
     <View style={{
       backgroundColor:"#ffffff",
+      flex:1,
     }}
     >
 
