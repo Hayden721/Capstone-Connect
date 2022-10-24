@@ -34,6 +34,7 @@ const InnerContainer = styled.View`
   margin: 0 10px 0 10px;
   margin-bottom: 20px;
   height: 60px;
+  justify-Content: center;
 `;
 
 const ButtonContainer = styled.View`
@@ -59,19 +60,23 @@ const Top = styled.Text`
 `;
 
 const FastButtonContainer = styled.View`
-  width: 60px;
-  height: 60px;
+  width: 60;
+  height: 60;
+  border-width: 2px;
   border-radius: 40px;
   margin: 20px;
   margin-top: 10px;
   padding: 15px;
   background-color: #f7f1e3;
+  border-color: white;
   box-shadow: 1px 3px 5px;
 `;
 
 const TextContainer2 = styled.View`
-  width: 60px;
-  padding: 15px;
+justify-Content: center;
+text-align: center;
+
+  
 `;
 
 const Main = ({ navigation }) => {
@@ -105,7 +110,7 @@ const Main = ({ navigation }) => {
               style={{
                 justifyContent: 'center',
                 textAlign: 'center',
-                fontSize: 10,
+                fontSize: 8,
               }}
             >
               공지
@@ -125,6 +130,7 @@ const Main = ({ navigation }) => {
                 justifyContent: 'center',
                 textAlign: 'center',
                 fontSize: 8,
+              
               }}
             >
               학교
@@ -201,7 +207,7 @@ const Main = ({ navigation }) => {
                     justifyContent: 'center',
                     textAlign: 'center',
                     fontSize: 15,
-                    width: 40,
+                    width: 50,
                   }}
                 >
                   자유
@@ -239,7 +245,7 @@ const Main = ({ navigation }) => {
                     justifyContent: 'center',
                     textAlign: 'center',
                     fontSize: 15,
-                    width: 40,
+                    width: 50,
                   }}
                 >
                   공모전
@@ -250,6 +256,7 @@ const Main = ({ navigation }) => {
                 style={{
                   fontFamily: 'NanumGothic',
                   fontSize: 15,
+                  textAlign: 'center',
                 }}
               >
                 - {freeBoard}
@@ -276,7 +283,7 @@ const Main = ({ navigation }) => {
                     justifyContent: 'center',
                     textAlign: 'center',
                     fontSize: 15,
-                    width: 40,
+                    width: 50,
                   }}
                 >
                   동아리
@@ -287,6 +294,7 @@ const Main = ({ navigation }) => {
                 style={{
                   fontFamily: 'NanumGothic',
                   fontSize: 15,
+                  textAlign: 'center',
                 }}
               >
                 - {freeBoard}
@@ -313,7 +321,7 @@ const Main = ({ navigation }) => {
                     justifyContent: 'center',
                     textAlign: 'center',
                     fontSize: 15,
-                    width: 40,
+                    width: 50,
                   }}
                 >
                   취미
@@ -324,6 +332,8 @@ const Main = ({ navigation }) => {
                 style={{
                   fontFamily: 'NanumGothic',
                   fontSize: 15,
+                  textAlign: 'center',
+                  
                 }}
               >
                 - {freeBoard}
