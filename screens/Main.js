@@ -112,7 +112,6 @@ const renderItem = ({ item }, parallaxProps) => {
           {item.name}
         </Text>
         <TouchableOpacity >
-          <Ionicons name="arrow-redo" size={24} color="black"/>
 
         </TouchableOpacity>
       </View>
