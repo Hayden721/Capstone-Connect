@@ -64,8 +64,8 @@ const Tabs = ({ navigation, route }) => {
           },
           headerRight: ({ color, size }) => (
             <Ionicons
-              name="ios-alert-outline"
-              size={24}
+              name="add"
+              size={26}
               color="black"
               onPress={() =>
                 navigation.navigate('ChatStack', { screen: 'ChannelCreation' })

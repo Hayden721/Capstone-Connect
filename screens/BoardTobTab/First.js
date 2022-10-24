@@ -8,14 +8,23 @@ import Board from '../Board';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const CarouselContainer = styled.View`
   background-color: ${({ theme }) => theme.blackPearlBackgorund};
+  height: auto;
   width: auto;
-  height: 400px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-radius: 20px;
   box-shadow: 1px 3px 5px;
+  margin: 0 10px 0 10px;
+`;
+const InnerContainer = styled.View`
+  background-color: #f5f6fa;
+  text-align: center;
+  border-radius: 15px;
+  margin: 15px;
+  height: 60px;
+  justify-content: center;
 `;
 
 const Container = styled.View`
@@ -24,39 +33,23 @@ const Container = styled.View`
   border-radius: 5px;
   width: 100%;
   padding: 10px;
-
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `;
 
-const BoardTouchable = styled.TouchableOpacity``;
+const BoardTouchable = styled.TouchableOpacity`
+  margin: 0px 15px 0 15px;
+  justify-content: center;
+`;
 const First = ({ navigation }) => {
   return (
-    <Container>
-      <View
-        style={{
-          height: 100,
-          borderColor: '#111111',
-          backgroundColor: '#ffffff',
-          borderWidth: 1,
-          borderRadius: 10,
-          margin: 10,
-          marginTop: 20,
-        }}
-      >
-        <BoardTouchable
-          onPress={() =>
-            navigation.navigate('BoardStacks', { screen: '내가쓴글' })
-          }
-        >
-          <View
-            style={[
-              {
-                height: 35,
-                marginHorizontal: 25,
-                marginTop: 30,
-                justifyContent: 'center',
-              },
-            ]}
+    <ScrollView>
+      <View style={{ margin: 10 }}></View>
+      <CarouselContainer>
+        <InnerContainer>
+          <BoardTouchable
+            onPress={() =>
+              navigation.navigate('BoardStacks', { screen: '내가쓴글' })
+            }
           >
             <Text
               style={{
@@ -64,36 +57,35 @@ const First = ({ navigation }) => {
                 fontSize: 20,
               }}
             >
-              <Foundation name="clipboard-pencil" size={21} color="#9932CC" />
-              <Text> 내가 쓴 글</Text>
+              내가 쓴 글
             </Text>
-          </View>
-        </BoardTouchable>
-      </View>
+          </BoardTouchable>
+        </InnerContainer>
+      </CarouselContainer>
+      <View style={{ margin: 10 }}></View>
+      <CarouselContainer>
+        <InnerContainer>
+          <BoardTouchable
+            onPress={() =>
+              navigation.navigate('BoardStacks', { screen: '자유게시판' })
+            }
+          >
+            <Text
+              style={{
+                fontFamily: 'NanumGothicBold',
+                fontSize: 20,
+              }}
+            >
+              자유게시판
+            </Text>
+          </BoardTouchable>
+        </InnerContainer>
 
-      <View
-        style={{
-          height: 250,
-          borderColor: '#111111',
-          backgroundColor: '#ffffff',
-          borderWidth: 1,
-          borderRadius: 10,
-          margin: 10,
-        }}
-      >
-        <BoardTouchable
-          onPress={() =>
-            navigation.navigate('BoardStacks', { screen: '자유게시판' })
-          }
-        >
-          <View
-            style={[
-              {
-                height: 35,
-                marginHorizontal: 25,
-                marginTop: 20,
-              },
-            ]}
+        <InnerContainer>
+          <BoardTouchable
+            onPress={() =>
+              navigation.navigate('BoardStacks', { screen: '공모전게시판' })
+            }
           >
             <Text
               style={{
@@ -101,25 +93,15 @@ const First = ({ navigation }) => {
                 fontSize: 20,
               }}
             >
-              <AntDesign name="smile-circle" size={21} color="blue" />
-              <Text> 자유 게시판</Text>
+              <Text> 공모전게시판</Text>
             </Text>
-          </View>
-        </BoardTouchable>
-
-        <BoardTouchable
-          onPress={() =>
-            navigation.navigate('BoardStacks', { screen: '공모전게시판' })
-          }
-        >
-          <View
-            style={[
-              {
-                height: 35,
-                marginHorizontal: 25,
-                marginTop: 20,
-              },
-            ]}
+          </BoardTouchable>
+        </InnerContainer>
+        <InnerContainer>
+          <BoardTouchable
+            onPress={() =>
+              navigation.navigate('BoardStacks', { screen: '동아리게시판' })
+            }
           >
             <Text
               style={{
@@ -127,25 +109,15 @@ const First = ({ navigation }) => {
                 fontSize: 20,
               }}
             >
-              <Ionicons name="brush" size={21} color="green" />
-              <Text> 공모전 게시판</Text>
+              <Text> 동아리게시판</Text>
             </Text>
-          </View>
-        </BoardTouchable>
-
-        <BoardTouchable
-          onPress={() =>
-            navigation.navigate('BoardStacks', { screen: '동아리게시판' })
-          }
-        >
-          <View
-            style={[
-              {
-                height: 35,
-                marginHorizontal: 25,
-                marginTop: 20,
-              },
-            ]}
+          </BoardTouchable>
+        </InnerContainer>
+        <InnerContainer>
+          <BoardTouchable
+            onPress={() =>
+              navigation.navigate('BoardStacks', { screen: '취미게시판' })
+            }
           >
             <Text
               style={{
@@ -153,39 +125,12 @@ const First = ({ navigation }) => {
                 fontSize: 20,
               }}
             >
-              <Ionicons name="cafe" size={21} color="#D3AC2B" />
-              <Text> 동아리 게시판</Text>
+              <Text> 취미게시판</Text>
             </Text>
-          </View>
-        </BoardTouchable>
-
-        <BoardTouchable
-          onPress={() =>
-            navigation.navigate('BoardStacks', { screen: '취미게시판' })
-          }
-        >
-          <View
-            style={[
-              {
-                height: 35,
-                marginHorizontal: 25,
-                marginTop: 20,
-              },
-            ]}
-          >
-            <Text
-              style={{
-                fontFamily: 'NanumGothicBold',
-                fontSize: 20,
-              }}
-            >
-              <Ionicons name="baseball-outline" size={21} color="red" />
-              <Text> 취미 게시판</Text>
-            </Text>
-          </View>
-        </BoardTouchable>
-      </View>
-    </Container>
+          </BoardTouchable>
+        </InnerContainer>
+      </CarouselContainer>
+    </ScrollView>
   );
 };
 

@@ -13,6 +13,14 @@ export default class App extends React.Component {
   render() {
     return (     
       <View >
+        <View style={{marginTop:5}}>
+        <RNCarousel 
+          data={[
+            { url: "https://cdn.pixabay.com/photo/2018/02/27/10/49/training-3185170_1280.jpg" },
+            { url: "https://cdn.pixabay.com/photo/2018/05/19/00/53/online-education-3412473_1280.jpg" },
+            { url: "https://cdn.pixabay.com/photo/2017/10/21/12/36/training-2874597_1280.jpg" },
+          ]}/>
+        </View>
          <View
             style={[
               {
@@ -41,14 +49,7 @@ export default class App extends React.Component {
             </Text>
             </TouchableOpacity>
           </View>
-        <View style={{}}>
-        <RNCarousel 
-          data={[
-            { url: "https://cdn.pixabay.com/photo/2018/02/27/10/49/training-3185170_1280.jpg" },
-            { url: "https://cdn.pixabay.com/photo/2018/05/19/00/53/online-education-3412473_1280.jpg" },
-            { url: "https://cdn.pixabay.com/photo/2017/10/21/12/36/training-2874597_1280.jpg" },
-          ]}/>
-        </View>
+
  
          </View>     
    

@@ -32,6 +32,7 @@ const Board = ({ navigation }) => {
         fontSize: 30,
         color: 'black',
         textTransform: 'capitalize',
+        fontFamily: 'NanumGothicBold',
       },
       
     }}

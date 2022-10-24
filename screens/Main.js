@@ -1,30 +1,40 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { Text, View, Alert, Linking } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  Alert,
+  Linking,
+  Dimensions,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import Carousel, {
+  Pagination,
+  ParallaxImage,
+} from 'react-native-snap-carousel';
 
 // 아이콘 사용 import
 import { Ionicons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 import { useIsFocused } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { CallBoard } from '../utils/firebase';
 
-import {} from 'expo-status-bar';
-import { render } from 'react-dom';
+const { width: screenWidth } = Dimensions.get('window');
+
 // 학교, 종정, 셔틀 링크 사용 import
 const CarouselContainer = styled.View`
   background-color: ${({ theme }) => theme.blackPearlBackgorund};
   width: auto;
-  height: 400px;
+  height: 450px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  box-shadow: 1px 3px 5px;
+  box-shadow: 1px 2px 5px;
 `;
 
 const InnerContainer = styled.View`
@@ -34,7 +44,7 @@ const InnerContainer = styled.View`
   margin: 0 10px 0 10px;
   margin-bottom: 20px;
   height: 60px;
-  justify-Content: center;
+  justify-content: center;
 `;
 
 const ButtonContainer = styled.View`
@@ -68,16 +78,65 @@ const FastButtonContainer = styled.View`
   margin-top: 10px;
   padding: 15px;
   background-color: #f7f1e3;
-  border-color: white;
-  box-shadow: 1px 3px 5px;
+  border-color: #f7f1e3;
+  box-shadow: 1px 1px 2px;
 `;
 
 const TextContainer2 = styled.View`
-justify-Content: center;
-text-align: center;
 
-  
+  justify-content: center;
+  text-align: center;
 `;
+
+const renderItem = ({ item }, parallaxProps) => {
+  return (
+    <View
+      style={{
+        borderWidth: 1,
+        padding: 20,
+        borderRadius: 20,
+        alignItems: 'center',
+        backgroundColor: 'white',
+      }}
+    >
+      <ParallaxImage
+        source={{ uri: item.thumbnail }}
+        containerStyle={styles.imageContainer}
+        style={styles.image}
+        parallaxFactor={0.4}
+        {...parallaxProps}
+      />
+      <Image source={{ uri: item.url }} style={{ width: 200, height: 250 }} />
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={{ marginVertical: 10, fontSize: 20, fontWeight: 'bold' }}>
+          {item.name}
+        </Text>
+        <TouchableOpacity >
+          <Ionicons name="arrow-redo" size={24} color="black"/>
+
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const data = [
+  {
+    id: 1,
+    name: '학습법 워크숍',
+    url: 'https://www.shinhan.ac.kr/CrossEditor/binary/images/000128/%EB%AF%B8%EB%9E%98%EC%82%AC%ED%9A%8C_%EC%97%AD%EB%9F%89%EA%B0%95%ED%99%94_%ED%95%99%EC%8A%B5%EB%B2%95_%EC%9B%8C%ED%81%AC%EC%83%B5_%ED%8F%AC%EC%8A%A4%ED%84%B0.png',
+  },
+  {
+    id: 2,
+    name: '한중일 대학생 외교캠프',
+    url: 'https://www.shinhan.ac.kr/CrossEditor/binary/images/000128/%EC%A0%9C9%EC%B0%A8_%ED%95%9C%EC%9D%BC%EC%A4%91_%EB%8C%80%ED%95%99%EC%83%9D_%EC%99%B8%EA%B5%90%EC%BA%A0%ED%94%84(%EA%B5%AD%EB%AC%B8).png',
+  },
+  {
+    id: 3,
+    name: '낙동강 세계평화 문화 대축전',
+    url: 'https://www.shinhan.ac.kr/CrossEditor/binary/images/000128/%ED%8F%AC%EC%8A%A4%ED%84%B0.png',
+  },
+];
 
 const Main = ({ navigation }) => {
   const [freeBoard, setFreeBoard] = useState('');
@@ -86,6 +145,8 @@ const Main = ({ navigation }) => {
   const [hobbyBoard, setHobbyBoard] = useState('');
   const [posts, setPosts] = useState(null);
   const isFocused = useIsFocused(); // isFoucesd Define
+  const [index, setIndex] = useState(0);
+  const isCarousel = useRef(null);
 
   CallBoard('Free', setFreeBoard);
   CallBoard('Competition', setCompetitionBoard);
@@ -95,7 +156,37 @@ const Main = ({ navigation }) => {
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <CarouselContainer>
-        <Text>안녕</Text>
+        <View style={{ marginTop: 30 }}></View>
+        <Carousel
+          ref={isCarousel}
+          sliderWidth={screenWidth}
+          sliderHeight={screenWidth}
+          itemWidth={screenWidth - 80}
+          itemHeight={styles.carouselHeight}
+          renderItem={renderItem}
+          hasParallaxImages={true}
+          onSnapToItem={index => setIndex(index)}
+          data={data}
+        />
+        <Pagination
+          dotsLength={data.length}
+          activeDotIndex={index}
+          carouselRef={isCarousel}
+          dotStyle={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            marginHorizontal: 8,
+            backgroundColor: '#F4BB41',
+          }}
+          tappableDots={true}
+          inactiveDotStyle={{
+            backgroundColor: 'white',
+            // Define styles for inactive dots here
+          }}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
+        />
       </CarouselContainer>
 
       <ButtonContainer>
@@ -105,7 +196,7 @@ const Main = ({ navigation }) => {
           }
         >
           <FastButtonContainer>
-          <Ionicons name="megaphone" size={24} color="black" />
+            <Ionicons name="megaphone" size={24} color="black" />
             <Text
               style={{
                 justifyContent: 'center',
@@ -130,7 +221,6 @@ const Main = ({ navigation }) => {
                 justifyContent: 'center',
                 textAlign: 'center',
                 fontSize: 8,
-              
               }}
             >
               학교
@@ -144,7 +234,7 @@ const Main = ({ navigation }) => {
           }
         >
           <FastButtonContainer>
-          <Ionicons name="desktop" size={24} color="black" />
+            <Ionicons name="desktop" size={24} color="black" />
             <Text
               style={{
                 justifyContent: 'center',
@@ -170,7 +260,7 @@ const Main = ({ navigation }) => {
               style={{
                 justifyContent: 'center',
                 textAlign: 'center',
-                fontSize: 8,
+                fontSize: 10,
               }}
             >
               셔틀
@@ -204,8 +294,10 @@ const Main = ({ navigation }) => {
               <TextContainer2>
                 <Text
                   style={{
+                    fontFamily: 'NanumGothicBold',
                     justifyContent: 'center',
                     textAlign: 'center',
+
                     fontSize: 15,
                     width: 50,
                   }}
@@ -216,7 +308,7 @@ const Main = ({ navigation }) => {
 
               <Text
                 style={{
-                  fontFamily: 'NanumGothic',
+                  fontFamily: 'NanumGothicBold',
                   fontSize: 15,
                   textAlign: 'center',
                 }}
@@ -242,6 +334,7 @@ const Main = ({ navigation }) => {
               <TextContainer2>
                 <Text
                   style={{
+                    fontFamily: 'NanumGothicBold',
                     justifyContent: 'center',
                     textAlign: 'center',
                     fontSize: 15,
@@ -254,12 +347,12 @@ const Main = ({ navigation }) => {
 
               <Text
                 style={{
-                  fontFamily: 'NanumGothic',
+                  fontFamily: 'NanumGothicBold',
                   fontSize: 15,
                   textAlign: 'center',
                 }}
               >
-                - {freeBoard}
+                - {competitionBoard}
               </Text>
             </View>
           </TouchableOpacity>
@@ -280,6 +373,7 @@ const Main = ({ navigation }) => {
               <TextContainer2>
                 <Text
                   style={{
+                    fontFamily: 'NanumGothicBold',
                     justifyContent: 'center',
                     textAlign: 'center',
                     fontSize: 15,
@@ -292,12 +386,12 @@ const Main = ({ navigation }) => {
 
               <Text
                 style={{
-                  fontFamily: 'NanumGothic',
+                  fontFamily: 'NanumGothicBold',
                   fontSize: 15,
                   textAlign: 'center',
                 }}
               >
-                - {freeBoard}
+                - {clubBoard}
               </Text>
             </View>
           </TouchableOpacity>
@@ -318,6 +412,7 @@ const Main = ({ navigation }) => {
               <TextContainer2>
                 <Text
                   style={{
+                    fontFamily: 'NanumGothicBold',
                     justifyContent: 'center',
                     textAlign: 'center',
                     fontSize: 15,
@@ -330,13 +425,12 @@ const Main = ({ navigation }) => {
 
               <Text
                 style={{
-                  fontFamily: 'NanumGothic',
+                  fontFamily: 'NanumGothicBold',
                   fontSize: 15,
                   textAlign: 'center',
-                  
                 }}
               >
-                - {freeBoard}
+                - {hobbyBoard}
               </Text>
             </View>
           </TouchableOpacity>
@@ -347,3 +441,21 @@ const Main = ({ navigation }) => {
 };
 
 export default Main;
+
+const styles = StyleSheet.create({
+  item: {
+    width: screenWidth - 60,
+    height: 300,
+  },
+
+  imageContainer: {
+    flex: 1,
+    marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
+    backgroundColor: 'white',
+    borderRadius: 8,
+  },
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    resizeMode: 'cover',
+  },
+});

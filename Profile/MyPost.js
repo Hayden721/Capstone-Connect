@@ -172,6 +172,7 @@ const MyPost = ({ navigation }) => {
       </View>
       <View
         style={{
+          marginTop: 10,
           flexDirection:"row",
           flex:1,
           justifyContent:"space-evenly"
@@ -186,15 +187,18 @@ const MyPost = ({ navigation }) => {
             }
             }
             style = {{
-              borderWidth:1,
-              backgroundColor: categoryTitle  == categories[index] ? 'green' : 'transparent',
-              borderRadius: 10,
+              height: 50,
+              backgroundColor: categoryTitle  == categories[index] ? '#808e9b' : 'transparent',
+              borderRadius: 50,
+              alignItems: 'center',
+              justifyContent: 'center',
+              
             }}>
               <Text 
                 style={{
                   padding: 15,
                   fontSize: 19,
-                
+                  
                 }}>
                 {category}
               </Text>
@@ -209,7 +213,7 @@ const MyPost = ({ navigation }) => {
         }}
       >
       <SearchBar
-          placeholder="알아검색해"
+          placeholder="글 제목을 입력해주세요."
           onChangeText={text => {
             searchName(text);
           }}

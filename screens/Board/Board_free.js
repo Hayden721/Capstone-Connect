@@ -143,7 +143,7 @@ const Board_free = ({ navigation }) => {
       }}
     >
       <SearchBar
-        placeholder="알아검색해"
+        placeholder="글 제목을 입력해주세요."
         onChangeText={text => {
           searchName(text);
         }}
