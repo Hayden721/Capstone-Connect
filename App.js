@@ -60,7 +60,10 @@ export default function App() {
 
   return (
   <ThemeProvider theme={theme}>
-    <SafeAreaView/>
+
+  
+    <SafeAreaView />
+
     <NavigationContainer>
       {isLoggedIn ? (
         <Stack.Navigator>

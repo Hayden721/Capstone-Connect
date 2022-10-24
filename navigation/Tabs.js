@@ -1,9 +1,9 @@
-import React, { useContext} from 'react';
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import 'react-native-gesture-handler';
 
 import { Ionicons } from '@expo/vector-icons';
-
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 //stack screens import
 import Main from '../screens/Main';
 import Board from '../screens/Board';
@@ -25,13 +25,13 @@ style={{
 }} /> */
 const Tabs = ({ navigation, route }) => {
   const theme = useContext(ThemeContext);
-
   return (
     <Tab.Navigator>
       <Tab.Screen
         name="Main"
         component={Main}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="home-outline" size={24} color={color} />;
           },
@@ -41,12 +41,12 @@ const Tabs = ({ navigation, route }) => {
         name="Board"
         component={Board}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color, size }) => {
             return (
               <Ionicons name="clipboard-outline" size={24} color={color} />
             );
           },
-          headerShown: true,
         }}
       />
       <Tab.Screen
@@ -102,8 +102,6 @@ const Tabs = ({ navigation, route }) => {
         }}
       />
     </Tab.Navigator>
-
-    
   );
 };
 

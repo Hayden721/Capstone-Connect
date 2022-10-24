@@ -1,3 +1,4 @@
+import { color } from "react-native-reanimated";
 
 const colors = {
   white: '#ffffff',
@@ -15,6 +16,7 @@ const colors = {
 export const theme = {
   background:colors.white,
   text: colors.black,
+  blackPearlBackgorund: colors.blackPearl,
   //imageColor
   imageBackground: colors.grey_0,
   imageButtonBackground: colors.hintOfElusiveBlue,
