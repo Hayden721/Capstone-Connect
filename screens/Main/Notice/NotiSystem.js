@@ -69,7 +69,7 @@ const NotiSystem = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <Pressable
     onPress={() =>
-      navigation.navigate('Stack',{ screen: 'NotiLookUp' , //다른 네비게이터에 파라미터 보내고 싶을때
+      navigation.navigate('NotiScreenStack',{ screen: '공지조회' , //다른 네비게이터에 파라미터 보내고 싶을때
         params:{
         title: item.title,
         date: item.date,
@@ -180,7 +180,7 @@ const NotiSystem = ({ navigation }) => {
         }}
       >
       <SearchBar
-        placeholder="알아검색해"
+        placeholder="제목을 입력하세요."
         onChangeText={text => {
           searchName(text);
         }}
@@ -207,7 +207,7 @@ const NotiSystem = ({ navigation }) => {
         >
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('Stack', { screen: 'NotiWrite' })
+              navigation.navigate('NotiScreenStack', { screen: '공지글쓰기' })
             }
             style={{
               borderRadius: 20,

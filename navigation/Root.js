@@ -9,6 +9,7 @@ import ChatStack from './ChatStack';
 import ChatChannel from '../screens/Chat/Chat_Channel';
 import { Ionicons } from '@expo/vector-icons';
 import ProfileStack from './ProfileStack';
+import NotiScreenStack from './NotiScreenStack';
 
 const Nav = createStackNavigator();
 
@@ -43,6 +44,7 @@ const Root = ({ navigation }) => {
         }}
       />
       <Nav.Screen name="ProfileStack" component={ProfileStack} />
+      <Nav.Screen name="NotiScreenStack" component={NotiScreenStack} />
     </Nav.Navigator>
   );
 };
