@@ -31,7 +31,7 @@ const Tabs = ({ navigation, route }) => {
         name="Main"
         component={Main}
         options={{
-          headerShown: false,
+          headerShown: true,
           tabBarIcon: ({ color, size }) => {
             return <Ionicons name="home-outline" size={24} color={color} />;
           },
@@ -41,13 +41,21 @@ const Tabs = ({ navigation, route }) => {
         name="Board"
         component={Board}
         options={{
-          headerShown: false,
+          headerShown: true,
           tabBarIcon: ({ color, size }) => {
             return (
               <Ionicons name="clipboard-outline" size={24} color={color} />
             );
           },
+          headerRight: () => (
+            <Ionicons name="ios-alert-outline" size={24} color="black" 
+            onPress={() => navigation.navigate("BoardStacks", {screen:"신고"})}
+            style={{
+              marginRight: 10,
+            }} />
+          )
         }}
+        
       />
       <Tab.Screen
         name="Chat"

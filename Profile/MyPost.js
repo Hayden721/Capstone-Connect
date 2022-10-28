@@ -187,7 +187,7 @@ const MyPost = ({ navigation }) => {
             }
             }
             style = {{
-              height: 50,
+              height: 60,
               backgroundColor: categoryTitle  == categories[index] ? '#808e9b' : 'transparent',
               borderRadius: 50,
               alignItems: 'center',

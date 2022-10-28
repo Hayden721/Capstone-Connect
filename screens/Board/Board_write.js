@@ -208,6 +208,8 @@ const Board_write = ({ navigation }) => {
           <Image
             source={{ uri: imageUrl }}
             style={{ width: 400, height: 400 }} // 이미지 크기
+            resizeMethod="resize"
+            resizeMode="contain"
           />
         </View>
         <View

@@ -32,6 +32,7 @@ const BoardStack = createStackNavigator();
       <BoardStack.Screen name="글조회" component={Board_postLookUp}/>
       <BoardStack.Screen name="글수정" component={Board_edit}/>
       <BoardStack.Screen name="내가쓴글" component={MyPost} />
+      <BoardStack.Screen name="신고" component={Report} />
 
     </BoardStack.Navigator>  
 

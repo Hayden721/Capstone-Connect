@@ -311,7 +311,7 @@ const Board_postLookUp = ({ navigation, route }) => {
             source={{ uri: photoUrl }}
             style={{ width: 400, height: 350 }}
             resizeMethod="resize"
-            resizeMode="cover"
+            resizeMode="contain"
           />
         </View>
       )}

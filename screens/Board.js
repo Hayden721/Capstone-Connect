@@ -13,6 +13,7 @@ const BoardTopTabs = createMaterialTopTabNavigator();
 const Board = ({ navigation }) => {
   
   return (
+    
     <BoardTopTabs.Navigator
     screenOptions={{ //use this config
       tabBarScrollEnabled: true,

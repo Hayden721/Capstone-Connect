@@ -15,6 +15,7 @@ import { SearchBar } from '@rneui/themed';
 const Board_free = ({ navigation }) => {
   const isFocused = useIsFocused(); // isFoucesd Define
   const [posts, setPosts] = useState(null);
+  //const [display, setDisplay] = useState(false);
   useEffect(() => {
     getPosts().then(setPosts);
     setTerm('');
@@ -54,85 +55,98 @@ const Board_free = ({ navigation }) => {
     }
   };
 
+  const [userName, setUserName] = useState("");
+  const [userNumber, setUserNumber] = useState("");
+  db.collection('users')
+  .where('email', '==', firebase.auth().currentUser.email)
+  .get()
+  .then(result => {
+    result.forEach(doc => {
+      setUserName(doc.data().displayName);
+      setUserNumber(doc.data().stuId);
+    });
+  });
+
+
   const renderItem = ({ item }) => (
     <Pressable
-      onPress={() =>
-        navigation.navigate('글조회', {
-          title: item.title,
-          date: item.date,
-          writer: item.writer,
-          content: item.content,
-          photoUrl: item.photoUrl,
-          id: item.id,
-          boardCategory: boardCategory,
-        })
-      }
-    >
-      <View
-        style={{
-          backgroundColor: '#ffffff',
-          //배경색
-        }}
-      >
-        <View
-          style={[
-            {
-              flexDirection: 'row',
-              alignItems: 'center',
-              // 제목, 날짜, 이메일
-              height: 90,
-              marginHorizontal: 10,
-              borderBottomWidth: 1,
-              // 아래밑줄
-            },
-          ]}
-        >
-          <View
-            style={[
-              {
-                flexDirection: 'column',
-                flex: 2,
-                // 그림여백
-              },
-            ]}
-          >
-            <Text
-              style={{
-                fontFamily: 'NanumGothicBold',
-                fontSize: 20,
-              }}
-            >
-              {item.title}
-            </Text>
+    onPress={() =>
+      navigation.navigate('글조회', {
+        title: item.title,
+        date: item.date,
+        writer: item.writer,
+        content: item.content,
+        photoUrl: item.photoUrl,
+        id: item.id,
+        boardCategory: boardCategory,
+      })
+    }
+  >
+    <View style={{ 
+            paddingTop: 16,
+            margin:10
+            }}>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: 5,
-              }}
-            >
-              <Text style={{ fontSize: 11 }}>{item.date}</Text>
-              <Text style={{ fontSize: 11 }}> || </Text>
-              <Text style={{ fontSize: 11 }}>{item.writer}</Text>
+      <View style={{width:"100%", height:200, backgroundColor:"#d2dae2",borderRadius:20}}>
+          <View style={{
+            paddingHorizontal: 16,
+            flexDirection:"row"
+          }}>
+            <View style={{marginTop:20, height:50,  width:"55%", }}>
+              <Text  numberOfLines={1} ellipsizeMode="tail" style={{
+                fontSize: 15,
+                fontFamily:'NanumGothicBold',
+              }}>{item.title}</Text>
+              <View style={{justifyContent:"center",height: 100,justifyContent:"flex-start",marginTop:10, width:"70%"}}>
+                <Text numberOfLines={3} ellipsizeMode="tail"
+                  style={{ 
+                    fontSize: 14,
+                    lineHeight: 24,
+                    marginBottom: 8,
+                  }}>
+                    {item.content}</Text>
+              </View>
+              <Text
+                style={{
+                  color: '#757575',
+                  fontSize: 10,
+                  lineHeight: 18,}}>
+                {item.date}
+              </Text>
+              <Text
+                style={{
+                  color: '#757575',
+                  fontSize: 10,
+                  lineHeight: 18,}}>
+                작성자: {userName} {userNumber}
+              </Text>
+            </View>
+            <View style={{
+              flex:1,
+              alignItems:"flex-end",
+              justifyContent:"center",
+              height:200,
+            }}>
+              <View>
+                {item.photoUrl &&(
+                  <Image
+                    source={{uri:item.photoUrl}}
+                    style={{
+                      backgroundColor: '#bdbdbd',
+                      width:150,
+                      height:150,
+                      aspectRatio: 1,
+                      marginBottom: 16}}
+                      resizeMethod="resize"
+                      resizeMode="contain"
+                  />
+                )}
+              </View>
             </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-            }}
-          >
-            <Image
-              source={{ uri: item.photoUrl }}
-              style={{ width: 80, height: 80 }}
-              resizeMethod="resize"
-              resizeMode="cover"
-            />
-          </View>
         </View>
-      </View>
-    </Pressable>
+    </View>
+  </Pressable>
   );
 
   return (

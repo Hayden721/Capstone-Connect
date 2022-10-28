@@ -9,12 +9,13 @@ import {
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import { FlatList } from 'react-native-gesture-handler';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native'; //새로고침 랜더링
 import ActionButton from 'react-native-action-button';
 import { SearchBar } from '@rneui/themed';
 const Board_hobby = ({ navigation }) => {
   const isFocused = useIsFocused(); // isFoucesd Define
   const [posts, setPosts] = useState(null);
+  //const [display, setDisplay] = useState(false);
   useEffect(() => {
     getPosts().then(setPosts);
     setTerm('');
@@ -54,6 +55,19 @@ const Board_hobby = ({ navigation }) => {
     }
   };
 
+  const [userName, setUserName] = useState("");
+  const [userNumber, setUserNumber] = useState("");
+  db.collection('users')
+  .where('email', '==', firebase.auth().currentUser.email)
+  .get()
+  .then(result => {
+    result.forEach(doc => {
+      setUserName(doc.data().displayName);
+      setUserNumber(doc.data().stuId);
+    });
+  });
+
+
   const renderItem = ({ item }) => (
     <Pressable
       onPress={() =>
@@ -68,67 +82,73 @@ const Board_hobby = ({ navigation }) => {
         })
       }
     >
-      <View
-        style={{
-          backgroundColor: '#ffffff',
-        }}
-      >
-        <View
-          style={[
-            {
-              flexDirection: 'row',
-              alignItems: 'center',
-              height: 90,
-              marginHorizontal: 10,
-              borderBottomWidth: 1,
-            },
-          ]}
-        >
-          <View
-            style={[
-              {
-                flexDirection: 'column',
-                flex: 2,
-              },
-            ]}
-          >
-            <Text
-              style={{
-                fontFamily: 'NanumGothicBold',
-                fontSize: 20,
-              }}
-            >
-              {item.title}
-            </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: 5,
-              }}
-            >
-              <Text style={{ fontSize: 11 }}>{item.date}</Text>
-              <Text style={{ fontSize: 11 }}> || </Text>
-              <Text style={{ fontSize: 11 }}>{item.writer}</Text>
+      <View style={{ 
+              paddingTop: 16,
+              margin:10
+              }}>
+
+        <View style={{width:"100%", height:200, backgroundColor:"#d2dae2",borderRadius:20}}>
+            <View style={{
+              paddingHorizontal: 16,
+              flexDirection:"row"
+            }}>
+              <View style={{marginTop:20, height:50,  width:"55%", }}>
+                <Text  numberOfLines={1} ellipsizeMode="tail" style={{
+                  fontSize: 15,
+                  fontFamily:'NanumGothicBold',
+                }}>{item.title}</Text>
+                <View style={{justifyContent:"center",height: 100,justifyContent:"flex-start",marginTop:10, width:"70%"}}>
+                  <Text numberOfLines={3} ellipsizeMode="tail"
+                    style={{ 
+                      fontSize: 14,
+                      lineHeight: 24,
+                      marginBottom: 8,
+                    }}>
+                      {item.content}</Text>
+                </View>
+                <Text
+                  style={{
+                    color: '#757575',
+                    fontSize: 10,
+                    lineHeight: 18,}}>
+                  {item.date}
+                </Text>
+                <Text
+                  style={{
+                    color: '#757575',
+                    fontSize: 10,
+                    lineHeight: 18,}}>
+                  작성자: {userName} {userNumber}
+                </Text>
+              </View>
+              <View style={{
+                flex:1,
+                alignItems:"flex-end",
+                justifyContent:"center",
+                height:200,
+              }}>
+                <View>
+                  {item.photoUrl &&(
+                    <Image
+                      source={{uri:item.photoUrl}}
+                      style={{
+                        backgroundColor: '#bdbdbd',
+                        width:150,
+                        height:150,
+                        aspectRatio: 1,
+                        marginBottom: 16}}
+                        resizeMethod="resize"
+                        resizeMode="contain"
+                    />
+                  )}
+                </View>
+              </View>
             </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-            }}
-          >
-            <Image
-              source={{ uri: item.photoUrl }}
-              style={{ width: 70, height: 70 }}
-              resizeMethod="resize"
-              resizeMode="cover"
-            />
-          </View>
-        </View>
       </View>
     </Pressable>
   );
+
   return (
     <View
       style={{
@@ -144,7 +164,6 @@ const Board_hobby = ({ navigation }) => {
         value={term}
         platform="ios"
       />
-
       <View
         style={{
           flex: 11,
@@ -158,6 +177,7 @@ const Board_hobby = ({ navigation }) => {
           maxToRenderPerBatch={10} //스크롤시 랜더링 갯수
         />
       </View>
+
       <ActionButton
         buttonColor="rgba(231,76,60,1)"
         onPress={() => {
@@ -169,3 +189,4 @@ const Board_hobby = ({ navigation }) => {
 };
 
 export default Board_hobby;
+
