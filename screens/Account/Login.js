@@ -77,7 +77,7 @@ function LoginScreen({ navigation }) {
           value={email}
           onChangeText={_handleEmailChange}
           onSubmitEditing={() => passwordRef.current.focus()}
-          placeholder="Email"
+          placeholder="Email@o.shinhan.ac.kr"
           returnKetType="next"
         />
         <Input

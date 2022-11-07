@@ -55,18 +55,7 @@ const Board_free = ({ navigation }) => {
     }
   };
 
-  const [userName, setUserName] = useState("");
-  const [userNumber, setUserNumber] = useState("");
-  db.collection('users')
-  .where('email', '==', firebase.auth().currentUser.email)
-  .get()
-  .then(result => {
-    result.forEach(doc => {
-      setUserName(doc.data().displayName);
-      setUserNumber(doc.data().stuId);
-    });
-  });
-
+  
 
   const renderItem = ({ item }) => (
     <Pressable
@@ -118,7 +107,7 @@ const Board_free = ({ navigation }) => {
                   color: '#757575',
                   fontSize: 10,
                   lineHeight: 18,}}>
-                작성자: {userName} {userNumber}
+                작성자: {item.writer} {}
               </Text>
             </View>
             <View style={{

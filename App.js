@@ -53,6 +53,7 @@ export default function App() {
     Audiowide: require('./assets/fonts/AudiowideRegular.ttf'),
     NanumGothic: require('./assets/fonts/NanumGothic.otf'),
     NanumGothicBold: require('./assets/fonts/NanumGothicBold.otf'),
+    NanumGothicLight: require('./assets/fonts/NanumGothicLight.otf'),
   });
   if (!loaded) {
     return null;

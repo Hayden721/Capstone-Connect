@@ -12,8 +12,6 @@ import {
 } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import Carousel, {
   Pagination,
   ParallaxImage,
@@ -29,12 +27,9 @@ const { width: screenWidth } = Dimensions.get('window');
 
 // 학교, 종정, 셔틀 링크 사용 import
 const CarouselContainer = styled.View`
-  background-color: ${({ theme }) => theme.blackPearlBackgorund};
   width: auto;
-  height: 450px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  box-shadow: 1px 2px 5px;
+  height: 480px;
+  border-radius: 20px;
 `;
 
 const InnerContainer = styled.View`
@@ -57,21 +52,12 @@ const ButtonContainer = styled.View`
 const BoardContainer = styled.View`
   background-color: ${({ theme }) => theme.imageButtonIcon};
   width: auto;
-  height: 400px;
-  border-radius: 20px;
-  box-shadow: 1px 3px 5px;
-`;
-
-const Top = styled.Text`
-  font-size: 20px;
-  margin-left: 25px;
-  margin-top: 10px;
-  font-family: 'NanumGothicBold';
+  height: 380px;
 `;
 
 const FastButtonContainer = styled.View`
-  width: 60;
-  height: 60;
+  width: 60px;
+  height: 60px;
   border-width: 2px;
   border-radius: 40px;
   margin: 20px;
@@ -79,16 +65,15 @@ const FastButtonContainer = styled.View`
   padding: 15px;
   background-color: #f7f1e3;
   border-color: #f7f1e3;
-  box-shadow: 1px 1px 2px;
+
 `;
 
 const TextContainer2 = styled.View`
-
   justify-content: center;
   text-align: center;
 `;
 
-const renderItem = ({ item }, parallaxProps) => {
+const renderItem = ({ item }) => {
   return (
     <View
       style={{
@@ -99,21 +84,12 @@ const renderItem = ({ item }, parallaxProps) => {
         backgroundColor: 'white',
       }}
     >
-      <ParallaxImage
-        source={{ uri: item.thumbnail }}
-        containerStyle={styles.imageContainer}
-        style={styles.image}
-        parallaxFactor={0.4}
-        {...parallaxProps}
-      />
       <Image source={{ uri: item.url }} style={{ width: 200, height: 250 }} />
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ marginVertical: 10, fontSize: 20, fontWeight: 'bold' }}>
           {item.name}
         </Text>
-        <TouchableOpacity >
-
-        </TouchableOpacity>
+        <TouchableOpacity></TouchableOpacity>
       </View>
     </View>
   );
@@ -122,9 +98,10 @@ const renderItem = ({ item }, parallaxProps) => {
 const data = [
   {
     id: 1,
-    name: '학습법 워크숍',
-    url: 'https://www.shinhan.ac.kr/CrossEditor/binary/images/000128/%EB%AF%B8%EB%9E%98%EC%82%AC%ED%9A%8C_%EC%97%AD%EB%9F%89%EA%B0%95%ED%99%94_%ED%95%99%EC%8A%B5%EB%B2%95_%EC%9B%8C%ED%81%AC%EC%83%B5_%ED%8F%AC%EC%8A%A4%ED%84%B0.png',
+    name: '의정부시 청소년운영위원회 모집',
+    url: 'https://www.shinhan.ac.kr/CrossEditor/binary/images/000130/%EB%B6%99%EC%9E%841._%EB%AA%A8%EC%A7%91_%EC%95%88%EB%82%B4%EB%AC%B8.jpg'
   },
+  
   {
     id: 2,
     name: '한중일 대학생 외교캠프',
@@ -134,6 +111,11 @@ const data = [
     id: 3,
     name: '낙동강 세계평화 문화 대축전',
     url: 'https://www.shinhan.ac.kr/CrossEditor/binary/images/000128/%ED%8F%AC%EC%8A%A4%ED%84%B0.png',
+  },
+  {
+    id: 4,
+    name: '학습법 워크숍',
+    url: 'https://www.shinhan.ac.kr/CrossEditor/binary/images/000128/%EB%AF%B8%EB%9E%98%EC%82%AC%ED%9A%8C_%EC%97%AD%EB%9F%89%EA%B0%95%ED%99%94_%ED%95%99%EC%8A%B5%EB%B2%95_%EC%9B%8C%ED%81%AC%EC%83%B5_%ED%8F%AC%EC%8A%A4%ED%84%B0.png',
   },
 ];
 
@@ -154,129 +136,15 @@ const Main = ({ navigation }) => {
 
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
-      <CarouselContainer>
-        <View style={{ marginTop: 30 }}></View>
-        <Carousel
-          ref={isCarousel}
-          sliderWidth={screenWidth}
-          sliderHeight={screenWidth}
-          itemWidth={screenWidth - 80}
-          itemHeight={styles.carouselHeight}
-          renderItem={renderItem}
-          hasParallaxImages={true}
-          onSnapToItem={index => setIndex(index)}
-          data={data}
-        />
-        <Pagination
-          dotsLength={data.length}
-          activeDotIndex={index}
-          carouselRef={isCarousel}
-          dotStyle={{
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            marginHorizontal: 8,
-            backgroundColor: '#F4BB41',
-          }}
-          tappableDots={true}
-          inactiveDotStyle={{
-            backgroundColor: 'white',
-            // Define styles for inactive dots here
-          }}
-          inactiveDotOpacity={0.4}
-          inactiveDotScale={0.6}
-        />
-      </CarouselContainer>
-
-      <ButtonContainer>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('Notice', { screen: 'NotiSchool' })
-          }
-        >
-          <FastButtonContainer>
-            <Ionicons name="megaphone" size={24} color="black" />
-            <Text
-              style={{
-                justifyContent: 'center',
-                textAlign: 'center',
-                fontSize: 8,
-              }}
-            >
-              공지
-            </Text>
-          </FastButtonContainer>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() =>
-            Linking.openURL('https://www.shinhan.ac.kr/sites/kr/index.do')
-          }
-        >
-          <FastButtonContainer>
-            <Ionicons name="school" size={24} color="black" />
-            <Text
-              style={{
-                justifyContent: 'center',
-                textAlign: 'center',
-                fontSize: 8,
-              }}
-            >
-              학교
-            </Text>
-          </FastButtonContainer>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() =>
-            Linking.openURL('https://stins.shinhan.ac.kr/irj/portal')
-          }
-        >
-          <FastButtonContainer>
-            <Ionicons name="desktop" size={24} color="black" />
-            <Text
-              style={{
-                justifyContent: 'center',
-                textAlign: 'center',
-                fontSize: 8,
-              }}
-            >
-              종정시
-            </Text>
-          </FastButtonContainer>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() =>
-            Linking.openURL(
-              'https://shinhanunivst.modoo.at/?link=6n7lulzb&messageNo=108&mode=view&query=&queryType=0&myList=0&page=2'
-            )
-          }
-        >
-          <FastButtonContainer>
-            <Ionicons name="bus" size={24} color="black" />
-            <Text
-              style={{
-                justifyContent: 'center',
-                textAlign: 'center',
-                fontSize: 10,
-              }}
-            >
-              셔틀
-            </Text>
-          </FastButtonContainer>
-        </TouchableOpacity>
-      </ButtonContainer>
-
       <BoardContainer>
         <Text
           style={{
-            margin: 20,
+            margin: 15,
             fontSize: 25,
             fontFamily: 'NanumGothicBold',
           }}
         >
-          <Text> 최신글 </Text>
+          <Text>게시글</Text>
         </Text>
         <InnerContainer>
           <TouchableOpacity
@@ -296,7 +164,6 @@ const Main = ({ navigation }) => {
                     fontFamily: 'NanumGothicBold',
                     justifyContent: 'center',
                     textAlign: 'center',
-
                     fontSize: 15,
                     width: 50,
                   }}
@@ -435,6 +302,135 @@ const Main = ({ navigation }) => {
           </TouchableOpacity>
         </InnerContainer>
       </BoardContainer>
+
+      <View style={{ marginTop: 30 }}></View>
+
+      <CarouselContainer>
+      <Text
+          style={{
+            marginLeft:20,
+            marginBottom:20,
+            fontSize: 25,
+            fontFamily: 'NanumGothicBold',
+          }}
+        >
+          <Text>활동정보</Text>
+        </Text>
+        <View style={{ marginTop: 1 }}></View>
+        <Carousel
+          layout={'tinder'}
+          autoplay={true}
+          loop={true}
+          ref={isCarousel}
+          sliderWidth={screenWidth}
+          sliderHeight={screenWidth}
+          itemWidth={screenWidth - 80}
+          itemHeight={styles.carouselHeight}
+          renderItem={renderItem}
+          hasParallaxImages={true}
+          onSnapToItem={index => setIndex(index)}
+          data={data}
+        />
+        <Pagination
+          dotsLength={data.length}
+          activeDotIndex={index}
+          carouselRef={isCarousel}
+          dotStyle={{
+            width: 7,
+            height: 10,
+            borderRadius: 5,
+            marginHorizontal: 8,
+            backgroundColor: '#F4BB41',
+          }}
+          tappableDots={true}
+          inactiveDotStyle={{
+            backgroundColor: 'black',
+            // Define styles for inactive dots here
+          }}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
+        />
+      </CarouselContainer>
+
+      <ButtonContainer>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Notice', { screen: 'NotiSchool' })
+          }
+        >
+          <FastButtonContainer>
+            <Ionicons name="megaphone" size={24} color="black" />
+            <Text
+              style={{
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: 8,
+              }}
+            >
+              공지
+            </Text>
+          </FastButtonContainer>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL('https://www.shinhan.ac.kr/sites/kr/index.do')
+          }
+        >
+          <FastButtonContainer>
+            <Ionicons name="school" size={24} color="black" />
+            <Text
+              style={{
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: 8,
+              }}
+            >
+              학교
+            </Text>
+          </FastButtonContainer>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL('https://stins.shinhan.ac.kr/irj/portal')
+          }
+        >
+          <FastButtonContainer>
+            <Ionicons name="desktop" size={24} color="black" />
+            <Text
+              style={{
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: 8,
+              }}
+            >
+              종정시
+            </Text>
+          </FastButtonContainer>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL(
+              'https://shinhanunivst.modoo.at/?link=6n7lulzb&messageNo=108&mode=view&query=&queryType=0&myList=0&page=2'
+            )
+          }
+        >
+          <FastButtonContainer>
+            <Ionicons name="bus" size={24} color="black" />
+            <Text
+              style={{
+                justifyContent: 'center',
+                textAlign: 'center',
+                fontSize: 10,
+              }}
+            >
+              셔틀
+            </Text>
+          </FastButtonContainer>
+        </TouchableOpacity>
+      </ButtonContainer>
     </ScrollView>
   );
 };

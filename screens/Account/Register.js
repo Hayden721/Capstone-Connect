@@ -6,7 +6,7 @@ import {
   Platform,
   Alert,
   Modal,
-  Image
+  Image,
 } from 'react-native';
 import { images } from '../../utils/images';
 import CheckBox from 'expo-checkbox';
@@ -20,7 +20,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 import { validateEmail } from '../../utils/common';
-import { signup} from '../../utils/firebase';
+import { signup } from '../../utils/firebase';
 
 const db = firebase.firestore();
 
@@ -40,7 +40,7 @@ const ErrorText = styled.Text`
 `;
 
 function Register({ navigation }) {
-  const [admin] = useState('0'); 
+  const [admin] = useState('0');
   const [agree, setAgree] = useState(false);
   const [name, setName] = useState('');
   const [stuId, setStuId] = useState('');
@@ -61,11 +61,11 @@ function Register({ navigation }) {
   const passwordRef = useRef();
   const passwordCheckRef = useRef();
   //학번 인증
-  useEffect(()=> {
+  useEffect(() => {
     let _errorMessage1 = '';
-    if(!stuId) {
+    if (!stuId) {
       _errorMessage1 = '학번을 입력해주세요.';
-    } else if(!name) {
+    } else if (!name) {
       _errorMessage1 = '이름을 입력해주세요';
     } else {
       _errorMessage1 = '';
@@ -93,36 +93,32 @@ function Register({ navigation }) {
     setDisabled1(!(stuId && name && !errorMessage1));
   }, [stuId, name, errorMessage1]);
   //모달인증버튼 활성화
-  useEffect(()=>{
-    setDisabled2(!(email && password && passwordCheck && agree && !errorMessage2));
+  useEffect(() => {
+    setDisabled2(
+      !(email && password && passwordCheck && agree && !errorMessage2)
+    );
   }, [email, password, passwordCheck, agree, errorMessage2]);
 
+  //const storageUrl = photoUrl.startsWith('http') ? photoUrl : uploadImage(photoUrl);
+  function saveUserInfo() {
+    db.collection('users')
+      .doc(email)
+      .set({
+        admin: admin,
+        displayName: name,
+        stuId: stuId,
+        email: email,
+        photoURL: photoUrl,
+      })
+      .then(() => {
+        console.log('Create Complete!');
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
+  }
 
-
-
-
-
-//const storageUrl = photoUrl.startsWith('http') ? photoUrl : uploadImage(photoUrl);
-function saveUserInfo (){
-   db.collection('users')
-    .doc(email)
-    .set({
-      admin: admin,
-      displayName: name,
-      stuId: stuId,
-      email: email,
-      photoURL: photoUrl
-  })
-  .then(() => {
-    console.log('Create Complete!');
-  })
-  .catch(error => {
-    console.log(error.message);
-  });
-}
-
-
-const pickImage = async () => {
+  const pickImage = async () => {
     // 권한 확인 코드: 권한이 없으면 물어보고, 승인하지 않으면 종료
     if (!status?.granted) {
       const permission = await requestPermission();
@@ -182,24 +178,22 @@ const pickImage = async () => {
       .then(url => {
         console.log(url);
         setPhotoUrl(url);
-        Alert.alert("업로드 성공", "완료");
+        Alert.alert('업로드 성공', '완료');
       })
       .catch(error => {
         console.log(error);
       });
   };
 
-
-
-  const _handleRegisterButtonPress = async () =>{
+  const _handleRegisterButtonPress = async () => {
     try {
-      const user = await signup({email, password});
+      const user = await signup({ email, password });
       saveUserInfo();
       console.log(user);
-    } catch(e) {
-      Alert.alert('Signup Error', e.message)
+    } catch (e) {
+      Alert.alert('Signup Error', e.message);
     }
-  }
+  };
 
   function stuidCheck() {
     db.collection('HakbunName')
@@ -209,15 +203,11 @@ const pickImage = async () => {
           if (stuId == doc.data().number && name == doc.data().name) {
             console.log('확인되었습니다');
             throw setModalVisible(true);
-          } else if (
-            stuId != doc.data().number || name != doc.data().name
-          ) {
+          } else if (stuId != doc.data().number || name != doc.data().name) {
             setModalVisible(false);
           }
         });
       });
-
-
   }
 
   return (
@@ -243,114 +233,120 @@ const pickImage = async () => {
           returnKetType="done"
         />
         <ErrorText>{errorMessage1}</ErrorText>
-        <Button title="인증" onPress={() => stuidCheck()} disabled={disabled1} />
+        <Button
+          title="인증"
+          onPress={() => stuidCheck()}
+          disabled={disabled1}
+        />
 
         <Modal presentationStyle={'formSheet'} visible={modalVisible}>
-        <KeyboardAwareScrollView
-      style={{ flex: 1, backgroundColor: 'white', paddingTop: 30 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >  
-          <View>
-            <TouchableOpacity>
-              <Ionicons
-                name="chevron-back-sharp"
-                size={50}
-                color="black"
-                onPress={() => setModalVisible(false)}
-              />
-            </TouchableOpacity>
-          </View>
-          <Container>
-          <TouchableOpacity onPress ={pickImage}>
-            <View 
-              style={{ 
-                width:120,
-                height:120,
-            }}>
-              <Image 
-                source={{ uri: imageUrl }}
-                style={{
-                  borderRadius: 100,
-                  height:120,
-                  width:120
-                }}/>
-              </View>
-            </TouchableOpacity>
-            <Input
-              ref={emailRef}
-              label="학교 이메일"
-              value={email}
-              onChangeText={text => setEmail(text)}
-              onSubmitEditing={() => passwordRef.current.focus()}
-              placeholder="ex) 20001234@shinhan.ac.kr"
-              returnKetType="next"
-            />
-            <Input
-              label="비밀번호"
-              value={password}
-              onChangeText={text => setPassword(text)}
-              onSubmitEditing={() => passwordCheckRef.current.focus()}
-              placeholder="비밀번호를 입력하세요"
-              returnKetType="next"
-              isPassword
-            />
-            <Input
-              label="비밀번호 확인"
-              value={passwordCheck}
-              onChangeText={text => setPasswordCheck(text)}
-              placeholder="비밀번호를 입력하세요"
-              returnKetType="done"
-              isPassword
-            />
-
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ flex: 1 }}>
-                <CheckBox
-                  value={agree}
-                  onValueChange={() => setAgree(!agree)}
-                  color={agree ? '#1e272e' : undefined}
-                  margin={20}
-                  marginRight={-10}
-                  marginTop={31}
+          <KeyboardAwareScrollView
+            style={{ flex: 1, backgroundColor: 'white', paddingTop: 30 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          >
+            <View>
+              <TouchableOpacity>
+                <Ionicons
+                  name="chevron-back-sharp"
+                  size={50}
+                  color="black"
+                  onPress={() => setModalVisible(false)}
                 />
-              </View>
-              <View style={{ flex: 7 }}>
-                <Text
+              </TouchableOpacity>
+            </View>
+            <Container>
+              <TouchableOpacity onPress={pickImage}>
+                <View
                   style={{
-                    fontSize: 20,
-                    fontFamily: 'NanumGothic',
-                    marginLeft: 20,
-                    marginTop: 30,
+                    width: 120,
+                    height: 120,
                   }}
                 >
-                  [필수]동의합니다.
-                </Text>
-              </View>
-              <View
-                style={{
-                  flex: 3,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <TouchableOpacity>
-                  <Ionicons name="add" size={40} color="black" />
-                </TouchableOpacity>
-                
-              </View>
-              
-            </View>
-            <ErrorText>{errorMessage2}</ErrorText>
+                  <Image
+                    source={{ uri: imageUrl }}
+                    style={{
+                      borderRadius: 100,
+                      height: 120,
+                      width: 120,
+                    }}
+                  />
+                </View>
+              </TouchableOpacity>
+              <Input
+                ref={emailRef}
+                label="학교 이메일"
+                value={email}
+                onChangeText={text => setEmail(text)}
+                onSubmitEditing={() => passwordRef.current.focus()}
+                placeholder="ex) 20001234@shinhan.ac.kr"
+                returnKetType="next"
+              />
+              <Input
+                label="비밀번호"
+                value={password}
+                onChangeText={text => setPassword(text)}
+                onSubmitEditing={() => passwordCheckRef.current.focus()}
+                placeholder="비밀번호를 입력하세요"
+                returnKetType="next"
+                isPassword
+              />
+              <Input
+                label="비밀번호 확인"
+                value={passwordCheck}
+                onChangeText={text => setPasswordCheck(text)}
+                placeholder="비밀번호를 입력하세요"
+                returnKetType="done"
+                isPassword
+              />
 
-            <Button title="회원가입" onPress={() => _handleRegisterButtonPress()} disabled={disabled2} />
-          </Container>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1 }}>
+                  <CheckBox
+                    value={agree}
+                    onValueChange={() => setAgree(!agree)}
+                    color={agree ? '#1e272e' : undefined}
+                    margin={20}
+                    marginRight={-10}
+                    marginTop={31}
+                  />
+                </View>
+                <View style={{ flex: 7 }}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontFamily: 'NanumGothic',
+                      marginLeft: 20,
+                      marginTop: 30,
+                    }}
+                  >
+                    [필수]동의합니다.
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 3,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <TouchableOpacity>
+                    <Ionicons name="add" size={40} color="black" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <ErrorText>{errorMessage2}</ErrorText>
+
+              <Button
+                title="회원가입"
+                onPress={() => _handleRegisterButtonPress()}
+                disabled={disabled2}
+              />
+            </Container>
           </KeyboardAwareScrollView>
         </Modal>
       </Container>
     </KeyboardAwareScrollView>
   );
 }
-
-
 
 export default Register;

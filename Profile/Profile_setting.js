@@ -138,33 +138,7 @@ const Profile_setting = () => {
           </Text>
         </View>
 
-        <TouchableOpacity
-          onPress={() => firebase.auth().signOut()}
-          style={{
-            justifyContent: 'center',
-            marginTop: 10,
-            marginLeft: 30,
-            fontFamily: 'NanumGothicBold',
-          }}
-        >
-          <Text>
-          로그아웃
-          </Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => userDelete()}
-          style={{
-            justifyContent: 'center',
-            marginTop: 10,
-            marginLeft: 30,
-            fontFamily: 'NanumGothicBold',
-          }}
-        >
-          <Text>
-            회원탈퇴
-          </Text>
-        </TouchableOpacity>
         
       </SafeAreaView>
     </ScrollView>

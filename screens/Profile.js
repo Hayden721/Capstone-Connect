@@ -15,11 +15,28 @@ import firebase from 'firebase/app';
 import 'react-native-gesture-handler';
 import 'firebase/auth';
 import 'firebase/firestore';
+import styled from 'styled-components/native';
 import * as ImagePicker from 'expo-image-picker';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { getCurrentUser, updateUserPhoto, Profile_Edit } from '../utils/firebase';
 import { Image } from '../components';
+
+const ContainerBox = styled.View`
+  width: 380px;
+  height: auto;
+  border-style: dashed;
+  margin: 20px;
+  
+`
+
+const HorizentalLine = styled.View`
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: black;
+  height: 1px;
+  align-self: stretch;
+`;
 
 const userDelete = () => {
   Alert.alert(
@@ -76,7 +93,6 @@ const Main_profile = ({navigation}) => {
       });
     });
 
-
     function touch(){
       console.log(firebase.auth().currentUser.photoURL);
     }
@@ -105,30 +121,39 @@ const Main_profile = ({navigation}) => {
             <Text style={{marginLeft:20, fontSize:17, fontFamily: 'NanumGothicBold', margin:10}}> Email: {userEmail} </Text>
         
         </View>
+        <HorizentalLine/>
         
-       {/* <TouchableOpacity
-        onPress={()=> navigation.navigate("BoardStacks",{screen:"내가쓴글"})}> 
-        <View
+        <ContainerBox>
+          <Text style={{fontFamily: 'NanumGothicBold', fontSize:20}}>기타</Text>
+          <TouchableOpacity
+          onPress={() => firebase.auth().signOut()}
           style={{
-            marginLeft: 25,
-            marginTop: 40,
-            margin:5,
-          }}   
+            justifyContent: 'center',
+            marginTop: 10,
+            marginLeft: 20,
+            fontFamily: 'NanumGothicLight',
+
+          }}
         >
-          <Text
-            style={{
-              marginTop: 30,
-              fontFamily: 'NanumGothicBold',
-              fontSize: 20,
-              
-            }}
-          >
-          
-            <FontAwesome5 name="book-open" size={22} color="green"/>
-            작성한 게시글
+          <Text style={{fontSize: 15, fontFamily:'NanumGothicLight'}}>
+          로그아웃
           </Text>
-        </View>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => userDelete()}
+          style={{
+            justifyContent: 'center',
+            marginTop: 10,
+            marginLeft: 20,
+            fontFamily: 'NanumGothicBold',
+          }}
+        >
+          <Text style={{fontSize: 15, fontFamily:'NanumGothicLight'}}>
+            회원탈퇴
+          </Text>
+        </TouchableOpacity>
+        </ContainerBox>
       </SafeAreaView>
     </ScrollView>
   );
