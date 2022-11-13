@@ -118,7 +118,7 @@ const Board_competition = ({ navigation }) => {
                     color: '#757575',
                     fontSize: 10,
                     lineHeight: 18,}}>
-                  작성자: {userName} {userNumber}
+                  작성자: {item.writer} 
                 </Text>
               </View>
               <View style={{
