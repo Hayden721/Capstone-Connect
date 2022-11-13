@@ -23,10 +23,13 @@ import { getCurrentUser, updateUserPhoto, Profile_Edit } from '../utils/firebase
 import { Image } from '../components';
 
 const ContainerBox = styled.View`
-  width: 380px;
+  width: auto;
   height: auto;
-  border-style: dashed;
-  margin: 20px;
+  border-radius: 15px;
+  border-style: 'solid';
+  margin: 30px;
+  border-style: solid;
+  background-color: whitesmoke;
   
 `
 
@@ -37,6 +40,7 @@ const HorizentalLine = styled.View`
   height: 1px;
   align-self: stretch;
 `;
+
 
 const userDelete = () => {
   Alert.alert(
@@ -135,7 +139,7 @@ const Main_profile = ({navigation}) => {
 
           }}
         >
-          <Text style={{fontSize: 15, fontFamily:'NanumGothicLight'}}>
+          <Text style={{fontSize: 16, fontFamily:'NanumGothicBold', color:'#404040'}}>
           로그아웃
           </Text>
         </TouchableOpacity>
@@ -149,7 +153,7 @@ const Main_profile = ({navigation}) => {
             fontFamily: 'NanumGothicBold',
           }}
         >
-          <Text style={{fontSize: 15, fontFamily:'NanumGothicLight'}}>
+          <Text style={{fontSize: 16, fontFamily:'NanumGothicBold', color:'#404040'}}>
             회원탈퇴
           </Text>
         </TouchableOpacity>
